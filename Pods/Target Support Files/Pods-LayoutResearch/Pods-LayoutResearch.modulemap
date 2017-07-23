@@ -1,0 +1,6 @@
+framework module Pods_LayoutResearch {
+  umbrella header "Pods-LayoutResearch-umbrella.h"
+
+  export *
+  module * { export * }
+}
