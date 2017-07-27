@@ -4,6 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -82,6 +83,16 @@
                                     <action selector="exportConsentFormPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="wXT-KZ-KaL"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86M-q3-Q9r">
+                                <rect key="frame" x="302" y="28" width="57" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <state key="normal" title="Settings">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <segue destination="vKG-OD-IgQ" kind="show" id="bzz-iJ-ObW"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -90,6 +101,9 @@
                             <constraint firstItem="2x4-ex-AhU" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CBo-eB-yKC"/>
                             <constraint firstItem="n6a-Qm-xmB" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CNg-AR-IJx"/>
                             <constraint firstItem="lOi-BV-6kC" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CaR-UC-lef"/>
+                            <constraint firstItem="86M-q3-Q9r" firstAttribute="top" secondItem="xBf-7S-Jh7" secondAttribute="top" constant="8" id="D8h-zn-YDp"/>
+                            <constraint firstItem="xBf-7S-Jh7" firstAttribute="trailing" secondItem="86M-q3-Q9r" secondAttribute="trailing" constant="16" id="NeM-8T-7dk"/>
+                            <constraint firstItem="86M-q3-Q9r" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W7y-Xs-dxL" secondAttribute="leading" constant="20" symbolic="YES" id="Ob8-mT-mIM"/>
                             <constraint firstItem="xBf-7S-Jh7" firstAttribute="bottom" secondItem="lOi-BV-6kC" secondAttribute="bottom" constant="16" id="V0x-sg-NRz"/>
                             <constraint firstItem="3J4-bm-ji0" firstAttribute="top" secondItem="2x4-ex-AhU" secondAttribute="bottom" constant="28" id="rAf-Ff-U7J"/>
                             <constraint firstItem="n6a-Qm-xmB" firstAttribute="top" secondItem="3J4-bm-ji0" secondAttribute="bottom" constant="28" id="xrT-uY-eib"/>
@@ -104,6 +118,14 @@
                 <exit id="q2g-8h-H5L" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1053.5999999999999" y="497.90104947526243"/>
+        </scene>
+        <!--Settings-->
+        <scene sceneID="Jpl-0J-3l5">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Settings" id="vKG-OD-IgQ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QFG-3e-XpO" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1732" y="497"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="6av-h0-wJN">

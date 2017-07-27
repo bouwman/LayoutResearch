@@ -11,12 +11,11 @@ import ResearchKit
 
 class StudyViewController: UIViewController {
     var resultService = ResultService()
+    var service: StudyService!
     
     @IBOutlet weak var exportResultsButton: UIButton!
     
     @IBAction func didPressStart(_ sender: RoundedButton) {
-        let layouts: [LayoutType] = [.grid, .horizontal, .vertical]
-        let service = StudyService(layouts: layouts, organisation: .random, dimension: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
         let task = ORKOrderedTask(identifier: "SearchTask-1", steps: service.steps)
         let taskVC = ORKTaskViewController(task: task, taskRun: nil)
         
@@ -37,8 +36,24 @@ class StudyViewController: UIViewController {
         present(createActivityViewControllerFor(items: [consentPath]), animated: true, completion: nil)
     }
     
+    @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
+        // Settings vc gets dismisseds
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let navVC = segue.destination as? UINavigationController {
+            if let settingsVC = navVC.topViewController as? SettingsViewController {
+                settingsVC.settings = service.settings
+                settingsVC.delegate = self
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let settings = StudySettings(group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
+        service = StudyService(settings: settings)
         
         exportResultsButton.isEnabled = resultService.isResultAvailable
     }
@@ -104,5 +119,11 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
         } else {
             return ORKActiveStepViewController(step: step)
         }
+    }
+}
+
+extension StudyViewController: SettingsViewControllerDelegate {
+    func settingsViewController(viewController: SettingsViewController, didChangeSettings settings: StudySettings) {
+        service = StudyService(settings: settings)
     }
 }

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		29B41C8EA5A67F14E515D30B /* Pods_LayoutResearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D970F4D5AE66D2F3BADBBF60 /* Pods_LayoutResearch.framework */; };
+		4728AB021F29F3CB0084EFB1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */; };
+		4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */; };
 		4751B4F61F2517AE00549329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751B4F51F2517AE00549329 /* AppDelegate.swift */; };
 		4751B4F81F2517AE00549329 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751B4F71F2517AE00549329 /* ContainerViewController.swift */; };
 		4751B4FB1F2517AE00549329 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4751B4F91F2517AE00549329 /* Main.storyboard */; };
@@ -23,6 +25,7 @@
 		4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B51F276287009AC457 /* StudyViewController.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
+		4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */; };
 		47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */; };
 		47B5C8D31F25519200EDF07C /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D21F25519200EDF07C /* RoundedButton.swift */; };
 		47C1DA141F28EE8200F69A75 /* LayoutIntroStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */; };
@@ -35,6 +38,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
 		4751B4F21F2517AE00549329 /* LayoutResearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayoutResearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4751B4F51F2517AE00549329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4751B4F71F2517AE00549329 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +57,7 @@
 		4764C4B51F276287009AC457 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
+		4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStepViewController.swift; sourceTree = "<group>"; };
 		47B5C8D21F25519200EDF07C /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutIntroStep.swift; sourceTree = "<group>"; };
@@ -78,6 +84,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4728AB031F29F3D10084EFB1 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */,
+				4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		4751B4E91F2517AE00549329 = {
 			isa = PBXGroup;
 			children = (
@@ -101,11 +116,13 @@
 			children = (
 				4751B4F51F2517AE00549329 /* AppDelegate.swift */,
 				47C86DAC1F269FB8005430B2 /* Constants.swift */,
+				4728AB031F29F3D10084EFB1 /* Settings */,
 				476AC2EB1F27A3EB004EB3A0 /* Onboarding */,
 				47DF75691F27F43B00A6FC52 /* Study */,
 				47DF756A1F27F45500A6FC52 /* Model */,
 				47DF756B1F27F46C00A6FC52 /* Views */,
 				4751B4F91F2517AE00549329 /* Main.storyboard */,
+				4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */,
 				4751B4FC1F2517AE00549329 /* Assets.xcassets */,
 				4751B4FE1F2517AE00549329 /* LaunchScreen.storyboard */,
 				4751B5011F2517AE00549329 /* Info.plist */,
@@ -241,6 +258,7 @@
 				4751B5001F2517AE00549329 /* LaunchScreen.storyboard in Resources */,
 				4751B4FD1F2517AE00549329 /* Assets.xcassets in Resources */,
 				4751B4FB1F2517AE00549329 /* Main.storyboard in Resources */,
+				4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +320,7 @@
 				47C86DAD1F269FB8005430B2 /* Constants.swift in Sources */,
 				47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */,
 				4764C4AC1F275A44009AC457 /* ConsentDocument.swift in Sources */,
+				4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */,
 				4764C4AE1F275A8C009AC457 /* ReplaceSegue.swift in Sources */,
 				4751B4F81F2517AE00549329 /* ContainerViewController.swift in Sources */,
 				4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */,
@@ -312,6 +331,7 @@
 				477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */,
 				47CE6AD61F2908E0006E90DD /* CSVWriter.swift in Sources */,
 				47E7CBB81F2918DE00092680 /* ResultService.swift in Sources */,
+				4728AB021F29F3CB0084EFB1 /* SettingsViewController.swift in Sources */,
 				47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */,
 				4764C4B01F275C22009AC457 /* IntroductionViewController.swift in Sources */,
 				47C1DA141F28EE8200F69A75 /* LayoutIntroStep.swift in Sources */,

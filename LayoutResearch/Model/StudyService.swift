@@ -23,33 +23,20 @@ enum OrganisationType: CustomStringConvertible {
 
 class StudyService {
     var steps: [ORKStep] = []
-    var layouts: [LayoutType]
-    var organisation: OrganisationType
-    var dimension: Int, itemDiameter: CGFloat
-    var itemDistance: CGFloat
-    var trialCount: Int
-    var practiceTrialCount: Int
-    
-    
+    var settings: StudySettings
     
     private var searchItems: [[SearchItemProtocol]] = []
     private var targetItems: [SearchItemProtocol] = []
     
-    init(layouts: [LayoutType], organisation: OrganisationType, dimension: Int, itemDiameter: CGFloat, itemDistance: CGFloat, trialCount: Int, practiceTrialCount: Int) {
-        self.layouts = layouts
-        self.organisation = organisation
-        self.dimension = dimension
-        self.itemDiameter = itemDiameter
-        self.itemDistance = itemDistance
-        self.trialCount = trialCount
-        self.practiceTrialCount = practiceTrialCount
+    init(settings: StudySettings) {
+        self.settings = settings
         
         // Create base item array
         var counter = 1
         
-        for row in 0..<dimension {
+        for row in 0..<settings.rowCount {
             var rowItems: [SearchItemProtocol] = []
-            for column in 0..<dimension {
+            for column in 0..<settings.columnCount {
                 let item = SearchItem(identifier: "\(counter)", colorId: colors[row][column], shapeId: counter % Const.Interface.shapeCount)
                 rowItems.append(item)
                 targetItems.append(item)
@@ -62,7 +49,8 @@ class StudyService {
         targetItems.shuffle()
         
         // Create enough target items for every trial
-        let totalTrials = trialCount * layouts.count + practiceTrialCount * layouts.count
+        let layouts = settings.group.layouts
+        let totalTrials = settings.trialCount * layouts.count + settings.practiceTrialCount * layouts.count
         let targetItemsCopy = targetItems
         while targetItems.count < totalTrials {
             targetItems = targetItems + targetItemsCopy
@@ -85,12 +73,12 @@ class StudyService {
         for (i, layout) in layouts.enumerated() {
             // Not add layout intro after intro
             if i != 0 {
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(i)", items: layoutIntroItems, layout: layout, itemDiameter: itemDiameter, itemDistance: itemDistance)
+                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance)
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different"
                 steps.append(newLayoutStep)
             }
-            for _ in 0..<practiceTrialCount {
+            for _ in 0..<settings.practiceTrialCount {
                 addTrialStepsFor(index: trialCounter, layout: layout, isPractice: true)
                 trialCounter += 1
             }
@@ -106,12 +94,12 @@ class StudyService {
         for (i, layout) in layouts.enumerated() {
             // Not add layout intro after intro
             if i != 0 {
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: itemDiameter, itemDistance: itemDistance)
+                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance)
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different"
                 steps.append(newLayoutStep)
             }
-            for _ in 0..<trialCount {
+            for _ in 0..<settings.trialCount {
                 addTrialStepsFor(index: trialCounter, layout: layout, isPractice: false)
                 trialCounter += 1
             }
@@ -120,7 +108,7 @@ class StudyService {
     
     private func addTrialStepsFor(index: Int, layout: LayoutType, isPractice: Bool) {
         // Shuffle layout for every trial if random
-        if organisation == .random {
+        if settings.group.organisation == .random {
             searchItems.shuffle()
             for (i, rowItems) in searchItems.enumerated() {
                 searchItems[i] = rowItems.shuffled()
@@ -129,8 +117,8 @@ class StudyService {
         
         let targetItem = targetItems[index]
         let searchStepIdentifier = "\(isPractice ? "(Practice)" : "")Trial\(index)"
-        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: targetItem, targetDiameter: itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, items: searchItems, targetItem: targetItem, layout: layout, organisation: organisation, itemDiameter: itemDiameter, itemDistance: itemDistance, isPractice: isPractice)
+        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: targetItem, targetDiameter: settings.itemDiameter)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"
@@ -161,9 +149,9 @@ class StudyService {
         var items: [[SearchItemProtocol]] = []
         
         var counter = 1
-        for _ in 0..<dimension {
+        for _ in 0..<settings.rowCount {
             var rowItems: [SearchItemProtocol] = []
-            for _ in 0..<dimension {
+            for _ in 0..<settings.columnCount {
                 // 0 for black color and no shape
                 let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0)
                 rowItems.append(item)

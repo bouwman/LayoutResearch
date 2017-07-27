@@ -12,6 +12,8 @@ struct Const {
     struct Identifiers {
         static let consetReviewStep = "ConsentReviewStep"
         static let visualConsentStep = "VisualConsentStep"
+        static let selectionCell = "SelectionCell"
+        static let toSelectionSegue = "toSelection"
     }
     struct Interface {
         static let descriptionItemMargin: CGFloat = 50
