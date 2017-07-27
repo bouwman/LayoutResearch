@@ -71,7 +71,7 @@ class StudyService {
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
-        introStep.text = "Try to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Search' button shown under the description. The 'Search' button will appear after 3 seconds. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it. If you are incorrect, the target description will be shown again.\n\nIf you are correct, you are given feedback on the time taken to locate the target and can click 'Next' to go to the next trial."
+        introStep.text = "Try to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select an item you are taken to the next trial. There is no chance to repeat the trial."
         steps.append(introStep)
         
         // Create practice intro step

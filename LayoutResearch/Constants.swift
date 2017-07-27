@@ -29,7 +29,50 @@ enum SettingsString: String {
 
 extension UIColor {
     static func searchColorFor(id: Int) -> UIColor {
-        return UIColor(named: "Color\(id)") ?? UIColor.black
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "Color\(id)") ?? UIColor.black
+        } else {
+            switch id {
+            case 0:
+                return UIColor.black
+            case 1:
+                return UIColor(rgbHex: 0x70C3ED)
+            case 2:
+                return UIColor(rgbHex: 0xFDB64E)
+            case 3:
+                return UIColor(rgbHex: 0x879BCE)
+            case 4:
+                return UIColor(rgbHex: 0xF05F90)
+            case 5:
+                return UIColor(rgbHex: 0xAED361)
+            case 6:
+                return UIColor(rgbHex: 0x8ECFB5)
+            case 7:
+                return UIColor(rgbHex: 0xF15C40)
+            default:
+                return UIColor.gray
+            }
+        }
+    }
+    
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Invalid red component")
+        assert(green >= 0 && green <= 255, "Invalid green component")
+        assert(blue >= 0 && blue <= 255, "Invalid blue component")
+        
+        if #available(iOS 10.0, *) {
+            self.init(displayP3Red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+        } else {
+            self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+        }
+    }
+    
+    convenience init(rgbHex: Int) {
+        self.init(
+            red: (rgbHex >> 16) & 0xFF,
+            green: (rgbHex >> 8) & 0xFF,
+            blue: rgbHex & 0xFF
+        )
     }
 }
 

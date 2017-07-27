@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A258544A4A8DD033FB73880404C965F0"
-               BuildableName = "Pods_LayoutResearch.framework"
-               BlueprintName = "Pods-LayoutResearch"
-               ReferencedContainer = "container:Pods.xcodeproj">
+               BlueprintIdentifier = "4751B4F11F2517AE00549329"
+               BuildableName = "LayoutResearch.app"
+               BlueprintName = "LayoutResearch"
+               ReferencedContainer = "container:LayoutResearch.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -30,6 +30,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4751B4F11F2517AE00549329"
+            BuildableName = "LayoutResearch.app"
+            BlueprintName = "LayoutResearch"
+            ReferencedContainer = "container:LayoutResearch.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -44,15 +53,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A258544A4A8DD033FB73880404C965F0"
-            BuildableName = "Pods_LayoutResearch.framework"
-            BlueprintName = "Pods-LayoutResearch"
-            ReferencedContainer = "container:Pods.xcodeproj">
+            BlueprintIdentifier = "4751B4F11F2517AE00549329"
+            BuildableName = "LayoutResearch.app"
+            BlueprintName = "LayoutResearch"
+            ReferencedContainer = "container:LayoutResearch.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -62,6 +72,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "4751B4F11F2517AE00549329"
+            BuildableName = "LayoutResearch.app"
+            BlueprintName = "LayoutResearch"
+            ReferencedContainer = "container:LayoutResearch.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
