@@ -63,11 +63,13 @@ class SearchView: UIView {
             var buttonRow: [RoundedButton] = []
             for item in itemsInRow {
                 let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
+                let inset = itemDiameter / Const.Interface.insetDiameterRatio
+                
                 button.identifier = item.identifier
                 button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
                 button.setImage(UIImage.searchImageFor(id: item.shapeId), for: .normal)
                 button.imageView?.contentMode = .scaleAspectFit
-                button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+                button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
                 
                 buttonRow.append(button)
             }

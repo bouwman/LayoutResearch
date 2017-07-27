@@ -37,7 +37,7 @@ class StudyViewController: UIViewController {
     }
     
     @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
-        // Settings vc gets dismisseds
+        // Settings vc gets dismissed
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -51,11 +51,20 @@ class StudyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let settings = StudySettings(group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
-        service = StudyService(settings: settings)
+
+        service = StudyService(settings: loadSettings())
         
         exportResultsButton.isEnabled = resultService.isResultAvailable
+    }
+    
+    private func loadSettings() -> StudySettings {
+        if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
+            return savedSettings
+        } else {
+            let settings = StudySettings(group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
+            settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+            return settings
+        }
     }
     
     private func createActivityViewControllerFor(items: [Any]) -> UIActivityViewController {

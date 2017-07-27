@@ -19,12 +19,13 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
         let targetItem = searchStep.targetItem
         let button = RoundedButton(frame: CGRect(x: 0, y: Const.Interface.descriptionItemMargin, width: size, height: size))
         let contentView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: Const.Interface.descriptionItemMargin + size))
+        let inset = size / Const.Interface.insetDiameterRatio
         
         button.identifier = targetItem.identifier
         button.backgroundColor = UIColor.searchColorFor(id: targetItem.colorId)
         button.setImage(UIImage.searchImageFor(id: targetItem.shapeId), for: .normal)
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         
         contentView.addSubview(button)
         

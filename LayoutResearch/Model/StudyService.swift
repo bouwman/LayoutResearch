@@ -33,11 +33,10 @@ class StudyService {
         
         // Create base item array
         var counter = 1
-        
         for row in 0..<settings.rowCount {
             var rowItems: [SearchItemProtocol] = []
             for column in 0..<settings.columnCount {
-                let item = SearchItem(identifier: "\(counter)", colorId: colors[row][column], shapeId: counter % Const.Interface.shapeCount)
+                let item = SearchItem(identifier: "\(counter)", colorId: colors[row][column], shapeId: counter)
                 rowItems.append(item)
                 targetItems.append(item)
                 counter += 1
@@ -130,18 +129,28 @@ class StudyService {
     private var colors: [[Int]] {
         var colors: [[Int]] = []
         
-        let colorRow1 = [1, 3, 2, 1, 4]
-        let colorRow2 = [4, 6, 2, 4, 3]
-        let colorRow3 = [5, 2, 1, 5, 2]
-        let colorRow4 = [1, 7, 6, 1, 4]
-        let colorRow5 = [5, 3, 2, 1, 3]
-        
+        let colorRow1 = [1, 3, 2, 1, 4, 0, 0, 0, 0, 0]
+        let colorRow2 = [4, 6, 2, 4, 3, 0, 0, 0, 0, 0]
+        let colorRow3 = [5, 2, 1, 5, 2, 0, 0, 0, 0, 0]
+        let colorRow4 = [1, 7, 6, 1, 4, 0, 0, 0, 0, 0]
+        let colorRow5 = [5, 3, 2, 1, 3, 0, 0, 0, 0, 0]
+        let colorRow6 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let colorRow7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let colorRow8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let colorRow9 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let colorRow10 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
         colors.append(colorRow1)
         colors.append(colorRow2)
         colors.append(colorRow3)
         colors.append(colorRow4)
         colors.append(colorRow5)
-        
+        colors.append(colorRow6)
+        colors.append(colorRow7)
+        colors.append(colorRow8)
+        colors.append(colorRow9)
+        colors.append(colorRow10)
+
         return colors
     }
     

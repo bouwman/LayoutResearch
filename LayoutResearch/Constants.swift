@@ -16,6 +16,7 @@ struct Const {
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
+        static let insetDiameterRatio: CGFloat = 4.1
         static let descriptionItemMargin: CGFloat = 50
         static let searchLayoutMargin: CGFloat = 200
         static let introLayoutMargin: CGFloat = 30
@@ -27,6 +28,13 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultCSVPath
+    case participantGroup
+    case layoutItemDiameter
+    case layoutItemDistance
+    case layoutRowCount
+    case layoutColumnCount
+    case trialCount
+    case practiceTrialCount
 }
 
 extension UIColor {

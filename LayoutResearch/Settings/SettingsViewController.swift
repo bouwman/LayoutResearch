@@ -55,6 +55,31 @@ struct StudySettings {
     var itemDistance: CGFloat
     var trialCount: Int
     var practiceTrialCount: Int
+    
+    func saveToUserDefaults(userDefaults: UserDefaults) {
+        userDefaults.set(group.rawValue, forKey: SettingsString.participantGroup.rawValue)
+        userDefaults.set(itemDiameter, forKey: SettingsString.layoutItemDiameter.rawValue)
+        userDefaults.set(itemDistance, forKey: SettingsString.layoutItemDistance.rawValue)
+        userDefaults.set(rowCount, forKey: SettingsString.layoutRowCount.rawValue)
+        userDefaults.set(columnCount, forKey: SettingsString.layoutColumnCount.rawValue)
+        userDefaults.set(trialCount, forKey: SettingsString.trialCount.rawValue)
+        userDefaults.set(practiceTrialCount, forKey: SettingsString.practiceTrialCount.rawValue)
+    }
+    
+    static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
+        let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
+        let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
+        let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
+        let itemDiameter = userDefaults.float(forKey: SettingsString.layoutItemDiameter.rawValue)
+        let itemDistance = userDefaults.float(forKey: SettingsString.layoutItemDistance.rawValue)
+        let trialCount = userDefaults.integer(forKey: SettingsString.trialCount.rawValue)
+        let practiceTrialCount = userDefaults.integer(forKey: SettingsString.practiceTrialCount.rawValue)
+        
+        guard let groupString = groupStringOptional else { return nil }
+        guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
+        
+        return StudySettings(group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), trialCount: trialCount, practiceTrialCount: practiceTrialCount)
+    }
 }
 
 protocol SettingsViewControllerDelegate {
@@ -70,12 +95,38 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var itemDistanceLabel: UILabel!
     @IBOutlet weak var rowCountLabel: UILabel!
     @IBOutlet weak var columnCountLabel: UILabel!
+    @IBOutlet weak var itemDiameterSlider: UISlider!
+    @IBOutlet weak var itemDistanceSlider: UISlider!
+    @IBOutlet weak var rowCountSlider: UISlider!
+    @IBOutlet weak var columnCountSlider: UISlider!
     
     var delegate: SettingsViewControllerDelegate?
     var settings: StudySettings? {
         didSet {
             updateUI()
         }
+    }
+    
+    // MARK: - IBActions
+    
+    @IBAction func itemDiameterSliderChanged(_ sender: UISlider) {
+        settings?.itemDiameter = CGFloat(sender.value)
+        updateUI()
+    }
+    
+    @IBAction func itemDistanceSliderChanged(_ sender: UISlider) {
+        settings?.itemDistance = CGFloat(sender.value)
+        updateUI()
+    }
+    
+    @IBAction func rowCountSliderChanged(_ sender: UISlider) {
+        settings?.rowCount = Int(sender.value)
+        updateUI()
+    }
+    
+    @IBAction func columnCountSliderChanged(_ sender: UISlider) {
+        settings?.columnCount = Int(sender.value)
+        updateUI()
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -115,9 +166,12 @@ class SettingsViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if let settings = settings {
-            delegate?.settingsViewController(viewController: self, didChangeSettings: settings)
-        }
+        // Save to userdefaults
+        guard let settings = settings else { return }
+
+        settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+        
+        delegate?.settingsViewController(viewController: self, didChangeSettings: settings)
     }
     
     private var allGroups: [ParticipantGroup] {
@@ -126,11 +180,17 @@ class SettingsViewController: UITableViewController {
     
     private func updateUI() {
         guard let settings = settings else { return }
+        
         participantGroupLabel?.text = settings.group.description
         itemDiameterLabel?.text = "\(Int(settings.itemDiameter))"
         itemDistanceLabel?.text = "\(Int(settings.itemDistance))"
         rowCountLabel?.text = "\(settings.rowCount)"
         columnCountLabel?.text = "\(settings.columnCount)"
+        
+        itemDiameterSlider?.value = Float(settings.itemDiameter)
+        itemDistanceSlider?.value = Float(settings.itemDistance)
+        rowCountSlider?.value = Float(settings.rowCount)
+        columnCountSlider?.value = Float(settings.columnCount)
     }
 }
 
