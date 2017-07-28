@@ -9,12 +9,7 @@
 import Foundation
 
 class ResultService {
-    let docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last!
-    var csvFilePath: URL { return docURL.appendingPathComponent("result.csv") }
-    
-    var isResultAvailable: Bool {
-        return FileManager.default.fileExists(atPath: csvFilePath.path)
-    }
+    let fileService = FileService()
     
     var lastResults: [SearchResult]? {
         didSet {
@@ -27,12 +22,9 @@ class ResultService {
     func saveResultsToCSV(results: [SearchResult]) {
         guard results.count != 0 else { return }
         
-        // Remove old if existent
-        if isResultAvailable {
-            try! FileManager.default.removeItem(at: csvFilePath)
-        }
+        fileService.removeResultIfExists()
         
-        let optionalSream = OutputStream(url: csvFilePath, append: false)
+        let optionalSream = OutputStream(url: fileService.csvFilePath, append: false)
         
         guard let stream = optionalSream else { return }
         
@@ -50,7 +42,7 @@ class ResultService {
             writer.stream.close()
             
             // Save url
-            UserDefaults.standard.set(csvFilePath, forKey: SettingsString.resultCSVPath.rawValue)
+            UserDefaults.standard.set(fileService.csvFilePath, forKey: SettingsString.resultCSVPath.rawValue)
         } catch {
             print("Error writing csv")
         }

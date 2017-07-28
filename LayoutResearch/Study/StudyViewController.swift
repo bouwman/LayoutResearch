@@ -25,9 +25,9 @@ class StudyViewController: UIViewController {
     }
     
     @IBAction func exportResultsButtonPressed(_ sender: UIButton) {
-        guard resultService.isResultAvailable else { return }
+        guard resultService.fileService.isResultAvailable else { return }
         
-        present(createActivityViewControllerFor(items: [resultService.csvFilePath]), animated: true, completion: nil)
+        present(createActivityViewControllerFor(items: [resultService.fileService.csvFilePath]), animated: true, completion: nil)
     }
     
     @IBAction func exportConsentFormPressed(_ sender: UIButton) {
@@ -54,14 +54,14 @@ class StudyViewController: UIViewController {
 
         service = StudyService(settings: loadSettings())
         
-        exportResultsButton.isEnabled = resultService.isResultAvailable
+        exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
     
     private func loadSettings() -> StudySettings {
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
             return savedSettings
         } else {
-            let settings = StudySettings(group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
+            let settings = StudySettings(participant: UUID().uuidString, group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
             return settings
         }
@@ -107,7 +107,7 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             resultService.lastResults = searchResults
             
             // Activate export button
-            exportResultsButton.isEnabled = resultService.isResultAvailable
+            exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
             
             // Dismiss
             dismiss(animated: true, completion: nil)

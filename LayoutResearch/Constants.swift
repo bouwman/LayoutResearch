@@ -28,6 +28,7 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultCSVPath
+    case participantIdentifier
     case participantGroup
     case layoutItemDiameter
     case layoutItemDistance

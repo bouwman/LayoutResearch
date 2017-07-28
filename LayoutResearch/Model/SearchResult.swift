@@ -9,7 +9,7 @@
 import ResearchKit
 
 class SearchResult: ORKResult {
-    
+    var participantIdentifier: String
     var targetItem: SearchItemProtocol
     var layout: LayoutType
     var organisation: OrganisationType
@@ -25,7 +25,8 @@ class SearchResult: ORKResult {
         return itemLocation != pressLocation
     }
     
-    init(identifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, isPractice: Bool) {
+    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, isPractice: Bool) {
+        self.participantIdentifier = participantIdentifier
         self.targetItem = targetItem
         self.layout = layout
         self.organisation = organisation
@@ -46,10 +47,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["Identifier","Layout","Organisation","ItemCount","SameColorCount","ItemLocationRow","ItemLocationColumn","Practice","Error"]
+        return ["ParticipantId","Trial","Layout","Organisation","ItemCount","SameColorCount","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
     }
     
     var csvRow: [String] {
-        return [identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(itemLocation.row)","\(itemLocation.section)","\(isPractice)","\(isError)"]
+        return [participantIdentifier,identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError)"]
     }
 }

@@ -13,6 +13,8 @@ class ContainerViewController: UIViewController {
 
     // MARK: Properties
     
+    let fileService = FileService()
+    
     var contentHidden = false {
         didSet {
             guard contentHidden != oldValue && isViewLoaded else { return }
@@ -72,7 +74,10 @@ extension ContainerViewController: ORKTaskViewControllerDelegate {
              the study and transition to the onboarding view.
              */
             if reason == .completed {
+                fileService.removeResultIfExists()
+                fileService.removeConsentIfExists()
                 UserDefaults.standard.set(false, forKey: SettingsString.isParticipating.rawValue)
+                UserDefaults.standard.removeObject(forKey: SettingsString.participantIdentifier.rawValue)
                 toOnboarding()
             }
             

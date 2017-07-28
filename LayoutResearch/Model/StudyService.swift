@@ -117,7 +117,7 @@ class StudyService {
         let targetItem = targetItems[index]
         let searchStepIdentifier = "\(isPractice ? "(Practice)" : "")Trial\(index)"
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: targetItem, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"

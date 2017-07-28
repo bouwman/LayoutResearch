@@ -34,6 +34,7 @@ import ResearchKit
 class OnboardingViewController: UIViewController {
     
     let consentDocument = ConsentDocument()
+    let fileService = FileService()
     
     // MARK: IB actions
     
@@ -70,17 +71,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                     
                     // Save pdf
                     consentDocument.makePDF(completionHandler: { (data, error) in
-                        //Get the local docs directory and append your local filename.
-                        let docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last
-                        let path = docURL?.appendingPathComponent("signature.pdf")
-                        
-                        try! data?.write(to: path!)
-                        
-                        UserDefaults.standard.set(path, forKey: SettingsString.consentPath.rawValue)
+                        self.fileService.saveConsent(data: data)
                     })
-                    
-                    // Save
-                    UserDefaults.standard.set(true, forKey: SettingsString.isParticipating.rawValue)
                     
                     // Show study
                     performSegue(withIdentifier: "unwindToStudy", sender: nil)

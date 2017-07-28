@@ -48,6 +48,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
 }
 
 struct StudySettings {
+    var participant: String
     var group: ParticipantGroup
     var rowCount: Int
     var columnCount: Int
@@ -57,6 +58,7 @@ struct StudySettings {
     var practiceTrialCount: Int
     
     func saveToUserDefaults(userDefaults: UserDefaults) {
+        userDefaults.set(participant, forKey: SettingsString.participantIdentifier.rawValue)
         userDefaults.set(group.rawValue, forKey: SettingsString.participantGroup.rawValue)
         userDefaults.set(itemDiameter, forKey: SettingsString.layoutItemDiameter.rawValue)
         userDefaults.set(itemDistance, forKey: SettingsString.layoutItemDistance.rawValue)
@@ -67,6 +69,7 @@ struct StudySettings {
     }
     
     static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
+        let participantOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
         let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
         let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
         let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
@@ -77,8 +80,9 @@ struct StudySettings {
         
         guard let groupString = groupStringOptional else { return nil }
         guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
+        guard let participant = participantOptional else { return nil }
         
-        return StudySettings(group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), trialCount: trialCount, practiceTrialCount: practiceTrialCount)
+        return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), trialCount: trialCount, practiceTrialCount: practiceTrialCount)
     }
 }
 
@@ -135,7 +139,8 @@ class SettingsViewController: UITableViewController {
         if selectedCell == groupSelectionCell {
             toSelection()
         } else if selectedCell == resetSettingsCell {
-            settings = StudySettings(group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
+            let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
+            settings = StudySettings(participant: participantOptional!, group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }

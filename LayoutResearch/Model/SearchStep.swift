@@ -9,6 +9,7 @@
 import ResearchKit
 
 class SearchStep: ORKActiveStep {
+    var participantIdentifier: String
     var items: [[SearchItemProtocol]]
     var targetItem: SearchItemProtocol
     var layout: LayoutType
@@ -17,7 +18,8 @@ class SearchStep: ORKActiveStep {
     var itemDistance: CGFloat
     var isPractice: Bool
     
-    init(identifier: String, items: [[SearchItemProtocol]], targetItem: SearchItemProtocol, layout: LayoutType, organisation: OrganisationType, itemDiameter: CGFloat, itemDistance: CGFloat, isPractice: Bool) {
+    init(identifier: String, participantIdentifier: String, items: [[SearchItemProtocol]], targetItem: SearchItemProtocol, layout: LayoutType, organisation: OrganisationType, itemDiameter: CGFloat, itemDistance: CGFloat, isPractice: Bool) {
+        self.participantIdentifier = participantIdentifier
         self.items = items
         self.targetItem = targetItem
         self.layout = layout
