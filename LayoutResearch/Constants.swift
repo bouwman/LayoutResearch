@@ -22,6 +22,15 @@ struct Const {
         static let introLayoutMargin: CGFloat = 30
         static let shapeCount: Int = 27
     }
+    struct StudyParameters {
+        static let group: ParticipantGroup = .a
+        static let rowCount = 5
+        static let columnCount = 5
+        static let itemDiameter: CGFloat = 50.0
+        static let itemDistance: CGFloat = 10.0
+        static let trialCount = 3
+        static let practiceTrialCount = 3
+    }
 }
 
 enum SettingsString: String {

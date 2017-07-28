@@ -21,6 +21,8 @@ class SearchStepViewController: ORKActiveStepViewController {
         return step as? SearchStep
     }
     
+    static var isSearchedBefore = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,15 +109,21 @@ extension SearchStepViewController: SearchViewDelegate {
         
         searchResult.pressLocation = index
         searchResult.pressedItem = item
+        searchResult.isError = searchResult.itemLocation != searchResult.pressLocation
         
         if let startTime = startTime {
             searchResult.searchTime = Date().timeIntervalSince(startTime)
         }
         
         // Go back when error
-        if searchResult.isError {
+        if searchResult.isError! {
+            SearchStepViewController.isSearchedBefore = true
             delegate?.stepViewController(self, didFinishWith: .reverse)
         } else {
+            // When searched before store step as an error
+            searchResult.isError = SearchStepViewController.isSearchedBefore
+            SearchStepViewController.isSearchedBefore = false
+            
             delegate?.stepViewController(self, didFinishWith: .forward)
         }
     }

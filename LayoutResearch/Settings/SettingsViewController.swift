@@ -140,7 +140,7 @@ class SettingsViewController: UITableViewController {
             toSelection()
         } else if selectedCell == resetSettingsCell {
             let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
-            settings = StudySettings(participant: participantOptional!, group: .a, rowCount: 5, columnCount: 5, itemDiameter: 50, itemDistance: 10, trialCount: 5, practiceTrialCount: 3)
+            settings = StudySettings(participant: participantOptional!, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, trialCount: Const.StudyParameters.trialCount, practiceTrialCount: Const.StudyParameters.practiceTrialCount)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }

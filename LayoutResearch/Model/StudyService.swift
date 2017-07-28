@@ -69,18 +69,10 @@ class StudyService {
         
         // Create practice steps
         var trialCounter = 0
-        for (i, layout) in layouts.enumerated() {
-            // Not add layout intro after intro
-            if i != 0 {
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance)
-                newLayoutStep.title = "New Layout"
-                newLayoutStep.text = "The next layout will be different"
-                steps.append(newLayoutStep)
-            }
-            for _ in 0..<settings.practiceTrialCount {
-                addTrialStepsFor(index: trialCounter, layout: layout, isPractice: true)
-                trialCounter += 1
-            }
+        
+        for _ in 0..<settings.practiceTrialCount {
+            addTrialStepsFor(index: trialCounter, layout: settings.group.layouts.first!, isPractice: true)
+            trialCounter += 1
         }
         
         // Create experiment start step

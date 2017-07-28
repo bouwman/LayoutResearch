@@ -20,10 +20,7 @@ class SearchResult: ORKResult {
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
     var searchTime: TimeInterval?
-    
-    var isError: Bool {
-        return itemLocation != pressLocation
-    }
+    var isError: Bool?
     
     init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, isPractice: Bool) {
         self.participantIdentifier = participantIdentifier
@@ -51,6 +48,6 @@ class SearchResult: ORKResult {
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError)"]
+        return [participantIdentifier,identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
     }
 }

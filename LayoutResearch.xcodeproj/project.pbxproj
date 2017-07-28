@@ -10,7 +10,6 @@
 		29B41C8EA5A67F14E515D30B /* Pods_LayoutResearch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D970F4D5AE66D2F3BADBBF60 /* Pods_LayoutResearch.framework */; };
 		4728AB021F29F3CB0084EFB1 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */; };
 		4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */; };
-		474E566B1F2B2C2800E4C73D /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 474E566A1F2B2C2800E4C73D /* HealthKit.framework */; };
 		4751B4F61F2517AE00549329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751B4F51F2517AE00549329 /* AppDelegate.swift */; };
 		4751B4F81F2517AE00549329 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4751B4F71F2517AE00549329 /* ContainerViewController.swift */; };
 		4751B4FB1F2517AE00549329 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4751B4F91F2517AE00549329 /* Main.storyboard */; };
@@ -42,8 +41,6 @@
 /* Begin PBXFileReference section */
 		4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
-		474E56691F2B2C2700E4C73D /* LayoutResearch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LayoutResearch.entitlements; sourceTree = "<group>"; };
-		474E566A1F2B2C2800E4C73D /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
 		4751B4F21F2517AE00549329 /* LayoutResearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LayoutResearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4751B4F51F2517AE00549329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4751B4F71F2517AE00549329 /* ContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +80,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				29B41C8EA5A67F14E515D30B /* Pods_LayoutResearch.framework in Frameworks */,
-				474E566B1F2B2C2800E4C73D /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -120,7 +116,6 @@
 		4751B4F41F2517AE00549329 /* LayoutResearch */ = {
 			isa = PBXGroup;
 			children = (
-				474E56691F2B2C2700E4C73D /* LayoutResearch.entitlements */,
 				4751B4F51F2517AE00549329 /* AppDelegate.swift */,
 				47C86DAC1F269FB8005430B2 /* Constants.swift */,
 				4728AB031F29F3D10084EFB1 /* Settings */,
@@ -197,7 +192,6 @@
 		87459A4B7AAE9B925724A81A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				474E566A1F2B2C2800E4C73D /* HealthKit.framework */,
 				D970F4D5AE66D2F3BADBBF60 /* Pods_LayoutResearch.framework */,
 			);
 			name = Frameworks;
@@ -240,7 +234,7 @@
 						CreatedOnToolsVersion = 9.0;
 						SystemCapabilities = {
 							com.apple.HealthKit = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -492,7 +486,6 @@
 			baseConfigurationReference = 4EE6601F644FFD3403E00F02 /* Pods-LayoutResearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LayoutResearch/LayoutResearch.entitlements;
 				DEVELOPMENT_TEAM = A66LE5ZVQX;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LayoutResearch/Info.plist;
@@ -510,7 +503,6 @@
 			baseConfigurationReference = 9FBF39D3AB22A08A0591EEC8 /* Pods-LayoutResearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = LayoutResearch/LayoutResearch.entitlements;
 				DEVELOPMENT_TEAM = A66LE5ZVQX;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LayoutResearch/Info.plist;
