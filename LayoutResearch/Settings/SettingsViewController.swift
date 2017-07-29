@@ -94,6 +94,7 @@ class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var groupSelectionCell: UITableViewCell!
     @IBOutlet weak var resetSettingsCell: UITableViewCell!
+    @IBOutlet weak var layoutPreviewCell: UITableViewCell!
     @IBOutlet weak var participantGroupLabel: UILabel!
     @IBOutlet weak var itemDiameterLabel: UILabel!
     @IBOutlet weak var itemDistanceLabel: UILabel!
@@ -110,6 +111,8 @@ class SettingsViewController: UITableViewController {
             updateUI()
         }
     }
+    
+    var layoutPreviewView: SearchView!
     
     // MARK: - IBActions
     
@@ -165,6 +168,20 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: Fix performance issues
+//        guard let settings = settings else { return }
+//
+//        let items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
+//
+//        layoutPreviewView = SearchView(itemDiameter: settings.itemDiameter, distance: settings.itemDistance, layout: .grid, topMargin: 0, items: items)
+//        
+//        // TODO: Align center with autlayouts
+//        // Add to center of cell
+//        let width = layoutPreviewView.frame.size.width
+//        let height = layoutPreviewView.frame.size.height
+//        layoutPreviewView.frame.origin = CGPoint(x: layoutPreviewCell.frame.size.width / 2 - width / 2, y: layoutPreviewCell.frame.size.height / 2 - height / 2)
+//        layoutPreviewCell.contentView.addSubview(layoutPreviewView)
+        
         updateUI()
     }
     
@@ -196,7 +213,28 @@ class SettingsViewController: UITableViewController {
         itemDistanceSlider?.value = Float(settings.itemDistance)
         rowCountSlider?.value = Float(settings.rowCount)
         columnCountSlider?.value = Float(settings.columnCount)
+
+        layoutPreviewView?.items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
+        layoutPreviewView?.itemDiameter = settings.itemDiameter
+        layoutPreviewView?.distance = settings.itemDistance
     }
+    
+    private func createItemsFor(rows: Int, columns: Int) -> [[SearchItemProtocol]] {
+        var items: [[SearchItemProtocol]] = []
+        
+        var counter = 0
+        for _ in 0..<rows {
+            var itemRow: [SearchItemProtocol] = []
+            for _ in 0..<columns {
+                itemRow.append(SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0))
+                counter += 1
+            }
+            items.append(itemRow)
+        }
+        
+        return items
+    }
+    
 }
 
 extension SettingsViewController: SelectionViewControllerDelegate {

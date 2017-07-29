@@ -33,11 +33,32 @@ protocol SearchViewDelegate {
 }
 
 class SearchView: UIView {
-    var itemDiameter: CGFloat
-    var distance: CGFloat
-    var layout: LayoutType
-    var items: [[SearchItemProtocol]]
-    var topMargin: CGFloat
+    var itemDiameter: CGFloat {
+        didSet {
+            layoutButtons()
+        }
+    }
+    var distance: CGFloat {
+        didSet {
+            layoutButtons()
+        }
+    }
+    var layout: LayoutType {
+        didSet {
+            layoutButtons()
+        }
+    }
+    var items: [[SearchItemProtocol]] {
+        didSet {
+            createButtonsForItems()
+            layoutButtons()
+        }
+    }
+    var topMargin: CGFloat {
+        didSet {
+            layoutButtons()
+        }
+    }
     
     var delegate: SearchViewDelegate?
     
@@ -58,36 +79,13 @@ class SearchView: UIView {
         self.topMargin = topMargin
         self.items = items
         
-        // Map buttons to items
-        for itemsInRow in items {
-            var buttonRow: [RoundedButton] = []
-            for item in itemsInRow {
-                let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
-                let inset = itemDiameter / Const.Interface.insetDiameterRatio
-                
-                button.identifier = item.identifier
-                button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
-                button.setImage(UIImage.searchImageFor(id: item.shapeId), for: .normal)
-                button.imageView?.contentMode = .scaleAspectFit
-                button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-                
-                buttonRow.append(button)
-            }
-            buttons.append(buttonRow)
-        }
-        
         super.init(frame: CGRect.zero)
+        
+        // Map buttons to items
+        createButtonsForItems()
         
         // Layout buttons
         layoutButtons()
-        
-        // Connect buttons to view
-        for buttonRow in buttons {
-            for button in buttonRow {
-                addSubview(button)
-                button.addTarget(self, action: #selector(SearchView.didPress(button:)), for: .touchDown)
-            }
-        }
         
         // Set frame based on layout
         frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
@@ -117,6 +115,39 @@ class SearchView: UIView {
         self.items = []
         
         super.init(coder: aDecoder)
+    }
+    
+    private func createButtonsForItems() {
+        // Remove buttons if exist
+        if buttons.count > 0 {
+            for buttonRow in buttons {
+                for button in buttonRow {
+                    button.removeTarget(self, action: #selector(didPress(button:)), for: .touchDown)
+                    button.removeFromSuperview()
+                }
+            }
+            buttons.removeAll()
+        }
+        
+        // Map buttons to items
+        for itemsInRow in items {
+            var buttonRow: [RoundedButton] = []
+            for item in itemsInRow {
+                let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
+                let inset = itemDiameter / Const.Interface.insetDiameterRatio
+                
+                button.identifier = item.identifier
+                button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
+                button.setImage(UIImage.searchImageFor(id: item.shapeId), for: .normal)
+                button.imageView?.contentMode = .scaleAspectFit
+                button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+                button.addTarget(self, action: #selector(SearchView.didPress(button:)), for: .touchDown)
+                
+                addSubview(button)
+                buttonRow.append(button)
+            }
+            buttons.append(buttonRow)
+        }
     }
     
     private func layoutButtons() {
