@@ -16,24 +16,28 @@ struct Const {
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
-        static let insetDiameterRatio: CGFloat = 4.1
+        static let iconInsetDiameterRatio: CGFloat = 4.1
         static let descriptionItemMargin: CGFloat = 50
-        static let searchLayoutMargin: CGFloat = 200
-        static let introLayoutMargin: CGFloat = 30
+        static let searchLayoutMargin: CGFloat = 50
+        static let introLayoutMargin: CGFloat = 0
         static let shapeCount: Int = 27
     }
     struct StudyParameters {
         static let group: ParticipantGroup = .a
-        static let rowCount = 5
-        static let columnCount = 5
+        static let rowCount = 6
+        static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0
-        static let itemDistance: CGFloat = 10.0
+        static let itemDistance: CGFloat = 10
         static let trialCount = 3
         static let practiceTrialCount = 3
+        static let targetCount = 8
+        static let distractorColorLowCount = 2
+        static let distractorColorHighCount = 6
     }
 }
 
 enum SettingsString: String {
+    case versionOfLastRun
     case isParticipating
     case consentPath
     case resultCSVPath
@@ -45,6 +49,9 @@ enum SettingsString: String {
     case layoutColumnCount
     case trialCount
     case practiceTrialCount
+    case targetCount
+    case distractorColorLowCount
+    case distractorColorHighCount
 }
 
 extension UIColor {
@@ -123,4 +130,28 @@ extension Sequence {
         result.shuffle()
         return result
     }
+}
+
+extension Sequence where Iterator.Element == Sequence {
+    /// Returns a two dimensional array with the contents of this sequence, shuffled.
+//    func shuffled2dArray()  -> [Element] {
+//        
+//        var shuffledArray: [Element] = []
+//        
+//        var counter = 0
+//        var flatArray = flatMap { $0 }
+//        
+//        flatArray.shuffle()
+//        
+//        for (row, rowItems) in self.enumerated() {
+//            guard let rowItemsCollection = rowItems as? Self else { return [] }
+//            shuffledArray.append([])
+//            for column in rowItemsCollection.enumerated() {
+//                shuffledArray[row][column] = 
+//                counter += 1
+//            }
+//        }
+//        
+//        return shuffledArray
+//    }
 }

@@ -13,9 +13,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        checkAppUpgrade()
+        
         return true
     }
 
@@ -41,6 +42,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func checkAppUpgrade() {
+        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
+        let versionOfLastRun = UserDefaults.standard.string(forKey: SettingsString.versionOfLastRun.rawValue)
+        
+        if versionOfLastRun == nil {
+            // First start after installing the app
+        } else if versionOfLastRun != currentVersion {
+            // App was updated since last run
+            // Reset settings
+            let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
+            let settings: StudySettings
+            if let participant = participantOptional {
+                settings = StudySettings.defaultSettingsForParticipant(participant)
+            } else {
+                settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
+            }
+            settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+        } else {
+            // nothing changed
+            
+        }
+        
+        UserDefaults.standard.set(currentVersion, forKey: SettingsString.versionOfLastRun.rawValue)
+        UserDefaults.standard.synchronize()
+    }
 }
 

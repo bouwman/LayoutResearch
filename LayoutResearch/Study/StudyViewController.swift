@@ -61,7 +61,7 @@ class StudyViewController: UIViewController {
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
             return savedSettings
         } else {
-            let settings = StudySettings(participant: UUID().uuidString, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, trialCount: Const.StudyParameters.trialCount, practiceTrialCount: Const.StudyParameters.practiceTrialCount)
+            let settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
             return settings
         }

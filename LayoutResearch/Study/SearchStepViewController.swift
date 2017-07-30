@@ -29,7 +29,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         guard let searchStep = searchStep else { return }
         
         var topMargin = Const.Interface.searchLayoutMargin
-        if searchStep.layout == .vertical {
+        if searchStep.layout == .vertical && topMargin >= searchStep.itemDistance {
             topMargin -= searchStep.itemDistance
         } else if searchStep.layout == .horizontal {
             topMargin += searchStep.itemDistance
@@ -54,7 +54,7 @@ class SearchStepViewController: ORKActiveStepViewController {
                 }
             }
         }
-        
+                
         // Setup result
         let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
         searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, isPractice: searchStep.isPractice)

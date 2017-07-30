@@ -40,6 +40,9 @@ class SearchView: UIView {
     }
     var distance: CGFloat {
         didSet {
+            if distance <= 0 {
+                distance = 0.001
+            }
             layoutButtons()
         }
     }
@@ -65,9 +68,18 @@ class SearchView: UIView {
     private var buttons: [[RoundedButton]] = []
     
     override var intrinsicContentSize: CGSize {
-        let lastButton = buttons.last!.last!
-        let width = lastButton.frame.origin.x + itemDiameter
-        let height = lastButton.frame.origin.y + itemDiameter
+        let lastXButton: UIButton
+        var lastYButton = buttons.last!.last!
+        if buttons.count % 2 == 1 {
+            lastXButton = buttons.last!.last!
+        } else {
+            lastXButton = buttons[buttons.count - 2].last!
+        }
+        if layout == .vertical {
+            lastYButton = buttons.last!.first!
+        }
+        let width = lastXButton.frame.origin.x + itemDiameter
+        let height = lastYButton.frame.origin.y + itemDiameter
         
         return CGSize(width: width, height: height)
     }
@@ -134,7 +146,7 @@ class SearchView: UIView {
             var buttonRow: [RoundedButton] = []
             for item in itemsInRow {
                 let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
-                let inset = itemDiameter / Const.Interface.insetDiameterRatio
+                let inset = itemDiameter / Const.Interface.iconInsetDiameterRatio
                 
                 button.identifier = item.identifier
                 button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
@@ -204,7 +216,7 @@ class SearchView: UIView {
                     button.frame.origin.y = yPosition
                 }
             }
-        }
+        }        
     }
 }
 

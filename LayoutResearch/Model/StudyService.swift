@@ -33,19 +33,38 @@ class StudyService {
         
         // Create base item array
         var counter = 1
-        for row in 0..<settings.rowCount {
+        var colorDistractorCounter = 0 // counts how many items share the same color
+        var colorCounter = 0 // counts how many different colours are used
+        for _ in 0..<settings.rowCount {
             var rowItems: [SearchItemProtocol] = []
-            for column in 0..<settings.columnCount {
-                let item = SearchItem(identifier: "\(counter)", colorId: colors[row][column], shapeId: counter)
+            for _ in 0..<settings.columnCount {
+                
+                if colorCounter < 3 {
+                    if colorDistractorCounter >= settings.distractorColorHighCount {
+                        colorCounter += 1
+                        colorDistractorCounter = 0
+                    }
+                } else {
+                    if colorDistractorCounter >= settings.distractorColorLowCount {
+                        colorCounter += 1
+                        colorDistractorCounter = 0
+                    }
+                }
+                
+                let item = SearchItem(identifier: "\(counter)", colorId: colorCounter + 1, shapeId: counter)
                 rowItems.append(item)
                 targetItems.append(item)
+                
+                // Counters
                 counter += 1
+                colorDistractorCounter += 1
             }
             searchItems.append(rowItems)
         }
         
-        // Shuffle target items
+        // Shuffle items at least once
         targetItems.shuffle()
+        shuffle2dArray(&searchItems)
         
         // Create enough target items for every trial
         let layouts = settings.group.layouts
@@ -85,7 +104,7 @@ class StudyService {
         for (i, layout) in layouts.enumerated() {
             // Not add layout intro after intro
             if i != 0 {
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance)
+                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different"
                 steps.append(newLayoutStep)
@@ -97,19 +116,28 @@ class StudyService {
         }
     }
     
+    private func shuffle2dArray(_ array: inout [[SearchItemProtocol]]) {
+        let flatMap = array.flatMap { $0 }
+        let itemsShuffled = flatMap.shuffled()
+        var itemCounter = 0
+        for (row, rowItems) in array.enumerated() {
+            for (column, _) in rowItems.enumerated() {
+                array[row][column] = itemsShuffled[itemCounter]
+                itemCounter += 1
+            }
+        }
+    }
+    
     private func addTrialStepsFor(index: Int, layout: LayoutType, isPractice: Bool) {
         // Shuffle layout for every trial if random
         if settings.group.organisation == .random {
-            searchItems.shuffle()
-            for (i, rowItems) in searchItems.enumerated() {
-                searchItems[i] = rowItems.shuffled()
-            }
+            shuffle2dArray(&searchItems)
         }
         
         let targetItem = targetItems[index]
         let searchStepIdentifier = "\(isPractice ? "(Practice)" : "")Trial\(index)"
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: targetItem, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"

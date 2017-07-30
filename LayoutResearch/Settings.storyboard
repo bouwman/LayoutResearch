@@ -55,8 +55,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="50" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Uw-kT-V3Q">
-                                                    <rect key="frame" x="339.5" y="12" width="20.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="50.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Uw-kT-V3Q">
+                                                    <rect key="frame" x="315.5" y="12" width="44.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -100,8 +100,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fp1-5h-Lfe">
-                                                    <rect key="frame" x="342" y="12" width="18" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="10.00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fp1-5h-Lfe">
+                                                    <rect key="frame" x="318" y="12" width="42" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -117,7 +117,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="n0m-Vs-ktl">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.01" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="n0m-Vs-ktl">
                                                     <rect key="frame" x="18" y="7" width="339" height="31"/>
                                                     <connections>
                                                         <action selector="itemDistanceSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="33B-VY-9fW"/>
