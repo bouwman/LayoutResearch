@@ -33,13 +33,13 @@ protocol SearchViewDelegate {
     func didSelect(item: SearchItemProtocol?, atIndex index: IndexPath?)
 }
 
-class SearchView: UIView {
-    var itemDiameter: CGFloat {
+@IBDesignable class SearchView: UIView {
+    @IBInspectable var itemDiameter: CGFloat {
         didSet {
             layoutButtons()
         }
     }
-    var distance: CGFloat {
+    @IBInspectable var distance: CGFloat {
         didSet {
             if distance <= 0 {
                 distance = 0.001
@@ -61,6 +61,22 @@ class SearchView: UIView {
     var topMargin: CGFloat {
         didSet {
             layoutButtons()
+        }
+    }
+    
+    @IBInspectable var layoutIdForIB: Int = 1 {
+        didSet {
+            switch layoutIdForIB {
+            case 1:
+                layout = .grid
+            case 2:
+                layout = .horizontal
+            case 3:
+                layout = .vertical
+            default:
+                layoutIdForIB = 1
+                layout = .grid
+            }
         }
     }
     
@@ -121,13 +137,22 @@ class SearchView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.itemDiameter = 0
-        self.distance = 0
+        self.itemDiameter = Const.StudyParameters.itemDiameter
+        self.distance = Const.StudyParameters.itemDistance
         self.layout = .grid
         self.topMargin = 0
-        self.items = []
+        self.items = SearchView.createDefaultItems()
         
         super.init(coder: aDecoder)
+        
+        // Map buttons to items
+        createButtonsForItems()
+        
+        // Layout buttons
+        layoutButtons()
+        
+        // Set frame based on layout
+        frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
     }
     
     private func createButtonsForItems() {
@@ -218,6 +243,23 @@ class SearchView: UIView {
                 }
             }
         }        
+    }
+    
+    private static func createDefaultItems() -> [[SearchItemProtocol]] {
+        var items: [[SearchItemProtocol]] = []
+        
+        var counter = 1
+        for _ in 0..<5 {
+            var rowItems: [SearchItemProtocol] = []
+            for _ in 0..<5 {
+                // 0 for black color and no shape
+                let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sharedColorCount: 0)
+                rowItems.append(item)
+                counter += 1
+            }
+            items.append(rowItems)
+        }
+        return items
     }
 }
 
