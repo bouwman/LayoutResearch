@@ -28,11 +28,13 @@ struct Const {
         static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0
         static let itemDistance: CGFloat = 10
-        static let trialCount = 3
         static let practiceTrialCount = 3
-        static let targetCount = 8
+        static let targetFreqLowCount = 2
+        static let targetFreqHighCount = 4
         static let distractorColorLowCount = 2
         static let distractorColorHighCount = 6
+        static let colorIdFarApartCondition1 = 5
+        static let colorIdFarApartCondition2 = 6
     }
 }
 
@@ -47,9 +49,9 @@ enum SettingsString: String {
     case layoutItemDistance
     case layoutRowCount
     case layoutColumnCount
-    case trialCount
     case practiceTrialCount
-    case targetCount
+    case targetFreqLowCount
+    case targetFreqHighCount
     case distractorColorLowCount
     case distractorColorHighCount
 }

@@ -149,7 +149,7 @@ class SettingsViewController: UITableViewController {
         for _ in 0..<rows {
             var itemRow: [SearchItemProtocol] = []
             for _ in 0..<columns {
-                itemRow.append(SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0))
+                itemRow.append(SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sharedColorCount: 0))
                 counter += 1
             }
             items.append(itemRow)

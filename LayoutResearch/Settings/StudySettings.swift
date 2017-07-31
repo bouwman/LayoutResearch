@@ -53,9 +53,9 @@ struct StudySettings {
     var columnCount: Int
     var itemDiameter: CGFloat
     var itemDistance: CGFloat
-    var trialCount: Int
     var practiceTrialCount: Int
-    var targetCount: Int
+    var targetFreqLowCount: Int
+    var targetFreqHighCount: Int
     var distractorColorLowCount: Int
     var distractorColorHighCount: Int
     
@@ -76,9 +76,9 @@ struct StudySettings {
         userDefaults.set(itemDistance, forKey: SettingsString.layoutItemDistance.rawValue)
         userDefaults.set(rowCount, forKey: SettingsString.layoutRowCount.rawValue)
         userDefaults.set(columnCount, forKey: SettingsString.layoutColumnCount.rawValue)
-        userDefaults.set(trialCount, forKey: SettingsString.trialCount.rawValue)
         userDefaults.set(practiceTrialCount, forKey: SettingsString.practiceTrialCount.rawValue)
-        userDefaults.set(targetCount, forKey: SettingsString.targetCount.rawValue)
+        userDefaults.set(targetFreqLowCount, forKey: SettingsString.targetFreqLowCount.rawValue)
+        userDefaults.set(targetFreqHighCount, forKey: SettingsString.targetFreqHighCount.rawValue)
         userDefaults.set(distractorColorLowCount, forKey: SettingsString.distractorColorLowCount.rawValue)
         userDefaults.set(distractorColorHighCount, forKey: SettingsString.distractorColorHighCount.rawValue)
         
@@ -92,9 +92,9 @@ struct StudySettings {
         let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
         let itemDiameter = userDefaults.float(forKey: SettingsString.layoutItemDiameter.rawValue)
         let itemDistance = userDefaults.float(forKey: SettingsString.layoutItemDistance.rawValue)
-        let trialCount = userDefaults.integer(forKey: SettingsString.trialCount.rawValue)
         let practiceTrialCount = userDefaults.integer(forKey: SettingsString.practiceTrialCount.rawValue)
-        let targetCount = userDefaults.integer(forKey: SettingsString.targetCount.rawValue)
+        let targetFreqLowCount = userDefaults.integer(forKey: SettingsString.targetFreqLowCount.rawValue)
+        let targetFreqHighCount = userDefaults.integer(forKey: SettingsString.targetFreqHighCount.rawValue)
         let distractorColorLowCount = userDefaults.integer(forKey: SettingsString.distractorColorLowCount.rawValue)
         let distractorColorHighCount = userDefaults.integer(forKey: SettingsString.distractorColorHighCount.rawValue)
         
@@ -102,10 +102,10 @@ struct StudySettings {
         guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
         guard let participant = participantOptional else { return nil }
         
-        return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), trialCount: trialCount, practiceTrialCount: practiceTrialCount, targetCount: targetCount, distractorColorLowCount: distractorColorLowCount, distractorColorHighCount: distractorColorHighCount)
+        return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), practiceTrialCount: practiceTrialCount, targetFreqLowCount: targetFreqLowCount, targetFreqHighCount: targetFreqHighCount, distractorColorLowCount: distractorColorLowCount, distractorColorHighCount: distractorColorHighCount)
     }
     
     static func defaultSettingsForParticipant(_ participant: String) -> StudySettings {
-        return StudySettings(participant: participant, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, trialCount: Const.StudyParameters.trialCount, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetCount: Const.StudyParameters.targetCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
+        return StudySettings(participant: participant, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetFreqLowCount: Const.StudyParameters.targetFreqLowCount, targetFreqHighCount: Const.StudyParameters.targetFreqHighCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
     }
 }

@@ -133,6 +133,7 @@ struct SearchItem: SearchItemProtocol, CustomStringConvertible {
     var identifier: String
     var colorId: Int
     var shapeId: Int
+    var sharedColorCount: Int
     
     var description: String {
         return identifier

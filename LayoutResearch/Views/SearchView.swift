@@ -26,6 +26,7 @@ protocol SearchItemProtocol {
     var identifier: String { set get }
     var colorId: Int { get }
     var shapeId: Int { get }
+    var sharedColorCount: Int { get }
 }
 
 protocol SearchViewDelegate {
