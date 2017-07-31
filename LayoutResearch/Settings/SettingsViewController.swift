@@ -21,12 +21,12 @@ class SettingsViewController: UITableViewController {
     @IBOutlet weak var participantGroupLabel: UILabel!
     @IBOutlet weak var itemDiameterLabel: UILabel!
     @IBOutlet weak var itemDistanceLabel: UILabel!
-    @IBOutlet weak var rowCountLabel: UILabel!
-    @IBOutlet weak var columnCountLabel: UILabel!
+    @IBOutlet weak var targetFrequencyHighCountLabel: UILabel!
+    @IBOutlet weak var targetFrequencyLowCountLabel: UILabel!
     @IBOutlet weak var itemDiameterSlider: UISlider!
     @IBOutlet weak var itemDistanceSlider: UISlider!
-    @IBOutlet weak var rowCountSlider: UISlider!
-    @IBOutlet weak var columnCountSlider: UISlider!
+    @IBOutlet weak var targetFrequencyHightCountSlider: UISlider!
+    @IBOutlet weak var targetFrequencyLowCountSlider: UISlider!
     
     var delegate: SettingsViewControllerDelegate?
     var settings: StudySettings? {
@@ -49,13 +49,13 @@ class SettingsViewController: UITableViewController {
         updateUI()
     }
     
-    @IBAction func rowCountSliderChanged(_ sender: UISlider) {
-        settings?.rowCount = Int(sender.value)
+    @IBAction func targetFrequencyHighCountSliderChanged(_ sender: UISlider) {
+        settings?.targetFreqHighCount = Int(sender.value)
         updateUI()
     }
     
-    @IBAction func columnCountSliderChanged(_ sender: UISlider) {
-        settings?.columnCount = Int(sender.value)
+    @IBAction func targetFrequencyLowCountSliderChanged(_ sender: UISlider) {
+        settings?.targetFreqLowCount = Int(sender.value)
         updateUI()
     }
     
@@ -127,15 +127,15 @@ class SettingsViewController: UITableViewController {
         guard let settings = settings else { return }
         
         participantGroupLabel?.text = settings.group.description
-        itemDiameterLabel?.text = String.localizedStringWithFormat("%.2f", settings.itemDiameter)
-        itemDistanceLabel?.text = String.localizedStringWithFormat("%.2f", settings.itemDistance)
-        rowCountLabel?.text = "\(settings.rowCount)"
-        columnCountLabel?.text = "\(settings.columnCount)"
+        itemDiameterLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDiameter)
+        itemDistanceLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDistance)
+        targetFrequencyHighCountLabel?.text = "\(settings.targetFreqHighCount)"
+        targetFrequencyLowCountLabel?.text = "\(settings.targetFreqLowCount)"
         
         itemDiameterSlider?.value = Float(settings.itemDiameter)
         itemDistanceSlider?.value = Float(settings.itemDistance)
-        rowCountSlider?.value = Float(settings.rowCount)
-        columnCountSlider?.value = Float(settings.columnCount)
+        targetFrequencyHightCountSlider?.value = Float(settings.targetFreqHighCount)
+        targetFrequencyLowCountSlider?.value = Float(settings.targetFreqLowCount)
 
         layoutPreviewView?.items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
         layoutPreviewView?.itemDiameter = settings.itemDiameter
