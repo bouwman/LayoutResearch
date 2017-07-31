@@ -23,7 +23,7 @@ struct Const {
         static let shapeCount: Int = 27
     }
     struct StudyParameters {
-        static let group: ParticipantGroup = .a
+        static let group: ParticipantGroup = .i
         static let rowCount = 6
         static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0

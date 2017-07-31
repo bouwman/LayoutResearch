@@ -59,6 +59,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             }
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+            
+            // TODO: Remove from release
+            UserDefaults.standard.removeObject(forKey: SettingsString.isParticipating.rawValue)
         } else {
             // nothing changed
             
