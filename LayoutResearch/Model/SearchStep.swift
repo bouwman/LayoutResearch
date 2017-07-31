@@ -46,14 +46,6 @@ class SearchStep: ORKActiveStep {
     }
     
     var sameColorCount: Int {
-        var counter = 0
-        for itemsInRow in items {
-            for item in itemsInRow {
-                if item.colorId == targetItem.colorId {
-                    counter += 1
-                }
-            }
-        }
-        return counter
+        return targetItem.sameColorCount
     }
 }

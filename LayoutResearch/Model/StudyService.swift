@@ -32,35 +32,10 @@ class StudyService {
         self.settings = settings
         
         // Create base item array
-        var counter = 1
-        var colorDistractorCounter = 0 // counts how many items share the same color
-        var colorCounter = 0 // counts how many different colours are used
-        for _ in 0..<settings.rowCount {
-            var rowItems: [SearchItemProtocol] = []
-            for _ in 0..<settings.columnCount {
-                
-                if colorCounter < 3 {
-                    if colorDistractorCounter >= settings.distractorColorHighCount {
-                        colorCounter += 1
-                        colorDistractorCounter = 0
-                    }
-                } else {
-                    if colorDistractorCounter >= settings.distractorColorLowCount {
-                        colorCounter += 1
-                        colorDistractorCounter = 0
-                    }
-                }
-                
-                let item = SearchItem(identifier: "\(counter)", colorId: colorCounter + 1, shapeId: counter)
-                rowItems.append(item)
-                targetItems.append(item)
-                
-                // Counters
-                counter += 1
-                colorDistractorCounter += 1
-            }
-            searchItems.append(rowItems)
-        }
+        searchItems = createSearchItems()
+        
+        // Create target items
+        
         
         // Shuffle items at least once
         targetItems.shuffle()
@@ -116,6 +91,82 @@ class StudyService {
         }
     }
     
+    private func createSearchItems() -> [[SearchItemProtocol]] {
+        var items: [[SearchItemProtocol]] = []
+        var counter = 1
+        var colorDistractorCounter = 0 // counts how many items share the same color
+        var colorCounter = 0 // counts how many different colours are used
+        for _ in 0..<settings.rowCount {
+            var rowItems: [SearchItemProtocol] = []
+            for _ in 0..<settings.columnCount {
+                
+                if colorCounter < 3 {
+                    if colorDistractorCounter >= settings.distractorColorHighCount {
+                        colorCounter += 1
+                        colorDistractorCounter = 0
+                    }
+                } else {
+                    if colorDistractorCounter >= settings.distractorColorLowCount {
+                        colorCounter += 1
+                        colorDistractorCounter = 0
+                    }
+                }
+                
+                let item = SearchItem(identifier: "\(counter)", colorId: colorCounter + 1, shapeId: counter, sameColorCount: colorDistractorCounter)
+                rowItems.append(item)
+                
+                // Counters
+                counter += 1
+                colorDistractorCounter += 1
+            }
+            items.append(rowItems)
+        }
+        return items
+    }
+    
+    private func pickTargetItemsDynamically(amount: Int, highDistractorColorCountPerColor: Int, lowDistractorColorCountPerColor: Int, selectionCountHighDistractors: Int, selectionCountLowDistractors: Int) -> [SearchItemProtocol] {
+        var items: [SearchItemProtocol] = []
+        // Selection frequency per target
+        guard searchItems.count >= amount else { return items }
+        
+        var highCounter = 0
+        var lowCounter = 0
+        while items.count < amount {
+            // Look through search items
+            for rowItems in searchItems {
+                for item in rowItems {
+                    // Add when item is in high amounts of distractor colors condition
+                    if highCounter < highDistractorColorCountPerColor && item.sameColorCount > settings.distractorColorHighCount {
+                        if (items.filter {$0.colorId == item.colorId }).count < highDistractorColorCountPerColor {
+                            items.append(item)
+                            highCounter += 1
+                        } else {
+                            // Reset so more items with other colors can be found
+                            highCounter = 0
+                        }
+                        // Add when item is in low amounts of distractor colors condition
+                    } else if lowCounter < lowDistractorColorCountPerColor && item.sameColorCount > settings.distractorColorLowCount {
+                        if (items.filter {$0.colorId == item.colorId }).count < lowDistractorColorCountPerColor {
+                            items.append(item)
+                            lowCounter += 1
+                        } else {
+                            // Reset so more items with other colors can be found
+                            lowCounter = 0
+                        }
+                    }
+                    // Return when collected enough items
+                    if items.count >= amount {
+                        return items
+                    }
+                }
+            }
+            // Repeat if not enough items were found
+            
+        }
+        
+        return items
+    }
+    
     private func shuffle2dArray(_ array: inout [[SearchItemProtocol]]) {
         let flatMap = array.flatMap { $0 }
         let itemsShuffled = flatMap.shuffled()
@@ -134,14 +185,18 @@ class StudyService {
             shuffle2dArray(&searchItems)
         }
         
-        let targetItem = targetItems[index]
-        let searchStepIdentifier = "\(isPractice ? "(Practice)" : "")Trial\(index)"
+        // Start from the back for practice trials
+        let targetItem = targetItems[isPractice ? targetItems.count - index - 1 : index]
+        
+        // Create description step and search step
+        let searchStepIdentifier = "\(index)"
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: targetItem, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
+        let searchStep = SearchStep(identifier: "\(index)", participantIdentifier: settings.participant, items: searchItems, targetItem: targetItem, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"
         
+        // Add steps to array
         steps.append(descriptionStep)
         steps.append(searchStep)
     }
@@ -149,12 +204,12 @@ class StudyService {
     private var colors: [[Int]] {
         var colors: [[Int]] = []
         
-        let colorRow1 = [1, 3, 2, 1, 4, 0, 0, 0, 0, 0]
-        let colorRow2 = [4, 6, 2, 4, 3, 0, 0, 0, 0, 0]
-        let colorRow3 = [5, 2, 1, 5, 2, 0, 0, 0, 0, 0]
-        let colorRow4 = [1, 7, 6, 1, 4, 0, 0, 0, 0, 0]
-        let colorRow5 = [5, 3, 2, 1, 3, 0, 0, 0, 0, 0]
-        let colorRow6 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let colorRow1 = [1, 5, 1, 2, 0, 0, 0, 0, 0, 0]
+        let colorRow2 = [1, 2, 3, 1, 0, 0, 0, 0, 0, 0]
+        let colorRow3 = [2, 1, 1, 6, 0, 0, 0, 0, 0, 0]
+        let colorRow4 = [4, 2, 4, 6, 0, 0, 0, 0, 0, 0]
+        let colorRow5 = [4, 3, 2, 4, 0, 0, 0, 0, 0, 0]
+        let colorRow6 = [2, 4, 5, 4, 0, 0, 0, 0, 0, 0]
         let colorRow7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow9 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -182,7 +237,7 @@ class StudyService {
             var rowItems: [SearchItemProtocol] = []
             for _ in 0..<settings.columnCount {
                 // 0 for black color and no shape
-                let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0)
+                let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sameColorCount: 0)
                 rowItems.append(item)
                 counter += 1
             }
