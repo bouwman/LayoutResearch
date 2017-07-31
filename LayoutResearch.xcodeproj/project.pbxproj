@@ -24,6 +24,7 @@
 		4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B31F275E05009AC457 /* WithdrawViewController.swift */; };
 		4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B51F276287009AC457 /* StudyViewController.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
+		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
 		4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */; };
 		479480681F2A9B0A002F1C47 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479480671F2A9B0A002F1C47 /* FileService.swift */; };
@@ -57,6 +58,7 @@
 		4764C4B31F275E05009AC457 /* WithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
 		4764C4B51F276287009AC457 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
+		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
 		4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		479480671F2A9B0A002F1C47 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 		4728AB031F29F3D10084EFB1 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4771FFE61F2DF82700D6E5DC /* StudySettings.swift */,
 				4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */,
 				4728AB041F29F3EC0084EFB1 /* SelectionViewController.swift */,
 			);
@@ -331,6 +334,7 @@
 				47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */,
 				4764C4AC1F275A44009AC457 /* ConsentDocument.swift in Sources */,
 				4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */,
+				4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */,
 				4764C4AE1F275A8C009AC457 /* ReplaceSegue.swift in Sources */,
 				479480681F2A9B0A002F1C47 /* FileService.swift in Sources */,
 				4751B4F81F2517AE00549329 /* ContainerViewController.swift in Sources */,

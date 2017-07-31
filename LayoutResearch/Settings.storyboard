@@ -55,8 +55,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="50" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Uw-kT-V3Q">
-                                                    <rect key="frame" x="339.5" y="12" width="20.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="50.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Uw-kT-V3Q">
+                                                    <rect key="frame" x="325.5" y="12" width="34.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -100,8 +100,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fp1-5h-Lfe">
-                                                    <rect key="frame" x="342" y="12" width="18" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="10.0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Fp1-5h-Lfe">
+                                                    <rect key="frame" x="328" y="12" width="32" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -117,7 +117,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="1" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="n0m-Vs-ktl">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="10" minValue="0.01" maxValue="20" translatesAutoresizingMaskIntoConstraints="NO" id="n0m-Vs-ktl">
                                                     <rect key="frame" x="18" y="7" width="339" height="31"/>
                                                     <connections>
                                                         <action selector="itemDistanceSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="33B-VY-9fW"/>
@@ -138,15 +138,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Rows" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fNt-sh-GGs">
-                                                    <rect key="frame" x="16" y="12" width="41" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Target count high frequency condition" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fNt-sh-GGs">
+                                                    <rect key="frame" x="16" y="12" width="291.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="5" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="80i-Qf-dS3">
-                                                    <rect key="frame" x="349.5" y="12" width="10.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="4" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="80i-Qf-dS3">
+                                                    <rect key="frame" x="349" y="12" width="11" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -162,10 +162,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="2" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="z1N-TC-GnC">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="4" minValue="1" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="z1N-TC-GnC">
                                                     <rect key="frame" x="18" y="7" width="339" height="31"/>
                                                     <connections>
-                                                        <action selector="rowCountSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="Z44-DT-KYa"/>
+                                                        <action selector="targetFrequencyHighCountSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="bdZ-dx-JNn"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
@@ -183,15 +183,15 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Columns" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y9E-za-U59">
-                                                    <rect key="frame" x="16" y="12" width="67.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Target count low frequency condition" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y9E-za-U59">
+                                                    <rect key="frame" x="16" y="12" width="284" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="5" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rfD-hk-ZSa">
-                                                    <rect key="frame" x="349.5" y="12" width="10.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="2" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rfD-hk-ZSa">
+                                                    <rect key="frame" x="350" y="12" width="10" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -207,10 +207,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="5" minValue="2" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="8dg-uw-yj3">
+                                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2" minValue="1" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="8dg-uw-yj3">
                                                     <rect key="frame" x="18" y="6" width="339" height="31"/>
                                                     <connections>
-                                                        <action selector="columnCountSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="xA9-Cj-XZw"/>
+                                                        <action selector="targetFrequencyLowCountSliderChanged:" destination="Eoh-uR-CGp" eventType="valueChanged" id="nsR-vH-GUW"/>
                                                     </connections>
                                                 </slider>
                                             </subviews>
@@ -233,7 +233,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset to Default Settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGT-rg-sbl">
-                                                    <rect key="frame" x="92.5" y="11" width="190.5" height="21"/>
+                                                    <rect key="frame" x="92.5" y="11.5" width="190.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -261,8 +261,6 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="columnCountLabel" destination="rfD-hk-ZSa" id="dd8-Dx-VUx"/>
-                        <outlet property="columnCountSlider" destination="8dg-uw-yj3" id="rB7-gP-wW8"/>
                         <outlet property="groupSelectionCell" destination="Mcm-GZ-n17" id="JWs-eT-91Z"/>
                         <outlet property="itemDiameterLabel" destination="0Uw-kT-V3Q" id="I2f-ke-2JE"/>
                         <outlet property="itemDiameterSlider" destination="C0n-eH-0Mc" id="qYv-43-9sq"/>
@@ -270,8 +268,10 @@
                         <outlet property="itemDistanceSlider" destination="n0m-Vs-ktl" id="Fhy-lC-sPh"/>
                         <outlet property="participantGroupLabel" destination="lIv-Hq-1FZ" id="yTE-M5-ckd"/>
                         <outlet property="resetSettingsCell" destination="ufP-h1-vfh" id="7oq-Qr-BSz"/>
-                        <outlet property="rowCountLabel" destination="80i-Qf-dS3" id="8kp-cT-efa"/>
-                        <outlet property="rowCountSlider" destination="z1N-TC-GnC" id="d8n-Ms-3J0"/>
+                        <outlet property="targetFrequencyHighCountLabel" destination="80i-Qf-dS3" id="8kp-cT-efa"/>
+                        <outlet property="targetFrequencyHightCountSlider" destination="z1N-TC-GnC" id="d8n-Ms-3J0"/>
+                        <outlet property="targetFrequencyLowCountLabel" destination="rfD-hk-ZSa" id="dd8-Dx-VUx"/>
+                        <outlet property="targetFrequencyLowCountSlider" destination="8dg-uw-yj3" id="rB7-gP-wW8"/>
                         <segue destination="5Sd-L0-2RD" kind="show" identifier="toSelection" id="WGr-Lz-LSD"/>
                     </connections>
                 </tableViewController>

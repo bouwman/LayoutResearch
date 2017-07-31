@@ -26,27 +26,77 @@ protocol SearchItemProtocol {
     var identifier: String { set get }
     var colorId: Int { get }
     var shapeId: Int { get }
+    var sharedColorCount: Int { get }
 }
 
 protocol SearchViewDelegate {
     func didSelect(item: SearchItemProtocol?, atIndex index: IndexPath?)
 }
 
-class SearchView: UIView {
-    var itemDiameter: CGFloat
-    var distance: CGFloat
-    var layout: LayoutType
-    var items: [[SearchItemProtocol]]
-    var topMargin: CGFloat
+@IBDesignable class SearchView: UIView {
+    @IBInspectable var itemDiameter: CGFloat {
+        didSet {
+            layoutButtons()
+        }
+    }
+    @IBInspectable var distance: CGFloat {
+        didSet {
+            if distance <= 0 {
+                distance = 0.001
+            }
+            layoutButtons()
+        }
+    }
+    var layout: LayoutType {
+        didSet {
+            layoutButtons()
+        }
+    }
+    var items: [[SearchItemProtocol]] {
+        didSet {
+            createButtonsForItems()
+            layoutButtons()
+        }
+    }
+    var topMargin: CGFloat {
+        didSet {
+            layoutButtons()
+        }
+    }
+    
+    @IBInspectable var layoutIdForIB: Int = 1 {
+        didSet {
+            switch layoutIdForIB {
+            case 1:
+                layout = .grid
+            case 2:
+                layout = .horizontal
+            case 3:
+                layout = .vertical
+            default:
+                layoutIdForIB = 1
+                layout = .grid
+            }
+        }
+    }
     
     var delegate: SearchViewDelegate?
     
     private var buttons: [[RoundedButton]] = []
     
     override var intrinsicContentSize: CGSize {
-        let lastButton = buttons.last!.last!
-        let width = lastButton.frame.origin.x + itemDiameter
-        let height = lastButton.frame.origin.y + itemDiameter
+        let lastXButton: UIButton
+        var lastYButton = buttons.last!.last!
+        if buttons.count % 2 == 1 {
+            lastXButton = buttons.last!.last!
+        } else {
+            lastXButton = buttons[buttons.count - 2].last!
+        }
+        if layout == .vertical {
+            lastYButton = buttons.last!.first!
+        }
+        let width = lastXButton.frame.origin.x + itemDiameter
+        let height = lastYButton.frame.origin.y + itemDiameter
         
         return CGSize(width: width, height: height)
     }
@@ -58,36 +108,13 @@ class SearchView: UIView {
         self.topMargin = topMargin
         self.items = items
         
-        // Map buttons to items
-        for itemsInRow in items {
-            var buttonRow: [RoundedButton] = []
-            for item in itemsInRow {
-                let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
-                let inset = itemDiameter / Const.Interface.insetDiameterRatio
-                
-                button.identifier = item.identifier
-                button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
-                button.setImage(UIImage.searchImageFor(id: item.shapeId), for: .normal)
-                button.imageView?.contentMode = .scaleAspectFit
-                button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-                
-                buttonRow.append(button)
-            }
-            buttons.append(buttonRow)
-        }
-        
         super.init(frame: CGRect.zero)
+        
+        // Map buttons to items
+        createButtonsForItems()
         
         // Layout buttons
         layoutButtons()
-        
-        // Connect buttons to view
-        for buttonRow in buttons {
-            for button in buttonRow {
-                addSubview(button)
-                button.addTarget(self, action: #selector(SearchView.didPress(button:)), for: .touchDown)
-            }
-        }
         
         // Set frame based on layout
         frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
@@ -110,13 +137,55 @@ class SearchView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        self.itemDiameter = 0
-        self.distance = 0
+        self.itemDiameter = Const.StudyParameters.itemDiameter
+        self.distance = Const.StudyParameters.itemDistance
         self.layout = .grid
         self.topMargin = 0
-        self.items = []
+        self.items = SearchView.createDefaultItems()
         
         super.init(coder: aDecoder)
+        
+        // Map buttons to items
+        createButtonsForItems()
+        
+        // Layout buttons
+        layoutButtons()
+        
+        // Set frame based on layout
+        frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
+    }
+    
+    private func createButtonsForItems() {
+        // Remove buttons if exist
+        if buttons.count > 0 {
+            for buttonRow in buttons {
+                for button in buttonRow {
+                    button.removeTarget(self, action: #selector(didPress(button:)), for: .touchDown)
+                    button.removeFromSuperview()
+                }
+            }
+            buttons.removeAll()
+        }
+        
+        // Map buttons to items
+        for itemsInRow in items {
+            var buttonRow: [RoundedButton] = []
+            for item in itemsInRow {
+                let button = RoundedButton(frame: CGRect(x: 0, y: 0, width: itemDiameter, height: itemDiameter))
+                let inset = itemDiameter / Const.Interface.iconInsetDiameterRatio
+                
+                button.identifier = item.identifier
+                button.backgroundColor = UIColor.searchColorFor(id: item.colorId)
+                button.setImage(UIImage.searchImageFor(id: item.shapeId), for: .normal)
+                button.imageView?.contentMode = .scaleAspectFit
+                button.imageEdgeInsets = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+                button.addTarget(self, action: #selector(SearchView.didPress(button:)), for: .touchDown)
+                
+                addSubview(button)
+                buttonRow.append(button)
+            }
+            buttons.append(buttonRow)
+        }
     }
     
     private func layoutButtons() {
@@ -173,7 +242,24 @@ class SearchView: UIView {
                     button.frame.origin.y = yPosition
                 }
             }
+        }        
+    }
+    
+    private static func createDefaultItems() -> [[SearchItemProtocol]] {
+        var items: [[SearchItemProtocol]] = []
+        
+        var counter = 1
+        for _ in 0..<5 {
+            var rowItems: [SearchItemProtocol] = []
+            for _ in 0..<5 {
+                // 0 for black color and no shape
+                let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sharedColorCount: 0)
+                rowItems.append(item)
+                counter += 1
+            }
+            items.append(rowItems)
         }
+        return items
     }
 }
 

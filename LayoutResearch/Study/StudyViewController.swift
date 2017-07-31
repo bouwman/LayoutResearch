@@ -11,11 +11,12 @@ import ResearchKit
 
 class StudyViewController: UIViewController {
     var resultService = ResultService()
-    var service: StudyService!
+    var settings: StudySettings!
     
     @IBOutlet weak var exportResultsButton: UIButton!
     
     @IBAction func didPressStart(_ sender: RoundedButton) {
+        let service = StudyService(settings: settings)
         let task = ORKOrderedTask(identifier: "SearchTask-1", steps: service.steps)
         let taskVC = ORKTaskViewController(task: task, taskRun: nil)
         
@@ -43,7 +44,7 @@ class StudyViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navVC = segue.destination as? UINavigationController {
             if let settingsVC = navVC.topViewController as? SettingsViewController {
-                settingsVC.settings = service.settings
+                settingsVC.settings = settings
                 settingsVC.delegate = self
             }
         }
@@ -51,8 +52,8 @@ class StudyViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        service = StudyService(settings: loadSettings())
+        
+        settings = loadSettings()
         
         exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
@@ -61,7 +62,7 @@ class StudyViewController: UIViewController {
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
             return savedSettings
         } else {
-            let settings = StudySettings(participant: UUID().uuidString, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, trialCount: Const.StudyParameters.trialCount, practiceTrialCount: Const.StudyParameters.practiceTrialCount)
+            let settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
             return settings
         }
@@ -133,6 +134,6 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
 
 extension StudyViewController: SettingsViewControllerDelegate {
     func settingsViewController(viewController: SettingsViewController, didChangeSettings settings: StudySettings) {
-        service = StudyService(settings: settings)
+        self.settings = settings
     }
 }

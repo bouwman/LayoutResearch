@@ -9,83 +9,6 @@
 import UIKit
 import ResearchKit
 
-enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
-    case a,b,c,d,e,f,g,h,i,j,k,l
-    
-    var layouts: [LayoutType] {
-        switch self {
-        case .a,.g:
-            return [.grid, .horizontal, .vertical]
-        case .b,.h:
-            return [.grid, .vertical, .horizontal]
-        case .c,.i:
-            return [.horizontal, .grid, .vertical]
-        case .d,.j:
-            return [.vertical, .grid, .horizontal]
-        case .e,.k:
-            return [.vertical, .horizontal, .grid]
-        case .f,.l:
-            return [.horizontal, .vertical, .grid]
-        }
-    }
-    
-    var organisation: OrganisationType {
-        switch self {
-        case .a,.b,.c,.d,.e,.f:
-            return .stable
-        case .g,.h,.i,.j,.k,.l:
-            return .random
-        }
-    }
-    
-    var description: String {
-        return "Group \(self.rawValue.uppercased())"
-    }
-    
-    var title: String {
-        return description
-    }
-}
-
-struct StudySettings {
-    var participant: String
-    var group: ParticipantGroup
-    var rowCount: Int
-    var columnCount: Int
-    var itemDiameter: CGFloat
-    var itemDistance: CGFloat
-    var trialCount: Int
-    var practiceTrialCount: Int
-    
-    func saveToUserDefaults(userDefaults: UserDefaults) {
-        userDefaults.set(participant, forKey: SettingsString.participantIdentifier.rawValue)
-        userDefaults.set(group.rawValue, forKey: SettingsString.participantGroup.rawValue)
-        userDefaults.set(itemDiameter, forKey: SettingsString.layoutItemDiameter.rawValue)
-        userDefaults.set(itemDistance, forKey: SettingsString.layoutItemDistance.rawValue)
-        userDefaults.set(rowCount, forKey: SettingsString.layoutRowCount.rawValue)
-        userDefaults.set(columnCount, forKey: SettingsString.layoutColumnCount.rawValue)
-        userDefaults.set(trialCount, forKey: SettingsString.trialCount.rawValue)
-        userDefaults.set(practiceTrialCount, forKey: SettingsString.practiceTrialCount.rawValue)
-    }
-    
-    static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
-        let participantOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
-        let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
-        let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
-        let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
-        let itemDiameter = userDefaults.float(forKey: SettingsString.layoutItemDiameter.rawValue)
-        let itemDistance = userDefaults.float(forKey: SettingsString.layoutItemDistance.rawValue)
-        let trialCount = userDefaults.integer(forKey: SettingsString.trialCount.rawValue)
-        let practiceTrialCount = userDefaults.integer(forKey: SettingsString.practiceTrialCount.rawValue)
-        
-        guard let groupString = groupStringOptional else { return nil }
-        guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
-        guard let participant = participantOptional else { return nil }
-        
-        return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), trialCount: trialCount, practiceTrialCount: practiceTrialCount)
-    }
-}
-
 protocol SettingsViewControllerDelegate {
     func settingsViewController(viewController: SettingsViewController, didChangeSettings settings: StudySettings)
 }
@@ -94,15 +17,16 @@ class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var groupSelectionCell: UITableViewCell!
     @IBOutlet weak var resetSettingsCell: UITableViewCell!
+    @IBOutlet weak var layoutPreviewCell: UITableViewCell!
     @IBOutlet weak var participantGroupLabel: UILabel!
     @IBOutlet weak var itemDiameterLabel: UILabel!
     @IBOutlet weak var itemDistanceLabel: UILabel!
-    @IBOutlet weak var rowCountLabel: UILabel!
-    @IBOutlet weak var columnCountLabel: UILabel!
+    @IBOutlet weak var targetFrequencyHighCountLabel: UILabel!
+    @IBOutlet weak var targetFrequencyLowCountLabel: UILabel!
     @IBOutlet weak var itemDiameterSlider: UISlider!
     @IBOutlet weak var itemDistanceSlider: UISlider!
-    @IBOutlet weak var rowCountSlider: UISlider!
-    @IBOutlet weak var columnCountSlider: UISlider!
+    @IBOutlet weak var targetFrequencyHightCountSlider: UISlider!
+    @IBOutlet weak var targetFrequencyLowCountSlider: UISlider!
     
     var delegate: SettingsViewControllerDelegate?
     var settings: StudySettings? {
@@ -110,6 +34,8 @@ class SettingsViewController: UITableViewController {
             updateUI()
         }
     }
+    
+    var layoutPreviewView: SearchView!
     
     // MARK: - IBActions
     
@@ -123,13 +49,13 @@ class SettingsViewController: UITableViewController {
         updateUI()
     }
     
-    @IBAction func rowCountSliderChanged(_ sender: UISlider) {
-        settings?.rowCount = Int(sender.value)
+    @IBAction func targetFrequencyHighCountSliderChanged(_ sender: UISlider) {
+        settings?.targetFreqHighCount = Int(sender.value)
         updateUI()
     }
     
-    @IBAction func columnCountSliderChanged(_ sender: UISlider) {
-        settings?.columnCount = Int(sender.value)
+    @IBAction func targetFrequencyLowCountSliderChanged(_ sender: UISlider) {
+        settings?.targetFreqLowCount = Int(sender.value)
         updateUI()
     }
     
@@ -140,7 +66,7 @@ class SettingsViewController: UITableViewController {
             toSelection()
         } else if selectedCell == resetSettingsCell {
             let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
-            settings = StudySettings(participant: participantOptional!, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, trialCount: Const.StudyParameters.trialCount, practiceTrialCount: Const.StudyParameters.practiceTrialCount)
+            settings = StudySettings.defaultSettingsForParticipant(participantOptional!)
             tableView.deselectRow(at: indexPath, animated: true)
         }
     }
@@ -165,6 +91,20 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: Fix performance issues
+//        guard let settings = settings else { return }
+//
+//        let items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
+//
+//        layoutPreviewView = SearchView(itemDiameter: settings.itemDiameter, distance: settings.itemDistance, layout: .grid, topMargin: 0, items: items)
+//        
+//        // TODO: Align center with autlayouts
+//        // Add to center of cell
+//        let width = layoutPreviewView.frame.size.width
+//        let height = layoutPreviewView.frame.size.height
+//        layoutPreviewView.frame.origin = CGPoint(x: layoutPreviewCell.frame.size.width / 2 - width / 2, y: layoutPreviewCell.frame.size.height / 2 - height / 2)
+//        layoutPreviewCell.contentView.addSubview(layoutPreviewView)
+        
         updateUI()
     }
     
@@ -187,16 +127,37 @@ class SettingsViewController: UITableViewController {
         guard let settings = settings else { return }
         
         participantGroupLabel?.text = settings.group.description
-        itemDiameterLabel?.text = "\(Int(settings.itemDiameter))"
-        itemDistanceLabel?.text = "\(Int(settings.itemDistance))"
-        rowCountLabel?.text = "\(settings.rowCount)"
-        columnCountLabel?.text = "\(settings.columnCount)"
+        itemDiameterLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDiameter)
+        itemDistanceLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDistance)
+        targetFrequencyHighCountLabel?.text = "\(settings.targetFreqHighCount)"
+        targetFrequencyLowCountLabel?.text = "\(settings.targetFreqLowCount)"
         
         itemDiameterSlider?.value = Float(settings.itemDiameter)
         itemDistanceSlider?.value = Float(settings.itemDistance)
-        rowCountSlider?.value = Float(settings.rowCount)
-        columnCountSlider?.value = Float(settings.columnCount)
+        targetFrequencyHightCountSlider?.value = Float(settings.targetFreqHighCount)
+        targetFrequencyLowCountSlider?.value = Float(settings.targetFreqLowCount)
+
+        layoutPreviewView?.items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
+        layoutPreviewView?.itemDiameter = settings.itemDiameter
+        layoutPreviewView?.distance = settings.itemDistance
     }
+    
+    private func createItemsFor(rows: Int, columns: Int) -> [[SearchItemProtocol]] {
+        var items: [[SearchItemProtocol]] = []
+        
+        var counter = 0
+        for _ in 0..<rows {
+            var itemRow: [SearchItemProtocol] = []
+            for _ in 0..<columns {
+                itemRow.append(SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sharedColorCount: 0))
+                counter += 1
+            }
+            items.append(itemRow)
+        }
+        
+        return items
+    }
+    
 }
 
 extension SettingsViewController: SelectionViewControllerDelegate {

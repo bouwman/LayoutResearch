@@ -39,7 +39,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOi-BV-6kC">
-                                <rect key="frame" x="144" y="613" width="86" height="38"/>
+                                <rect key="frame" x="144.5" y="613" width="86" height="38"/>
                                 <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                 <state key="normal" title="Withdraw">
                                     <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -50,13 +50,13 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2x4-ex-AhU" customClass="RoundedButton" customModule="LayoutResearch" customModuleProvider="target">
-                                <rect key="frame" x="136" y="308.5" width="102" height="50"/>
+                                <rect key="frame" x="134.5" y="308.5" width="106" height="50"/>
                                 <color key="backgroundColor" red="0.20486970245838165" green="0.47176262736320496" blue="0.96604371070861816" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="VS9-d7-AQ4"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
                                 <state key="normal" title="Start Task">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -77,7 +77,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6a-Qm-xmB">
-                                <rect key="frame" x="117" y="444.5" width="140" height="30"/>
+                                <rect key="frame" x="117.5" y="444.5" width="140" height="30"/>
                                 <state key="normal" title="Export consent form"/>
                                 <connections>
                                     <action selector="exportConsentFormPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="wXT-KZ-KaL"/>
@@ -139,24 +139,49 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4F-71-9Xr">
-                                <rect key="frame" x="177.5" y="304.5" width="20" height="58"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="48"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UCLIC logo" translatesAutoresizingMaskIntoConstraints="NO" id="nOP-j7-bah">
+                                <rect key="frame" x="50" y="250" width="275" height="167"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="NXC-jN-PfZ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to the study on visual search in circular icon arrangments." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apg-Yr-kvY">
+                                <rect key="frame" x="18.5" y="192.5" width="338" height="49"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="Wp5-QZ-ryp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UCL logo" translatesAutoresizingMaskIntoConstraints="NO" id="Tip-Na-0lu">
+                                <rect key="frame" x="92" y="404.5" width="191" height="152"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="191" id="Fg8-Fn-KCz"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="W4F-71-9Xr" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="vWK-rX-NdE"/>
-                            <constraint firstItem="W4F-71-9Xr" firstAttribute="centerY" secondItem="1K4-Pt-nkY" secondAttribute="centerY" id="vnY-xs-m7n"/>
+                            <constraint firstItem="Apg-Yr-kvY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="18" id="20U-2d-7lw"/>
+                            <constraint firstItem="Apg-Yr-kvY" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="2Ta-yp-iaG"/>
+                            <constraint firstItem="nOP-j7-bah" firstAttribute="top" secondItem="Apg-Yr-kvY" secondAttribute="bottom" constant="8" symbolic="YES" id="66g-5x-iSb"/>
+                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Tip-Na-0lu" secondAttribute="trailing" constant="92" id="6aR-8e-Di8"/>
+                            <constraint firstItem="nOP-j7-bah" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="CHy-y0-mgM"/>
+                            <constraint firstItem="Tip-Na-0lu" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="IzD-9y-mTe"/>
+                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nOP-j7-bah" secondAttribute="trailing" constant="50" id="Kwe-TE-c2z"/>
+                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Apg-Yr-kvY" secondAttribute="trailing" constant="18" id="Sss-ae-BLa"/>
+                            <constraint firstItem="Tip-Na-0lu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="92" id="eUJ-za-YR4"/>
+                            <constraint firstItem="Tip-Na-0lu" firstAttribute="top" secondItem="nOP-j7-bah" secondAttribute="bottom" constant="-12.5" id="mMv-kp-4F9"/>
+                            <constraint firstItem="nOP-j7-bah" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="50" id="nU2-aI-lHI"/>
+                            <constraint firstItem="nOP-j7-bah" firstAttribute="centerY" secondItem="1K4-Pt-nkY" secondAttribute="centerY" id="sH6-N0-Jr6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="sJO-yB-Pr9"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zml-nD-7pV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2788" y="-850"/>
+            <point key="canvasLocation" x="2788" y="-850.52473763118451"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="m1d-5U-P6R">
@@ -170,17 +195,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NzW-R8-qhT">
-                                <rect key="frame" x="173.5" y="304.5" width="28" height="58"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="48"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="weW-en-NwF" customClass="SearchView" customModule="LayoutResearch" customModuleProvider="target">
+                                <rect key="frame" x="87.5" y="283.5" width="200" height="200"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" placeholder="YES" id="i3T-ci-Xd7"/>
+                                    <constraint firstAttribute="width" constant="200" placeholder="YES" id="q9Z-I7-7q5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="itemDiameter">
+                                        <real key="value" value="50"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="distance">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layoutIdForIB">
+                                        <integer key="value" value="2"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The study aims to explore how different layouts affect search performance." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5t-Rx-DJb">
+                                <rect key="frame" x="54" y="181.5" width="267" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="267.5" id="FuS-e8-Qwx"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="NzW-R8-qhT" firstAttribute="centerX" secondItem="vRc-Kw-8w8" secondAttribute="centerX" id="6JO-Zr-s1J"/>
-                            <constraint firstItem="NzW-R8-qhT" firstAttribute="centerY" secondItem="vRc-Kw-8w8" secondAttribute="centerY" id="hQq-PV-c1g"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="m5t-Rx-DJb" secondAttribute="trailing" constant="18" id="BmQ-XI-zGO"/>
+                            <constraint firstItem="weW-en-NwF" firstAttribute="centerY" secondItem="vRc-Kw-8w8" secondAttribute="centerY" constant="50" id="H0F-x0-M0F"/>
+                            <constraint firstItem="m5t-Rx-DJb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vRc-Kw-8w8" secondAttribute="leading" constant="18" id="PK5-rZ-9dG"/>
+                            <constraint firstItem="weW-en-NwF" firstAttribute="centerX" secondItem="vRc-Kw-8w8" secondAttribute="centerX" id="dqd-Wp-AeU"/>
+                            <constraint firstItem="weW-en-NwF" firstAttribute="top" secondItem="m5t-Rx-DJb" secondAttribute="bottom" constant="28" id="e9d-0X-UFH"/>
+                            <constraint firstItem="m5t-Rx-DJb" firstAttribute="centerX" secondItem="vRc-Kw-8w8" secondAttribute="centerX" id="izc-2e-xas"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="liS-5E-Tt1"/>
                     </view>
@@ -201,17 +252,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7t0-CT-geD">
-                                <rect key="frame" x="173.5" y="304.5" width="28" height="58"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="48"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press the join button to learn more about the study and fill in the consent form." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faO-I8-psF">
+                                <rect key="frame" x="23" y="196.5" width="329" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="328.5" id="I4Z-Lh-c0U"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="7t0-CT-geD" firstAttribute="centerX" secondItem="aAe-EP-sN7" secondAttribute="centerX" id="Oml-Jb-3UB"/>
-                            <constraint firstItem="7t0-CT-geD" firstAttribute="centerY" secondItem="aAe-EP-sN7" secondAttribute="centerY" id="fSQ-R5-sNh"/>
+                            <constraint firstItem="faO-I8-psF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aAe-EP-sN7" secondAttribute="leading" constant="18" id="cR7-nx-o51"/>
+                            <constraint firstItem="faO-I8-psF" firstAttribute="centerX" secondItem="aAe-EP-sN7" secondAttribute="centerX" id="uwD-cQ-wsZ"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="faO-I8-psF" secondAttribute="trailing" constant="18" id="y23-CI-u9H"/>
+                            <constraint firstItem="faO-I8-psF" firstAttribute="centerY" secondItem="aAe-EP-sN7" secondAttribute="centerY" constant="-100" id="zSW-G0-YrU"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Wjx-wP-OGu"/>
                     </view>
@@ -232,21 +288,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kc-Vl-bvF">
-                                <rect key="frame" x="151" y="617" width="73" height="30"/>
-                                <state key="normal" title="Join Study"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9kc-Vl-bvF" customClass="RoundedButton" customModule="LayoutResearch" customModuleProvider="target">
+                                <rect key="frame" x="133" y="597" width="109" height="50"/>
+                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Lhu-ys-j3C"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
+                                <state key="normal" title="Join Study">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="joinButtonTapped:" destination="hJg-ZS-8wg" eventType="touchUpInside" id="vfN-ro-2dd"/>
                                 </connections>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07M-Of-OE8">
-                                <rect key="frame" x="16" y="67.5" width="343" height="541.5"/>
+                                <rect key="frame" x="16" y="87.5" width="343" height="501.5"/>
                                 <connections>
                                     <segue destination="RPh-WI-4wS" kind="embed" id="u4k-lr-v3J"/>
                                 </connections>
                             </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Visual Search Study" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="1qE-w5-xEG">
-                                <rect key="frame" x="76.5" y="28" width="223.5" height="32"/>
+                                <rect key="frame" x="76" y="48" width="223" height="32"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -256,7 +325,7 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="07M-Of-OE8" secondAttribute="trailing" id="0mU-yS-fyy"/>
                             <constraint firstItem="9kc-Vl-bvF" firstAttribute="centerX" secondItem="x97-Fk-3WO" secondAttribute="centerX" id="R2y-dt-Oym"/>
-                            <constraint firstItem="1qE-w5-xEG" firstAttribute="top" secondItem="aRs-gA-bg7" secondAttribute="bottom" constant="8" symbolic="YES" id="VcZ-R5-zcG"/>
+                            <constraint firstItem="1qE-w5-xEG" firstAttribute="top" secondItem="aRs-gA-bg7" secondAttribute="bottom" constant="28" id="VcZ-R5-zcG"/>
                             <constraint firstItem="9kc-Vl-bvF" firstAttribute="top" secondItem="07M-Of-OE8" secondAttribute="bottom" constant="8" id="hTy-36-Ydy"/>
                             <constraint firstItem="07M-Of-OE8" firstAttribute="top" secondItem="1qE-w5-xEG" secondAttribute="bottom" constant="8" id="kgr-5C-j4V"/>
                             <constraint firstItem="07M-Of-OE8" firstAttribute="leading" secondItem="x97-Fk-3WO" secondAttribute="leadingMargin" id="nXM-ZQ-qz6"/>
@@ -283,4 +352,8 @@
             <point key="canvasLocation" x="1973" y="-229"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="UCL logo" width="512" height="152"/>
+        <image name="UCLIC logo" width="512" height="167"/>
+    </resources>
 </document>

@@ -50,6 +50,11 @@ class IntroductionViewController: UIPageViewController, UIPageViewControllerData
         dataSource = self
         
         setViewControllers([pageViewControllers[0]], direction: .forward, animated: false, completion: nil)
+        
+        // Make grey indicator
+        let pageAppearance = UIPageControl.appearance()
+        pageAppearance.pageIndicatorTintColor = UIColor.lightGray
+        pageAppearance.currentPageIndicatorTintColor = UIColor.darkGray
     }
     
     // MARK: UIPageViewControllerDataSource
@@ -73,7 +78,7 @@ class IntroductionViewController: UIPageViewController, UIPageViewControllerData
         
         return nil
     }
-    
+        
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
         return pageViewControllers.count
     }

@@ -19,7 +19,7 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
         let targetItem = searchStep.targetItem
         let button = RoundedButton(frame: CGRect(x: 0, y: Const.Interface.descriptionItemMargin, width: size, height: size))
         let contentView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: Const.Interface.descriptionItemMargin + size))
-        let inset = size / Const.Interface.insetDiameterRatio
+        let inset = size / Const.Interface.iconInsetDiameterRatio
         
         button.identifier = targetItem.identifier
         button.backgroundColor = UIColor.searchColorFor(id: targetItem.colorId)
