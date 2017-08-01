@@ -99,6 +99,12 @@ class StudyService {
                 trialCounter += 1
             }
         }
+        
+        // Add thank you step
+        let completionStep = ORKCompletionStep(identifier: "CompletionStep")
+        completionStep.title = "Thank you!"
+        completionStep.text = "Thank you for completing the task."
+        steps.append(completionStep)
     }
     
     private func shuffle2dArrayMaintainingColorDistance(_ array: inout [[SearchItemProtocol]]) {

@@ -126,6 +126,8 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             return LayoutIntroStepViewController(step: layoutIntroStep)
         } else if let introStep = step as? ORKInstructionStep {
             return ORKInstructionStepViewController(step: introStep)
+        } else if let completionStep = step as? ORKCompletionStep {
+            return ORKCompletionStepViewController(step: completionStep)
         } else {
             return ORKActiveStepViewController(step: step)
         }
