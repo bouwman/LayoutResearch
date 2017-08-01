@@ -44,6 +44,19 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     var title: String {
         return description
     }
+    
+    var next: ParticipantGroup {
+        let currentIndex = allGroups.index(of: self)!
+        if currentIndex == allGroups.count - 1 {
+            return allGroups.first!
+        } else {
+            return allGroups[currentIndex + 1]
+        }
+    }
+    
+    private var allGroups: [ParticipantGroup] {
+        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l]
+    }
 }
 
 struct StudySettings {

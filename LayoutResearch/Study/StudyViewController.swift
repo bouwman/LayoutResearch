@@ -15,6 +15,7 @@ class StudyViewController: UIViewController {
     var settings: StudySettings!
     
     @IBOutlet weak var exportResultsButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
     
     @IBAction func didPressStart(_ sender: RoundedButton) {
         let service = StudyService(settings: settings)
@@ -51,16 +52,21 @@ class StudyViewController: UIViewController {
         }
     }
     
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         settings = loadSettings()
                 
-        remoteDataService.fetchLastSettings { (group, error) in
+        remoteDataService.fetchLastSettings { (lastGroup, record, error) in
             DispatchQueue.main.async {
-                if let group = group {
-                    self.settings.group = group
+                if let lastGroup = lastGroup {
+                    self.settings.group = lastGroup.next
+                    self.startButton.isEnabled = true
                 } else {
+                    self.startButton.isEnabled = false
+                    // TODO: Add warning and retry button
                     let ac = UIAlertController(title: "Fetch failed", message: "There was a problem fetching the settings; please try again: \(error?.localizedDescription ?? "–")", preferredStyle: .alert)
                     ac.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(ac, animated: true)
@@ -70,6 +76,8 @@ class StudyViewController: UIViewController {
         
         exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
+    
+    // MARK: - Private
     
     private func loadSettings() -> StudySettings {
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
@@ -122,6 +130,13 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             
             // Activate export button
             exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
+            
+            // Save last conducted study settings
+            remoteDataService.uploadLastSettings(settings.group) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
             
             // Dismiss
             dismiss(animated: true, completion: nil)

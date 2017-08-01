@@ -28,7 +28,7 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
     
-    func fetchLastSettings(completion: @escaping (ParticipantGroup?, Error?) -> ()) {
+    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, Error?) -> ()) {
         let predicate = NSPredicate(value: true)
         let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
         
@@ -39,18 +39,38 @@ class RemoteDataService {
         
         operation.recordFetchedBlock = { record in
             if let groupString = record.object(forKey: CloudRecords.StudySettings.group) as? String {
-                completion(ParticipantGroup(rawValue: groupString), nil)
+                completion(ParticipantGroup(rawValue: groupString), record, nil)
             } else {
-                completion(nil, nil)
+                completion(nil, nil, nil)
             }
         }
         
         operation.queryCompletionBlock = { cursor, error in
             if let error = error {
-                completion(nil, error)
+                completion(nil, nil, error)
             }
         }
         
         publicDB.add(operation)
+    }
+    
+    func uploadLastSettings(_ newGroup: ParticipantGroup, completion: @escaping (Error?) -> ()) {
+        fetchLastSettings { (group, record, error) in
+            
+            if let record = record {
+                let value = NSString(string: newGroup.rawValue)
+                
+                record.setObject(value, forKey: CloudRecords.StudySettings.group)
+                
+                let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+                operation.qualityOfService = .userInitiated
+                
+                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                    completion(error)
+                }
+                
+                self.publicDB.add(operation)
+            }
+        }
     }
 }

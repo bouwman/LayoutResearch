@@ -113,6 +113,7 @@
                     </view>
                     <connections>
                         <outlet property="exportResultsButton" destination="3J4-bm-ji0" id="FYL-eo-Gx7"/>
+                        <outlet property="startButton" destination="2x4-ex-AhU" id="kQv-39-TZc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5BZ-5f-UBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
