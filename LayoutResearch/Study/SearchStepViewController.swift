@@ -54,7 +54,7 @@ class SearchStepViewController: ORKActiveStepViewController {
                 }
             }
         }
-                
+        
         // Setup result
         let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
         searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice)
@@ -99,6 +99,110 @@ class SearchStepViewController: ORKActiveStepViewController {
     override func resume() {
         super.resume()
     }
+    
+    static func calcDistanceToNearestSharedColorIn(searchItems: [[SearchItemProtocol]], targetItem: SearchItemProtocol, layout: LayoutType = .grid) -> (distance: Int?, shortestRowDistance: Int?, shortestColumnDistance: Int?, closestNeighboursCount: Int?) {
+        guard searchItems.count != 0 else { return (nil, nil, nil, nil) }
+        var targetItemPositionOptional: IndexPath?
+        var otherItemsPositions: [IndexPath] = []
+        
+        // Find position of all items with same color
+        for (row, itemRow) in searchItems.enumerated() {
+            for (column, item) in itemRow.enumerated() {
+                if item.colorId == targetItem.colorId {
+                    if item.shapeId == targetItem.shapeId {
+                        targetItemPositionOptional = IndexPath(row: row, section: column)
+                    } else {
+                        otherItemsPositions.append(IndexPath(row: row, section: column))
+                    }
+                }
+            }
+        }
+        // Return when not at least two items found
+        guard let targetItemPosition = targetItemPositionOptional, otherItemsPositions.count != 0 else { return (nil, nil, nil, nil) }
+        
+        // Find item with shortest distance
+        var shortestDistance = searchItems.count + searchItems.first!.count
+        var shortestRowDistance = searchItems.count + 1
+        var shortestColumnDistance = searchItems.first!.count + 1
+        var closeNeighboursCount = 0
+        for itemPosition in otherItemsPositions {
+            let difference = targetItemPosition - itemPosition
+            let distance = abs(difference.row) + abs(difference.section)
+            let rowDistance = abs(difference.row)
+            let columnDistance = abs(difference.section)
+
+            if distance < shortestDistance {
+                shortestDistance = distance
+            }
+            if rowDistance < shortestRowDistance {
+                shortestRowDistance = rowDistance
+            }
+            if columnDistance < shortestColumnDistance {
+                shortestColumnDistance = columnDistance
+            }
+            
+            // Find all sourrounding items
+            let isSameRowOrColum = itemPosition.row == targetItemPosition.row || itemPosition.section == targetItemPosition.section
+            if distance == 1 && isSameRowOrColum {
+                closeNeighboursCount += 1
+            } else if distance == 1 || distance == 2 {
+                let downLeft = IndexPath(row: targetItemPosition.row + 1, section: targetItemPosition.section - 1)
+                let downRight = IndexPath(row: targetItemPosition.row + 1, section: targetItemPosition.section + 1)
+                let upLeft = IndexPath(row: targetItemPosition.row - 1, section: targetItemPosition.section - 1)
+                let upRight = IndexPath(row: targetItemPosition.row - 1, section: targetItemPosition.section + 1)
+                switch layout {
+                case .horizontal:
+                    if targetItemPosition.row % 2 == 0 { // even row
+                        if itemPosition == downRight || itemPosition == upRight {
+                            closeNeighboursCount += 1
+                        }
+                    } else { // uneven row
+                        if itemPosition == downLeft || itemPosition == upLeft {
+                            closeNeighboursCount += 1
+                        }
+                    }
+                case .vertical:
+                    if targetItemPosition.section % 2 == 0 { // even column
+                        if itemPosition == downLeft || itemPosition == downRight {
+                            closeNeighboursCount += 1
+                        }
+                    } else { // uneven column
+                        if itemPosition == upLeft || itemPosition == upRight {
+                            closeNeighboursCount += 1
+                        }
+                    }
+                case .grid:
+                    let left = IndexPath(row: targetItemPosition.row, section: targetItemPosition.section - 1)
+                    let right = IndexPath(row: targetItemPosition.row, section: targetItemPosition.section + 1)
+                    let up = IndexPath(row: targetItemPosition.row - 1, section: targetItemPosition.section)
+                    let down = IndexPath(row: targetItemPosition.row - 1, section: targetItemPosition.section)
+                    
+                    if itemPosition == upLeft {
+                        if (otherItemsPositions.filter { $0 == up || $0 == left }).count == 1 {
+                            closeNeighboursCount += 1
+                        }
+                    } else if itemPosition == upRight {
+                        if (otherItemsPositions.filter { $0 == up || $0 == right }).count == 1 {
+                            closeNeighboursCount += 1
+                        }
+                    } else if itemPosition == downLeft {
+                        if (otherItemsPositions.filter { $0 == down || $0 == left }).count == 1 {
+                            closeNeighboursCount += 1
+                        }
+                    } else if itemPosition == downRight {
+                        if (otherItemsPositions.filter { $0 == down || $0 == right }).count == 1 {
+                            closeNeighboursCount += 1
+                        }
+                    }
+                }
+            }
+        }
+        
+        let rowDistance = shortestRowDistance <= searchItems.count ? shortestRowDistance : nil
+        let columnDistance = shortestColumnDistance <= searchItems.first!.count ? shortestColumnDistance : nil
+        
+        return (shortestDistance, rowDistance , columnDistance, closeNeighboursCount)
+    }
 }
 
 // MARK: - SearchViewDelegate
@@ -106,11 +210,19 @@ class SearchStepViewController: ORKActiveStepViewController {
 extension SearchStepViewController: SearchViewDelegate {
     func didSelect(item: SearchItemProtocol?, atIndex index: IndexPath?) {
         guard let searchResult = searchResult else { return }
+        guard let searchStep = searchStep else { return }
+        
+        let sameColors = SearchStepViewController.calcDistanceToNearestSharedColorIn(searchItems: searchStep.items, targetItem: searchStep.targetItem, layout: searchStep.layout)
         
         searchResult.pressLocation = index
         searchResult.pressedItem = item
         searchResult.isError = searchResult.itemLocation != searchResult.pressLocation
+        searchResult.distanceToNearestSharedColor = sameColors.distance
+        searchResult.closeNeighboursCount = sameColors.closestNeighboursCount
         
+        if let shortestRowDistance = sameColors.shortestRowDistance {
+            searchResult.distanceCondition = SearchItemDistance(rowDistance: shortestRowDistance)
+        }
         if let startTime = startTime {
             searchResult.searchTime = Date().timeIntervalSince(startTime)
         }
@@ -126,16 +238,5 @@ extension SearchStepViewController: SearchViewDelegate {
             
             delegate?.stepViewController(self, didFinishWith: .forward)
         }
-    }
-}
-
-struct SearchItem: SearchItemProtocol, CustomStringConvertible {
-    var identifier: String
-    var colorId: Int
-    var shapeId: Int
-    var sharedColorCount: Int
-    
-    var description: String {
-        return identifier
     }
 }
