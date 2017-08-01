@@ -17,12 +17,13 @@ class SearchResult: ORKResult {
     var isPractice: Bool
     var itemLocation: IndexPath
     var sameColorCount: Int
+    var targetFrequency: Int
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
     var searchTime: TimeInterval?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, isPractice: Bool) {
+    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool) {
         self.participantIdentifier = participantIdentifier
         self.targetItem = targetItem
         self.layout = layout
@@ -30,6 +31,7 @@ class SearchResult: ORKResult {
         self.itemCount = itemCount
         self.itemLocation = itemLocation
         self.sameColorCount = sameColorCount
+        self.targetFrequency = targetFrequency
         self.isPractice = isPractice
         
         super.init(identifier: identifier)
@@ -44,10 +46,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["ParticipantId","Trial","Layout","Organisation","ItemCount","SameColorCount","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
+        return ["ParticipantId","Trial","Layout","Organisation","ItemCount","SameColorCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
+        return [participantIdentifier,identifier,layout.description,organisation.description,"\(itemCount)","\(sameColorCount)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
     }
 }
