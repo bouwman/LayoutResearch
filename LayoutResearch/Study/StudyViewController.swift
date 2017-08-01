@@ -11,6 +11,7 @@ import ResearchKit
 
 class StudyViewController: UIViewController {
     var resultService = ResultService()
+    var remoteDataService = RemoteDataService()
     var settings: StudySettings!
     
     @IBOutlet weak var exportResultsButton: UIButton!
@@ -54,6 +55,18 @@ class StudyViewController: UIViewController {
         super.viewDidLoad()
         
         settings = loadSettings()
+                
+        remoteDataService.fetchLastSettings { (group, error) in
+            DispatchQueue.main.async {
+                if let group = group {
+                    self.settings.group = group
+                } else {
+                    let ac = UIAlertController(title: "Fetch failed", message: "There was a problem fetching the settings; please try again: \(error?.localizedDescription ?? "–")", preferredStyle: .alert)
+                    ac.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(ac, animated: true)
+                }
+            }
+        }
         
         exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
