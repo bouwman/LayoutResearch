@@ -57,7 +57,6 @@ class RemoteDataService {
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
-                    print(record[CloudRecords.Universal.createdAt])
                     completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
                 } else {
                     completion(nil, nil, userId, nil)
