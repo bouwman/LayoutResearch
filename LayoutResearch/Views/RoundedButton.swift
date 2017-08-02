@@ -26,6 +26,12 @@ import UIKit
         layer.cornerRadius = cornerRadius
     }
     
+    override var isEnabled: Bool {
+        didSet {
+            alpha = isEnabled ? 1.0 : 0.5
+        }
+    }
+    
     @IBInspectable var cornerRadius: CGFloat = 5 {
         didSet {
             layer.cornerRadius = cornerRadius

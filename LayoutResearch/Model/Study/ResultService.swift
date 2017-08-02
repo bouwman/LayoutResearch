@@ -9,7 +9,7 @@
 import Foundation
 
 class ResultService {
-    let fileService = FileService()
+    let fileService = LocalDataService()
     
     var lastResults: [SearchResult]? {
         didSet {

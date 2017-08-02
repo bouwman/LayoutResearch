@@ -23,16 +23,21 @@
 		4764C4B21F275CE1009AC457 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */; };
 		4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B31F275E05009AC457 /* WithdrawViewController.swift */; };
 		4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B51F276287009AC457 /* StudyViewController.swift */; };
+		47654C531F31D0B80099C285 /* StudyStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47654C521F31D0B80099C285 /* StudyStateMachine.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
 		4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */; };
-		479480681F2A9B0A002F1C47 /* FileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479480671F2A9B0A002F1C47 /* FileService.swift */; };
+		479480681F2A9B0A002F1C47 /* LocalDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479480671F2A9B0A002F1C47 /* LocalDataService.swift */; };
+		47B307501F30F92300AF2795 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B3074F1F30F92300AF2795 /* CloudKit.framework */; };
+		47B307521F310A1F00AF2795 /* RemoteDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B307511F310A1F00AF2795 /* RemoteDataService.swift */; };
 		47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */; };
 		47B5C8D31F25519200EDF07C /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D21F25519200EDF07C /* RoundedButton.swift */; };
 		47C1DA141F28EE8200F69A75 /* LayoutIntroStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */; };
 		47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */; };
 		47C86DAD1F269FB8005430B2 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C86DAC1F269FB8005430B2 /* Constants.swift */; };
+		47CBA9581F31199F000F0312 /* RemoteErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */; };
+		47CBA95A1F311CB4000F0312 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CBA9591F311CB4000F0312 /* Reachability.swift */; };
 		47CE6AD61F2908E0006E90DD /* CSVWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE6AD51F2908E0006E90DD /* CSVWriter.swift */; };
 		47DF75681F27F40200A6FC52 /* StudyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF75671F27F40200A6FC52 /* StudyService.swift */; };
 		47DF756D1F27F5AA00A6FC52 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF756C1F27F5AA00A6FC52 /* SearchResult.swift */; };
@@ -57,16 +62,22 @@
 		4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4764C4B31F275E05009AC457 /* WithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
 		4764C4B51F276287009AC457 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
+		47654C521F31D0B80099C285 /* StudyStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyStateMachine.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
 		4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
-		479480671F2A9B0A002F1C47 /* FileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileService.swift; sourceTree = "<group>"; };
+		479480671F2A9B0A002F1C47 /* LocalDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataService.swift; sourceTree = "<group>"; };
+		47B3074E1F30F91D00AF2795 /* LayoutResearch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LayoutResearch.entitlements; sourceTree = "<group>"; };
+		47B3074F1F30F92300AF2795 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		47B307511F310A1F00AF2795 /* RemoteDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataService.swift; sourceTree = "<group>"; };
 		47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStepViewController.swift; sourceTree = "<group>"; };
 		47B5C8D21F25519200EDF07C /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutIntroStep.swift; sourceTree = "<group>"; };
 		47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutIntroStepViewController.swift; sourceTree = "<group>"; };
 		47C86DAC1F269FB8005430B2 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteErrorViewController.swift; sourceTree = "<group>"; };
+		47CBA9591F311CB4000F0312 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		47CE6AD51F2908E0006E90DD /* CSVWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVWriter.swift; sourceTree = "<group>"; };
 		47DF40341F2BF8A90008AB06 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47DF75671F27F40200A6FC52 /* StudyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyService.swift; sourceTree = "<group>"; };
@@ -83,6 +94,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29B41C8EA5A67F14E515D30B /* Pods_LayoutResearch.framework in Frameworks */,
+				47B307501F30F92300AF2795 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +133,7 @@
 		4751B4F41F2517AE00549329 /* LayoutResearch */ = {
 			isa = PBXGroup;
 			children = (
+				47B3074E1F30F91D00AF2795 /* LayoutResearch.entitlements */,
 				4751B4F51F2517AE00549329 /* AppDelegate.swift */,
 				47C86DAC1F269FB8005430B2 /* Constants.swift */,
 				4728AB031F29F3D10084EFB1 /* Settings */,
@@ -144,14 +157,29 @@
 				4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */,
 				4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */,
 				4764C4B31F275E05009AC457 /* WithdrawViewController.swift */,
+				47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		47B3074D1F30F74400AF2795 /* Study */ = {
+			isa = PBXGroup;
+			children = (
+				47DF75671F27F40200A6FC52 /* StudyService.swift */,
+				47E7CBB71F2918DE00092680 /* ResultService.swift */,
+				4764C49A1F275269009AC457 /* SearchStep.swift */,
+				477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */,
+				47DF756C1F27F5AA00A6FC52 /* SearchResult.swift */,
+				47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */,
+			);
+			path = Study;
 			sourceTree = "<group>";
 		};
 		47DF75691F27F43B00A6FC52 /* Study */ = {
 			isa = PBXGroup;
 			children = (
 				4764C4B51F276287009AC457 /* StudyViewController.swift */,
+				47654C521F31D0B80099C285 /* StudyStateMachine.swift */,
 				47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */,
 				476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */,
 				47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */,
@@ -162,14 +190,11 @@
 		47DF756A1F27F45500A6FC52 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				47DF75671F27F40200A6FC52 /* StudyService.swift */,
-				47E7CBB71F2918DE00092680 /* ResultService.swift */,
-				479480671F2A9B0A002F1C47 /* FileService.swift */,
-				4764C49A1F275269009AC457 /* SearchStep.swift */,
-				477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */,
-				47DF756C1F27F5AA00A6FC52 /* SearchResult.swift */,
-				47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */,
+				47B3074D1F30F74400AF2795 /* Study */,
 				4764C4AB1F275A44009AC457 /* ConsentDocument.swift */,
+				479480671F2A9B0A002F1C47 /* LocalDataService.swift */,
+				47B307511F310A1F00AF2795 /* RemoteDataService.swift */,
+				47CBA9591F311CB4000F0312 /* Reachability.swift */,
 				47CE6AD51F2908E0006E90DD /* CSVWriter.swift */,
 			);
 			path = Model;
@@ -197,6 +222,7 @@
 		87459A4B7AAE9B925724A81A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47B3074F1F30F92300AF2795 /* CloudKit.framework */,
 				D970F4D5AE66D2F3BADBBF60 /* Pods_LayoutResearch.framework */,
 			);
 			name = Frameworks;
@@ -240,6 +266,12 @@
 						SystemCapabilities = {
 							com.apple.HealthKit = {
 								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 1;
 							};
 						};
 					};
@@ -333,15 +365,19 @@
 				47C86DAD1F269FB8005430B2 /* Constants.swift in Sources */,
 				47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */,
 				4764C4AC1F275A44009AC457 /* ConsentDocument.swift in Sources */,
+				47CBA9581F31199F000F0312 /* RemoteErrorViewController.swift in Sources */,
 				4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */,
 				4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */,
+				47654C531F31D0B80099C285 /* StudyStateMachine.swift in Sources */,
+				47B307521F310A1F00AF2795 /* RemoteDataService.swift in Sources */,
 				4764C4AE1F275A8C009AC457 /* ReplaceSegue.swift in Sources */,
-				479480681F2A9B0A002F1C47 /* FileService.swift in Sources */,
+				479480681F2A9B0A002F1C47 /* LocalDataService.swift in Sources */,
 				4751B4F81F2517AE00549329 /* ContainerViewController.swift in Sources */,
 				4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */,
 				4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */,
 				4751B4F61F2517AE00549329 /* AppDelegate.swift in Sources */,
 				47DF75681F27F40200A6FC52 /* StudyService.swift in Sources */,
+				47CBA95A1F311CB4000F0312 /* Reachability.swift in Sources */,
 				476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */,
 				477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */,
 				47CE6AD61F2908E0006E90DD /* CSVWriter.swift in Sources */,
@@ -492,6 +528,7 @@
 			baseConfigurationReference = 4EE6601F644FFD3403E00F02 /* Pods-LayoutResearch.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LayoutResearch/LayoutResearch.entitlements;
 				DEVELOPMENT_TEAM = A66LE5ZVQX;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LayoutResearch/Info.plist;
@@ -509,6 +546,7 @@
 			baseConfigurationReference = 9FBF39D3AB22A08A0591EEC8 /* Pods-LayoutResearch.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = LayoutResearch/LayoutResearch.entitlements;
 				DEVELOPMENT_TEAM = A66LE5ZVQX;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = LayoutResearch/Info.plist;

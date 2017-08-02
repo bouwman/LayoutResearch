@@ -24,6 +24,7 @@
                     <connections>
                         <segue destination="fSj-ck-ZbI" kind="custom" identifier="toStudy" customClass="ReplaceSegue" customModule="LayoutResearch" customModuleProvider="target" id="IE8-Eh-uNh"/>
                         <segue destination="hJg-ZS-8wg" kind="custom" identifier="toOnboarding" customClass="ReplaceSegue" customModule="LayoutResearch" customModuleProvider="target" id="jCt-me-5U2"/>
+                        <segue destination="ERw-Rd-WPJ" kind="custom" identifier="toICloudError" customClass="ReplaceSegue" customModule="LayoutResearch" customModuleProvider="target" id="R6h-C0-GtU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -39,8 +40,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOi-BV-6kC">
-                                <rect key="frame" x="144.5" y="613" width="86" height="38"/>
-                                <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                <rect key="frame" x="154.5" y="621" width="66" height="30"/>
                                 <state key="normal" title="Withdraw">
                                     <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -69,20 +69,6 @@
                                     <action selector="didPressStart:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="meF-Kh-FdF"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3J4-bm-ji0">
-                                <rect key="frame" x="140" y="386.5" width="95" height="30"/>
-                                <state key="normal" title="Export results"/>
-                                <connections>
-                                    <action selector="exportResultsButtonPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="Jne-Vl-wvg"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6a-Qm-xmB">
-                                <rect key="frame" x="117.5" y="444.5" width="140" height="30"/>
-                                <state key="normal" title="Export consent form"/>
-                                <connections>
-                                    <action selector="exportConsentFormPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="wXT-KZ-KaL"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86M-q3-Q9r">
                                 <rect key="frame" x="302" y="28" width="57" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -93,25 +79,73 @@
                                     <segue destination="vKG-OD-IgQ" kind="show" id="bzz-iJ-ObW"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You need to be connected to the internet to start this study." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uab-LE-dDC">
+                                <rect key="frame" x="37.5" y="433" width="300" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="319" id="X7G-GR-Ocy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3J4-bm-ji0">
+                                <rect key="frame" x="140" y="545" width="95" height="30"/>
+                                <state key="normal" title="Export results"/>
+                                <connections>
+                                    <action selector="exportResultsButtonPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="Jne-Vl-wvg"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n6a-Qm-xmB">
+                                <rect key="frame" x="117.5" y="583" width="140" height="30"/>
+                                <state key="normal" title="Export consent form"/>
+                                <connections>
+                                    <action selector="exportConsentFormPressed:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="wXT-KZ-KaL"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9w-eZ-QP7">
+                                <rect key="frame" x="162" y="386" width="51" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
+                                <state key="normal" title="⚠️"/>
+                                <connections>
+                                    <action selector="didPressWarningButton:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="RaW-Sc-zoi"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="MC7-zm-vTh">
+                                <rect key="frame" x="177.5" y="390.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="3J4-bm-ji0" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="0gD-OX-eO3"/>
-                            <constraint firstItem="2x4-ex-AhU" firstAttribute="centerY" secondItem="W7y-Xs-dxL" secondAttribute="centerY" id="5eQ-Lj-eSH"/>
+                            <constraint firstItem="lOi-BV-6kC" firstAttribute="top" secondItem="n6a-Qm-xmB" secondAttribute="bottom" constant="8" id="0uE-zg-ubm"/>
+                            <constraint firstItem="2x4-ex-AhU" firstAttribute="centerY" secondItem="W7y-Xs-dxL" secondAttribute="centerY" priority="750" id="5eQ-Lj-eSH"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uab-LE-dDC" secondAttribute="trailing" constant="18" id="5lR-lO-waD"/>
+                            <constraint firstItem="MC7-zm-vTh" firstAttribute="centerX" secondItem="r9w-eZ-QP7" secondAttribute="centerX" id="70Y-Nv-aLV"/>
+                            <constraint firstItem="uab-LE-dDC" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="79e-Yg-Lfy"/>
+                            <constraint firstItem="r9w-eZ-QP7" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="8qj-5n-ggN"/>
+                            <constraint firstItem="MC7-zm-vTh" firstAttribute="centerY" secondItem="r9w-eZ-QP7" secondAttribute="centerY" id="9at-oe-RDK"/>
                             <constraint firstItem="2x4-ex-AhU" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CBo-eB-yKC"/>
                             <constraint firstItem="n6a-Qm-xmB" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CNg-AR-IJx"/>
                             <constraint firstItem="lOi-BV-6kC" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CaR-UC-lef"/>
                             <constraint firstItem="86M-q3-Q9r" firstAttribute="top" secondItem="xBf-7S-Jh7" secondAttribute="top" constant="8" id="D8h-zn-YDp"/>
+                            <constraint firstItem="3J4-bm-ji0" firstAttribute="top" relation="greaterThanOrEqual" secondItem="uab-LE-dDC" secondAttribute="bottom" constant="8" id="IMj-F9-mZV"/>
+                            <constraint firstItem="uab-LE-dDC" firstAttribute="top" secondItem="r9w-eZ-QP7" secondAttribute="bottom" constant="18" id="MfL-Nu-RM2"/>
                             <constraint firstItem="xBf-7S-Jh7" firstAttribute="trailing" secondItem="86M-q3-Q9r" secondAttribute="trailing" constant="16" id="NeM-8T-7dk"/>
                             <constraint firstItem="86M-q3-Q9r" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W7y-Xs-dxL" secondAttribute="leading" constant="20" symbolic="YES" id="Ob8-mT-mIM"/>
+                            <constraint firstItem="r9w-eZ-QP7" firstAttribute="top" secondItem="2x4-ex-AhU" secondAttribute="bottom" constant="28" id="Pug-EZ-rFh"/>
                             <constraint firstItem="xBf-7S-Jh7" firstAttribute="bottom" secondItem="lOi-BV-6kC" secondAttribute="bottom" constant="16" id="V0x-sg-NRz"/>
-                            <constraint firstItem="3J4-bm-ji0" firstAttribute="top" secondItem="2x4-ex-AhU" secondAttribute="bottom" constant="28" id="rAf-Ff-U7J"/>
-                            <constraint firstItem="n6a-Qm-xmB" firstAttribute="top" secondItem="3J4-bm-ji0" secondAttribute="bottom" constant="28" id="xrT-uY-eib"/>
+                            <constraint firstItem="uab-LE-dDC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W7y-Xs-dxL" secondAttribute="leading" constant="18" id="dLa-bx-QNq"/>
+                            <constraint firstItem="n6a-Qm-xmB" firstAttribute="top" secondItem="3J4-bm-ji0" secondAttribute="bottom" constant="8" id="xrT-uY-eib"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="xBf-7S-Jh7"/>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="MC7-zm-vTh" id="56F-6H-CC5"/>
                         <outlet property="exportResultsButton" destination="3J4-bm-ji0" id="FYL-eo-Gx7"/>
+                        <outlet property="startButton" destination="2x4-ex-AhU" id="kQv-39-TZc"/>
+                        <outlet property="stateLabel" destination="uab-LE-dDC" id="se0-eT-QIw"/>
+                        <outlet property="warningButton" destination="r9w-eZ-QP7" id="Ppp-L3-WQ2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5BZ-5f-UBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -253,7 +287,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press the join button to learn more about the study and fill in the consent form." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faO-I8-psF">
-                                <rect key="frame" x="23" y="196.5" width="329" height="74"/>
+                                <rect key="frame" x="23.5" y="196.5" width="328.5" height="74"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="328.5" id="I4Z-Lh-c0U"/>
                                 </constraints>
@@ -275,6 +309,54 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wa-Ad-fKn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2788" y="492"/>
+        </scene>
+        <!--Remote Error View Controller-->
+        <scene sceneID="aAM-ON-S5C">
+            <objects>
+                <viewController id="ERw-Rd-WPJ" customClass="RemoteErrorViewController" customModule="LayoutResearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jyy-28-80P">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The app can only be used when signed into iCloud. Go to settings, enable iCloud and press the try again button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biq-Fh-vlt">
+                                <rect key="frame" x="18" y="296.5" width="339" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="339" id="poQ-LL-s1y"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUu-iD-fWE">
+                                <rect key="frame" x="155.5" y="432.5" width="63" height="30"/>
+                                <state key="normal" title="Try again"/>
+                                <connections>
+                                    <action selector="didPressTryAgainButton:" destination="ERw-Rd-WPJ" eventType="touchUpInside" id="Ve0-TZ-Bzs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTh-oe-wjt">
+                                <rect key="frame" x="152" y="155.5" width="71" height="91"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="66"/>
+                                <state key="normal" title="⚠️"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="lTh-oe-wjt" firstAttribute="centerX" secondItem="Jyy-28-80P" secondAttribute="centerX" id="5TX-tG-GRg"/>
+                            <constraint firstItem="biq-Fh-vlt" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Jyy-28-80P" secondAttribute="leading" constant="18" id="6rl-xP-5Vb"/>
+                            <constraint firstItem="dUu-iD-fWE" firstAttribute="top" secondItem="biq-Fh-vlt" secondAttribute="bottom" constant="62" id="9GK-mO-HJs"/>
+                            <constraint firstItem="biq-Fh-vlt" firstAttribute="centerX" secondItem="Jyy-28-80P" secondAttribute="centerX" id="WHB-i6-gdq"/>
+                            <constraint firstItem="biq-Fh-vlt" firstAttribute="centerY" secondItem="Jyy-28-80P" secondAttribute="centerY" id="Zje-En-Zig"/>
+                            <constraint firstItem="biq-Fh-vlt" firstAttribute="top" secondItem="lTh-oe-wjt" secondAttribute="bottom" constant="50" id="gO7-ni-gTz"/>
+                            <constraint firstItem="dUu-iD-fWE" firstAttribute="centerX" secondItem="biq-Fh-vlt" secondAttribute="centerX" id="lLe-g8-K7m"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="biq-Fh-vlt" secondAttribute="trailing" constant="18" id="wvr-eq-Wk3"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="nR0-ni-aNB"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fkw-QM-AXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1054" y="-940"/>
         </scene>
         <!--Onboarding View Controller-->
         <scene sceneID="62N-Nu-x0d">

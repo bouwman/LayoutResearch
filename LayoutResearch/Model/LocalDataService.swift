@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FileService {
+class LocalDataService {
     let docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last!
     var csvFilePath: URL { return docURL.appendingPathComponent("result.csv") }
     var consentPath: URL { return docURL.appendingPathComponent("signature.pdf") }

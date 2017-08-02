@@ -45,6 +45,7 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultCSVPath
+    case icloudUserId
     case participantIdentifier
     case participantGroup
     case layoutItemDiameter

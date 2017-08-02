@@ -13,7 +13,7 @@ class ContainerViewController: UIViewController {
 
     // MARK: Properties
     
-    let fileService = FileService()
+    let fileService = LocalDataService()
     
     var contentHidden = false {
         didSet {
@@ -30,7 +30,11 @@ class ContainerViewController: UIViewController {
         let isParticipating = UserDefaults.standard.bool(forKey: SettingsString.isParticipating.rawValue)
         
         if isParticipating {
-            toStudy()
+            if RemoteDataService.isICloudContainerAvailable {
+                toStudy()
+            } else {
+                toICloudError()
+            }
         }
         else {
             toOnboarding()
@@ -57,11 +61,27 @@ class ContainerViewController: UIViewController {
         performSegue(withIdentifier: "toStudy", sender: self)
     }
     
+    func toICloudError() {
+        performSegue(withIdentifier: "toICloudError", sender: self)
+    }
+    
     func toWithdrawl() {
         let viewController = WithdrawViewController()
         viewController.delegate = self
         
         present(viewController, animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let remoteErrorVC = segue.destination as? RemoteErrorViewController {
+            remoteErrorVC.delegate = self
+        }
+    }
+}
+
+extension ContainerViewController: RemoteErrorViewControllerDelegate {
+    func didResolveError() {
+        toStudy()
     }
 }
 
