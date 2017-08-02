@@ -9,6 +9,9 @@
 import CloudKit
 
 private struct CloudRecords {
+    struct Universal {
+        static let createdAt = "creationDate"
+    }
     struct StudySettings {
         static let typeName = "StudySettings"
         static let group = "group"
@@ -34,63 +37,69 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
     
-    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, Error?) -> ()) {
-        let predicate = NSPredicate(value: true)
-        let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
-        
-        let operation = CKQueryOperation(query: query)
-        operation.qualityOfService = .userInitiated
-        operation.resultsLimit = 1
-        operation.desiredKeys = [CloudRecords.StudySettings.group]
-        
-        operation.recordFetchedBlock = { record in
-            if let groupString = record.object(forKey: CloudRecords.StudySettings.group) as? String {
-                completion(ParticipantGroup(rawValue: groupString), record, nil)
-            } else {
-                completion(nil, nil, nil)
+    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
+        container.fetchUserRecordID { (userId, errorUser) in
+            guard let userId = userId else {
+                completion(nil, nil, nil, errorUser)
+                return
             }
+            
+            // Create operation
+            let predicate = NSPredicate(value: true)
+            let sortByCreationDate = NSSortDescriptor(key: CloudRecords.Universal.createdAt, ascending: false)
+            let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
+            query.sortDescriptors = [sortByCreationDate]
+            let operation = CKQueryOperation(query: query)
+            
+            operation.qualityOfService = .userInitiated
+            operation.resultsLimit = 1
+            operation.desiredKeys = [CloudRecords.StudySettings.group]
+            
+            operation.recordFetchedBlock = { record in
+                if let groupString = record[CloudRecords.StudySettings.group] as? String {
+                    print(record[CloudRecords.Universal.createdAt])
+                    completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
+                } else {
+                    completion(nil, nil, userId, nil)
+                }
+            }
+            
+            operation.queryCompletionBlock = { cursor, error in
+                if let error = error {
+                    completion(nil, nil, userId, error)
+                }
+            }
+            
+            self.publicDB.add(operation)
         }
+    }
+    
+    func uploadLastSettings(_ lastParticipantGroup: ParticipantGroup, completion: @escaping (Error?) -> ()) {
+        let settingsRecord = settingsRecordFor(participantGroup: lastParticipantGroup)
+        let operation = CKModifyRecordsOperation(recordsToSave: [settingsRecord], recordIDsToDelete: nil)
+        operation.qualityOfService = .userInitiated
         
-        operation.queryCompletionBlock = { cursor, error in
-            if let error = error {
-                completion(nil, nil, error)
-            }
+        operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+            completion(error)
         }
         
         publicDB.add(operation)
     }
     
-    func uploadLastSettings(_ newGroup: ParticipantGroup, completion: @escaping (Error?) -> ()) {
-        fetchLastSettings { (group, record, error) in
-            if let record = record {
-                
-                record[CloudRecords.StudySettings.group] = NSString(string: newGroup.rawValue)
-                
-                let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
-                operation.qualityOfService = .userInitiated
-                
-                operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-                    completion(error)
-                }
-                
-                self.publicDB.add(operation)
-            }
-        }
-    }
-    
-    func uploadStudyResults(csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResults(participantGroup: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
                 return
             }
-            let record = CKRecord(recordType: CloudRecords.StudyResult.typeName)
+            let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
+            let settingsRecord = self.settingsRecordFor(participantGroup: participantGroup)
             
-            record[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .deleteSelf)
-            record[CloudRecords.StudyResult.consentFile] = CKAsset(fileURL: consentURL)
-            record[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
+            resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .deleteSelf)
+            resultRecord[CloudRecords.StudyResult.consentFile] = CKAsset(fileURL: consentURL)
+            resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
             
-            let operation = CKModifyRecordsOperation(recordsToSave: [record], recordIDsToDelete: nil)
+            let operation = CKModifyRecordsOperation(recordsToSave: [resultRecord, settingsRecord], recordIDsToDelete: nil)
             operation.qualityOfService = .userInitiated
             
             operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
@@ -99,5 +108,12 @@ class RemoteDataService {
             
             self.publicDB.add(operation)
         }
+    }
+    
+    private func settingsRecordFor(participantGroup: ParticipantGroup) -> CKRecord {
+        let record = CKRecord(recordType: CloudRecords.StudySettings.typeName)
+        record[CloudRecords.StudySettings.group] = NSString(string: participantGroup.rawValue)
+        
+        return record
     }
 }
