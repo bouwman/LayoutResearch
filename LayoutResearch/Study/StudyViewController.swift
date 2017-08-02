@@ -138,6 +138,12 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
                 }
             }
             
+            remoteDataService.uploadStudyResults(csvURL: resultService.fileService.csvFilePath, consentURL: resultService.fileService.consentPath) { (error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                }
+            }
+            
             // Dismiss
             dismiss(animated: true, completion: nil)
         case .discarded, .failed, .saved:
