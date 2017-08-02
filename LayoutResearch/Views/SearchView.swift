@@ -8,18 +8,8 @@
 
 import UIKit
 
-enum LayoutType: CustomStringConvertible {
+enum LayoutType {
     case horizontal, vertical, grid
-    var description: String {
-        switch self {
-        case .horizontal:
-            return "Horizontal"
-        case .vertical:
-            return "Vertical"
-        case .grid:
-            return "Grid"
-        }
-    }
 }
 
 protocol SearchItemProtocol {

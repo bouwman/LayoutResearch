@@ -35,6 +35,8 @@ struct Const {
         static let distractorColorHighCount = 6
         static let colorIdFarApartCondition1 = 5
         static let colorIdFarApartCondition2 = 6
+        static let itemDistanceApartCondition = 1
+        static let itemDistanceFurtherApartCondition = 2...3
     }
 }
 
@@ -43,6 +45,7 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultCSVPath
+    case icloudUserId
     case participantIdentifier
     case participantGroup
     case layoutItemDiameter
@@ -132,6 +135,10 @@ extension Sequence {
         result.shuffle()
         return result
     }
+}
+
+func -(left: IndexPath, right: IndexPath) -> IndexPath {
+    return IndexPath(row: left.row - right.row, section: left.section - right.section)
 }
 
 extension Sequence where Iterator.Element == Sequence {

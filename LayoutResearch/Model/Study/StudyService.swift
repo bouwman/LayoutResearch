@@ -8,16 +8,18 @@
 
 import ResearchKit
 
-enum OrganisationType: CustomStringConvertible {
+enum OrganisationType {
     case random, stable
+}
+
+struct SearchItem: SearchItemProtocol, CustomStringConvertible {
+    var identifier: String
+    var colorId: Int
+    var shapeId: Int
+    var sharedColorCount: Int
     
     var description: String {
-        switch self {
-        case .random:
-            return "Random"
-        case .stable:
-            return "Stable"
-        }
+        return identifier
     }
 }
 
@@ -99,6 +101,12 @@ class StudyService {
                 trialCounter += 1
             }
         }
+        
+        // Add thank you step
+        let completionStep = ORKCompletionStep(identifier: "CompletionStep")
+        completionStep.title = "Thank you!"
+        completionStep.text = "Thank you for completing the task."
+        steps.append(completionStep)
     }
     
     private func shuffle2dArrayMaintainingColorDistance(_ array: inout [[SearchItemProtocol]]) {
@@ -156,10 +164,10 @@ class StudyService {
             // Shuffle again if target has not the distance it should have
             shuffleSearchItemsIfNeededFor(target: target)
         }
-        
+                
         let searchStepIdentifier = "\(index)"
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: target, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"
@@ -170,6 +178,10 @@ class StudyService {
     
     var isColorFarApartCondition1LastFarApart = false
     var isColorFarApartCondition2LastFarApart = false
+    
+    private func countFrequencyOf(target: SearchItemProtocol) -> Int {
+        return (targetItems.filter { $0.colorId == target.colorId && $0.shapeId == target.shapeId }).count * settings.group.layouts.count
+    }
     
     private func shuffleSearchItemsIfNeededFor(target: SearchItemProtocol) {
         if target.sharedColorCount == settings.distractorColorLowCount {

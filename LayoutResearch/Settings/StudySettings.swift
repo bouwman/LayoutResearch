@@ -44,6 +44,19 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     var title: String {
         return description
     }
+    
+    var next: ParticipantGroup {
+        let currentIndex = allGroups.index(of: self)!
+        if currentIndex == allGroups.count - 1 {
+            return allGroups.first!
+        } else {
+            return allGroups[currentIndex + 1]
+        }
+    }
+    
+    private var allGroups: [ParticipantGroup] {
+        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l]
+    }
 }
 
 struct StudySettings {
@@ -86,7 +99,7 @@ struct StudySettings {
     }
     
     static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
-        let participantOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
+        let userIdOptional = userDefaults.string(forKey: SettingsString.icloudUserId.rawValue)
         let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
         let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
         let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
@@ -98,9 +111,16 @@ struct StudySettings {
         let distractorColorLowCount = userDefaults.integer(forKey: SettingsString.distractorColorLowCount.rawValue)
         let distractorColorHighCount = userDefaults.integer(forKey: SettingsString.distractorColorHighCount.rawValue)
         
+        let participantIdentifierOptional: String?
+        if let userId = userIdOptional {
+            participantIdentifierOptional = userId
+        } else {
+            participantIdentifierOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
+        }
+        
         guard let groupString = groupStringOptional else { return nil }
         guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
-        guard let participant = participantOptional else { return nil }
+        guard let participant = participantIdentifierOptional else { return nil }
         
         return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), practiceTrialCount: practiceTrialCount, targetFreqLowCount: targetFreqLowCount, targetFreqHighCount: targetFreqHighCount, distractorColorLowCount: distractorColorLowCount, distractorColorHighCount: distractorColorHighCount)
     }

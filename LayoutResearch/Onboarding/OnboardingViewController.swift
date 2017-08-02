@@ -34,7 +34,7 @@ import ResearchKit
 class OnboardingViewController: UIViewController {
     
     let consentDocument = ConsentDocument()
-    let fileService = FileService()
+    let fileService = LocalDataService()
     
     // MARK: IB actions
     
