@@ -35,6 +35,7 @@ struct Const {
         static let distractorColorHighCount = 6
         static let colorIdFarApartCondition1 = 5
         static let colorIdFarApartCondition2 = 6
+        static let colorIdApartCondition = 2
         static let itemDistanceApartCondition = 1
         static let itemDistanceFurtherApartCondition = 2...3
     }

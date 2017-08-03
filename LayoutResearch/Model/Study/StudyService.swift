@@ -125,7 +125,6 @@ class StudyService {
         }
         
         var middleRowItemsGrouped = false
-        
         repeat {
             let middleUpperRow = array[half - 1]
             let middleLowerRow = array[half]
@@ -142,6 +141,33 @@ class StudyService {
                 array[half] = middleLowerRow.shuffled()
             }
         } while (middleRowItemsGrouped == false)
+        
+        var apartItemsUpOnSameColumn = true
+        var apartItemsDownOnSameColumn = true
+        repeat {
+            let apartId = Const.StudyParameters.colorIdApartCondition
+            
+            let itemIndexRow1 = array[0].index(where: { $0.colorId == apartId })
+            let itemIndexRow2 = array[1].index(where: { $0.colorId == apartId })
+            let itemIndexRow3 = array[2].index(where: { $0.colorId == apartId })
+
+            let itemIndexRowLast3 = array[array.count - 3].index(where: { $0.colorId == apartId })
+            let itemIndexRowLast2 = array[array.count - 2].index(where: { $0.colorId == apartId })
+            let itemIndexRowLast1 = array[array.count - 1].index(where: { $0.colorId == apartId })
+            
+            if itemIndexRow2 == itemIndexRow1 || itemIndexRow2 == itemIndexRow3 {
+                array[1].shuffle()
+                apartItemsUpOnSameColumn = true
+            } else {
+                apartItemsUpOnSameColumn = false
+            }
+            if itemIndexRowLast2 == itemIndexRowLast3 || itemIndexRowLast2 == itemIndexRowLast1 {
+                array[array.count - 2].shuffle()
+                apartItemsDownOnSameColumn = true
+            } else {
+                apartItemsDownOnSameColumn = false
+            }
+        } while (apartItemsUpOnSameColumn || apartItemsDownOnSameColumn)
     }
     
     private func shuffle2dArray(_ array: inout [[SearchItemProtocol]]) {
@@ -276,13 +302,14 @@ class StudyService {
         var colors: [[Int]] = []
         let c = Const.StudyParameters.colorIdFarApartCondition1
         let d = Const.StudyParameters.colorIdFarApartCondition2
+        let a = Const.StudyParameters.colorIdApartCondition
         
-        let colorRow1 = [1, c, 1, 2, 0, 0, 0, 0, 0, 0]
-        let colorRow2 = [1, 2, 3, 1, 0, 0, 0, 0, 0, 0]
-        let colorRow3 = [2, 1, 1, d, 0, 0, 0, 0, 0, 0]
-        let colorRow4 = [4, 2, 4, d, 0, 0, 0, 0, 0, 0]
-        let colorRow5 = [4, 3, 2, 4, 0, 0, 0, 0, 0, 0]
-        let colorRow6 = [2, 4, c, 4, 0, 0, 0, 0, 0, 0]
+        let colorRow1 = [1, c, 1, a, 0, 0, 0, 0, 0, 0]
+        let colorRow2 = [1, a, 3, 1, 0, 0, 0, 0, 0, 0]
+        let colorRow3 = [a, 1, 1, d, 0, 0, 0, 0, 0, 0]
+        let colorRow4 = [4, a, 4, d, 0, 0, 0, 0, 0, 0]
+        let colorRow5 = [4, 3, a, 4, 0, 0, 0, 0, 0, 0]
+        let colorRow6 = [a, 4, c, 4, 0, 0, 0, 0, 0, 0]
         let colorRow7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow9 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
