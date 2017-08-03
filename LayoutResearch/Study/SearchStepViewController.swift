@@ -39,6 +39,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         let searchView = SearchView(itemDiameter: searchStep.itemDiameter, distance: searchStep.itemDistance, layout: searchStep.layout, topMargin: topMargin, items: searchStep.items)
         
         searchView.delegate = self
+        searchView.alpha = 0.0
         
         customView = searchView
         
@@ -64,6 +65,10 @@ class SearchStepViewController: ORKActiveStepViewController {
         super.viewDidAppear(animated)
         
         startTime = Date()
+        
+        UIView.animate(withDuration: 0.6, delay: 0.3, options: .curveEaseOut, animations: {
+            self.customView?.alpha = 1.0
+        }, completion: nil)
     }
     
     private func indexOf(searchedItem: SearchItemProtocol, inItems items: [[SearchItemProtocol]]) -> IndexPath? {
