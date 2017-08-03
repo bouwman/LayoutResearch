@@ -44,7 +44,11 @@ class ContainerViewController: UIViewController {
     // MARK: Unwind segues
     
     @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
-        toStudy()
+        if RemoteDataService.isICloudContainerAvailable {
+            toStudy()
+        } else {
+            toICloudError()
+        }
     }
     
     @IBAction func unwindToWithdrawl(_ segue: UIStoryboardSegue) {

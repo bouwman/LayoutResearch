@@ -127,4 +127,18 @@ class RemoteDataService {
         
         return record
     }
+    
+    func subscribeToSettingsChanges(completion: @escaping (Error?) -> ()) {
+        let predicate = NSPredicate(value: true)
+        let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
+        let notification = CKNotificationInfo()
+        
+        notification.alertBody = "New settings were added"
+        notification.shouldBadge = true
+        subscription.notificationInfo = notification
+        
+        publicDB.save(subscription) { (subscription, error) in
+            completion(error)
+        }
+    }
 }
