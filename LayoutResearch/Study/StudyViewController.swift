@@ -27,7 +27,9 @@ class StudyViewController: UIViewController {
         let taskVC = ORKTaskViewController(task: task, taskRun: nil)
         
         taskVC.delegate = self
-        
+        remoteDataService.uploadLastSettings(settings.group) { (error) in
+            
+        }
         present(taskVC, animated: true, completion: nil)
     }
     
@@ -102,13 +104,16 @@ class StudyViewController: UIViewController {
         }
     }
     
-    private func loadRemoteSettings() {
+    func loadRemoteSettings() {
         stateMachine.enter(RetrievingDataState.self)
         remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
                 if let lastGroup = lastGroup {
                     self.settings.group = lastGroup.next
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+                    self.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
+                        // Optional, so ignore result
+                    })
                     self.stateMachine.enter(DataAvailableState.self)
                 } else {
                     self.stateMachine.enter(DataNotAvailableState.self)

@@ -128,17 +128,27 @@ class RemoteDataService {
         return record
     }
     
-    func subscribeToSettingsChanges(completion: @escaping (Error?) -> ()) {
-        let predicate = NSPredicate(value: true)
-        let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
-        let notification = CKNotificationInfo()
-        
-        notification.alertBody = "New settings were added"
-        notification.shouldBadge = true
-        subscription.notificationInfo = notification
-        
-        publicDB.save(subscription) { (subscription, error) in
-            completion(error)
+    func subscribeToSettingsChangesIfNotDoneYet(completion: @escaping (Error?) -> ()) {
+        publicDB.fetchAllSubscriptions { (subscriptions, error) in
+            if let _ = subscriptions {
+                // Alread exist
+                completion(nil)
+            } else if let error = error {
+                completion(error)
+            } else {
+                // Create new
+                let predicate = NSPredicate(value: true)
+                let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
+                let notification = CKNotificationInfo()
+                
+                notification.alertBody = "New settings were added"
+                notification.shouldBadge = true
+                subscription.notificationInfo = notification
+                
+                self.publicDB.save(subscription) { (subscription, error) in
+                    completion(error)
+                }
+            }
         }
     }
 }

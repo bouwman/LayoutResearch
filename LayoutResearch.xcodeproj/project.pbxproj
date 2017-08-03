@@ -26,6 +26,7 @@
 		47654C531F31D0B80099C285 /* StudyStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47654C521F31D0B80099C285 /* StudyStateMachine.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
+		4776DE491F3383C1007BE6AF /* IntroductionLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */; };
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
 		4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */; };
 		479480681F2A9B0A002F1C47 /* LocalDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479480671F2A9B0A002F1C47 /* LocalDataService.swift */; };
@@ -65,6 +66,7 @@
 		47654C521F31D0B80099C285 /* StudyStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyStateMachine.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
+		4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionLayoutViewController.swift; sourceTree = "<group>"; };
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
 		4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		479480671F2A9B0A002F1C47 /* LocalDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataService.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				4751B4F71F2517AE00549329 /* ContainerViewController.swift */,
 				4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */,
+				4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */,
 				4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */,
 				4764C4B31F275E05009AC457 /* WithdrawViewController.swift */,
 				47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */,
@@ -264,11 +267,14 @@
 					4751B4F11F2517AE00549329 = {
 						CreatedOnToolsVersion = 9.0;
 						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
 							com.apple.HealthKit = {
 								enabled = 0;
 							};
 							com.apple.Push = {
-								enabled = 0;
+								enabled = 1;
 							};
 							com.apple.iCloud = {
 								enabled = 1;
@@ -364,6 +370,7 @@
 			files = (
 				47C86DAD1F269FB8005430B2 /* Constants.swift in Sources */,
 				47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */,
+				4776DE491F3383C1007BE6AF /* IntroductionLayoutViewController.swift in Sources */,
 				4764C4AC1F275A44009AC457 /* ConsentDocument.swift in Sources */,
 				47CBA9581F31199F000F0312 /* RemoteErrorViewController.swift in Sources */,
 				4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */,

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import UserNotifications
+import CloudKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +18,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         checkAppUpgrade()
+        registerNotifications(application)
+        
+        // Load remote settings if settings changed while app was terminated
+        if let options: NSDictionary = launchOptions as NSDictionary? {
+            let remoteNotification = options[UIApplicationLaunchOptionsKey.remoteNotification]
+            if let notification = remoteNotification {
+                self.application(application, didReceiveRemoteNotification: notification as! [AnyHashable : Any], fetchCompletionHandler:  { (result) in
+                })
+            }
+        }
         
         return true
     }
@@ -32,6 +44,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        if let studyVC = window?.rootViewController?.childViewControllers.first as? StudyViewController {
+            studyVC.loadRemoteSettings()
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -40,6 +55,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        if let _ = notification as? CKQueryNotification {
+            if let studyVC = window?.rootViewController?.childViewControllers.first as? StudyViewController {
+                studyVC.loadRemoteSettings()
+            }
+        }
     }
 
     func checkAppUpgrade() {
@@ -69,6 +93,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UserDefaults.standard.set(currentVersion, forKey: SettingsString.versionOfLastRun.rawValue)
         UserDefaults.standard.synchronize()
+    }
+    
+    private func registerNotifications(_ application: UIApplication) {
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
+                // Handle Error
+            })
+        } else if #available(iOS 9.0, *){
+            let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        application.registerForRemoteNotifications()
     }
 }
 
