@@ -37,6 +37,8 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
     
+    var fetchingTriedAgain = false
+    
     func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
@@ -48,24 +50,34 @@ class RemoteDataService {
             let predicate = NSPredicate(value: true)
             let sortByCreationDate = NSSortDescriptor(key: CloudRecords.Universal.createdAt, ascending: false)
             let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
-            query.sortDescriptors = [sortByCreationDate]
             let operation = CKQueryOperation(query: query)
+            var recordFetched = false
             
+            query.sortDescriptors = [sortByCreationDate]
             operation.qualityOfService = .userInitiated
             operation.resultsLimit = 1
             operation.desiredKeys = [CloudRecords.StudySettings.group]
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
+                    recordFetched = true
                     completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
-                } else {
-                    completion(nil, nil, userId, nil)
                 }
             }
-            
+                        
             operation.queryCompletionBlock = { cursor, error in
                 if let error = error {
                     completion(nil, nil, userId, error)
+                } else if recordFetched == false {
+                    // No records found so create new
+                    self.uploadLastSettings(.a, completion: { (error) in
+                        if let error = error {
+                            completion(nil, nil, userId, error)
+                        } else {
+                            // Try fetch again
+                            self.fetchLastSettings(completion: completion)
+                        }
+                    })
                 }
             }
             
