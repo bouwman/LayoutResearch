@@ -37,6 +37,14 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
     
+    var isResultUploaded: Bool {
+        return UserDefaults.standard.bool(forKey: SettingsString.resultWasUploaded.rawValue)
+    }
+    
+    func setResultUploaded(_ uploaded: Bool) {
+        UserDefaults.standard.set(uploaded, forKey: SettingsString.resultWasUploaded.rawValue)
+    }
+    
     var fetchingTriedAgain = false
     
     func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
@@ -114,7 +122,12 @@ class RemoteDataService {
             operation.qualityOfService = .userInitiated
             
             operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-                completion(error)
+                if let error = error {
+                    completion(error)
+                } else {
+                    self.setResultUploaded(true)
+                    completion(error)
+                }
             }
             
             self.publicDB.add(operation)
@@ -141,8 +154,6 @@ class RemoteDataService {
                 let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
                 let notification = CKNotificationInfo()
                 
-                notification.alertBody = "New settings were added"
-                notification.shouldBadge = true
                 subscription.notificationInfo = notification
                 
                 self.publicDB.save(subscription) { (subscription, error) in

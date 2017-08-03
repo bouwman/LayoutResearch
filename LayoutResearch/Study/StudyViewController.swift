@@ -27,9 +27,7 @@ class StudyViewController: UIViewController {
         let taskVC = ORKTaskViewController(task: task, taskRun: nil)
         
         taskVC.delegate = self
-        remoteDataService.uploadLastSettings(settings.group) { (error) in
-            
-        }
+        
         present(taskVC, animated: true, completion: nil)
     }
     
@@ -74,7 +72,16 @@ class StudyViewController: UIViewController {
         stateMachine = StudyStateMachine(studyViewController: self)
         
         settings = loadLocalSettings()
-        loadRemoteSettings()
+        
+        if remoteDataService.isResultUploaded == false && resultService.fileService.isResultAvailable {
+            uploadStudyResults { (error) in
+                if let _ = error {
+                    self.stateMachine.enter(UploadingFailedState.self)
+                } else {
+                    self.loadRemoteSettings()
+                }
+            }
+        }
         
         exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
@@ -91,14 +98,18 @@ class StudyViewController: UIViewController {
         }
     }
     
-    private func uploadStudyResults() {
+    private func uploadStudyResults(_ completion: ((Error?)->())? = nil) {
         stateMachine.enter(UploadingState.self)
         remoteDataService.uploadStudyResults(participantGroup: settings.group, csvURL: resultService.fileService.csvFilePath, consentURL: resultService.fileService.consentPath) { (error) in
             DispatchQueue.main.async {
-                if let _ = error {
-                    self.stateMachine.enter(UploadingFailedState.self)
+                if let completion = completion {
+                    completion(error)
                 } else {
-                    self.stateMachine.enter(DataAvailableState.self)
+                    if let _ = error {
+                        self.stateMachine.enter(UploadingFailedState.self)
+                    } else {
+                        self.stateMachine.enter(DataAvailableState.self)
+                    }
                 }
             }
         }
@@ -167,6 +178,9 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             
             // Activate export button
             exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
+            
+            // Reset after completion of every task
+            remoteDataService.setResultUploaded(false)
             
             // Save last conducted study settings and study data to icloud
             uploadStudyResults()

@@ -126,7 +126,7 @@ class UploadingFailedState: GKState {
             vc.startButton?.isEnabled = false
             vc.warningButton?.isHidden = false
             vc.stateLabel?.isHidden = false
-            vc.stateLabel?.text = "Uploading study results failed. Please connect to the internet to share the results with the researcher."
+            vc.stateLabel?.text = "Uploading study results failed. Press the warning icon above to try again."
         }
     }
     

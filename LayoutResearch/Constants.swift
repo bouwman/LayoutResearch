@@ -46,6 +46,7 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultCSVPath
+    case resultWasUploaded
     case icloudUserId
     case participantIdentifier
     case participantGroup
