@@ -13,6 +13,7 @@ struct Const {
         static let consetReviewStep = "ConsentReviewStep"
         static let visualConsentStep = "VisualConsentStep"
         static let selectionCell = "SelectionCell"
+        static let profileDataCell = "ProfileDataCell"
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
@@ -45,7 +46,6 @@ enum SettingsString: String {
     case versionOfLastRun
     case isParticipating
     case consentPath
-    case resultCSVPath
     case resultWasUploaded
     case attemptNumber
     case isParticipantGroupAssigned

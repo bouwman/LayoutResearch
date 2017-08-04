@@ -98,7 +98,7 @@ extension ContainerViewController: ORKTaskViewControllerDelegate {
              the study and transition to the onboarding view.
              */
             if reason == .completed {
-                fileService.removeResultIfExists()
+                fileService.removeResultsIfExist()
                 fileService.removeConsentIfExists()
                 UserDefaults.standard.set(false, forKey: SettingsString.isParticipating.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantIdentifier.rawValue)

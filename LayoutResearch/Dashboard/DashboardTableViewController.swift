@@ -38,15 +38,13 @@ protocol AnimatableChart {
 class DashboardTableViewController: UITableViewController {
     // MARK: Properties
     
-    @IBOutlet var pieChart: ORKPieChartView!
     @IBOutlet var discreteGraph: ORKDiscreteGraphChartView!
     @IBOutlet var lineGraph: ORKLineGraphChartView!
     
     var allCharts: [UIView] {
-        return [pieChart, discreteGraph, lineGraph]
+        return [discreteGraph, lineGraph]
     }
     
-    let pieChartDataSource = PieChartDataSource()
     let discreteGraphDataSource = DiscreteGraphDataSource()
     let lineGraphDataSource = LineGraphDataSource()    
     
@@ -56,7 +54,6 @@ class DashboardTableViewController: UITableViewController {
         super.viewDidLoad()
         
         // Set the data source for each graph
-        pieChart.dataSource = pieChartDataSource
         discreteGraph.dataSource = discreteGraphDataSource
         lineGraph.dataSource = lineGraphDataSource
         

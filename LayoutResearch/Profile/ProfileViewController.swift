@@ -35,6 +35,8 @@ class ProfileViewController: UITableViewController {
     
     @IBOutlet var applicationNameLabel: UILabel!
     
+    let fileService = LocalDataService()
+    
     // MARK: UIViewController
     
     override func viewDidLoad() {
@@ -48,38 +50,60 @@ class ProfileViewController: UITableViewController {
     // MARK: UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return fileService.existingResultsPaths.count + 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ProfileStaticTableViewCell.reuseIdentifier, for: indexPath) as? ProfileStaticTableViewCell else { fatalError("Unable to dequeue a ProfileStaticTableViewCell") }
+        let cell = tableView.dequeueReusableCell(withIdentifier: Const.Identifiers.profileDataCell, for: indexPath)
         
-        configureCellWithDateOfBirth(cell)
-        
-        // TODO: Dispay result csvs
+        if indexPath.row > 0 {
+            cell.textLabel?.text = "Result \(indexPath.row + 1)"
+        } else {
+            cell.textLabel?.text = "Consent Form"
+        }
 
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "Files" : nil
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if indexPath.row > 0 {
+            exportResult(resultNumber: indexPath.row)
+        } else {
+            exportConsentForm()
+        }
     }
     
-    // MARK: Cell configuration
-    
-    func configureCellWithDateOfBirth(_ cell: ProfileStaticTableViewCell) {
-        // Set the default cell content.
-        cell.titleLabel.text = NSLocalizedString("Date of Birth", comment: "")
-        cell.valueLabel.text = NSLocalizedString("-", comment: "")
+    func exportResult(resultNumber: Int) {
+        guard fileService.areResultsAvailable else { return }
         
-        // TODO: Set data of birth
+        let result = fileService.existingResultsPaths[resultNumber]
+        present(createActivityViewControllerFor(items: [result]), animated: true, completion: nil)
     }
     
-    func configureCell(_ cell: ProfileStaticTableViewCell, withTitleText titleText: String, valueForQuantityTypeIdentifier identifier: String) {
-        // Set the default cell content.
-        cell.titleLabel.text = titleText
-        cell.valueLabel.text = NSLocalizedString("-", comment: "")
+    func exportConsentForm() {
+        guard fileService.isConsentAvailable else { return }
         
-        // TODO: Configure with data
+        present(createActivityViewControllerFor(items: [fileService.consentPath]), animated: true, completion: nil)
+    }
+    
+    private func createActivityViewControllerFor(items: [Any]) -> UIActivityViewController {
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        activityVC.excludedActivityTypes = [
+            .assignToContact,
+            .saveToCameraRoll,
+            .postToFlickr,
+            .postToVimeo,
+            .postToTencentWeibo,
+            .postToTwitter,
+            .postToFacebook,
+            .openInIBooks
+        ]
+        return activityVC
     }
 }

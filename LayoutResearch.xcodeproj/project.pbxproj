@@ -40,10 +40,8 @@
 		47CBA9581F31199F000F0312 /* RemoteErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */; };
 		47CBA95A1F311CB4000F0312 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CBA9591F311CB4000F0312 /* Reachability.swift */; };
 		47CE6AD61F2908E0006E90DD /* CSVWriter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47CE6AD51F2908E0006E90DD /* CSVWriter.swift */; };
-		47D15F301F348A1400335BBA /* ProfileStaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F2E1F348A1400335BBA /* ProfileStaticTableViewCell.swift */; };
 		47D15F311F348A1400335BBA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F2F1F348A1400335BBA /* ProfileViewController.swift */; };
 		47D15F321F348A1400335BBA /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F2D1F348A1400335BBA /* ProfileHeaderView.swift */; };
-		47D15F381F348C8000335BBA /* PieChartDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F341F348C8000335BBA /* PieChartDataSource.swift */; };
 		47D15F391F348C8000335BBA /* LineGraphDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F351F348C8000335BBA /* LineGraphDataSource.swift */; };
 		47D15F3A1F348C8000335BBA /* DashboardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F361F348C8000335BBA /* DashboardTableViewController.swift */; };
 		47D15F3B1F348C8000335BBA /* DiscreteGraphDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F371F348C8000335BBA /* DiscreteGraphDataSource.swift */; };
@@ -89,9 +87,7 @@
 		47CBA9591F311CB4000F0312 /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		47CE6AD51F2908E0006E90DD /* CSVWriter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSVWriter.swift; sourceTree = "<group>"; };
 		47D15F2D1F348A1400335BBA /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
-		47D15F2E1F348A1400335BBA /* ProfileStaticTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStaticTableViewCell.swift; sourceTree = "<group>"; };
 		47D15F2F1F348A1400335BBA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		47D15F341F348C8000335BBA /* PieChartDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChartDataSource.swift; sourceTree = "<group>"; };
 		47D15F351F348C8000335BBA /* LineGraphDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphDataSource.swift; sourceTree = "<group>"; };
 		47D15F361F348C8000335BBA /* DashboardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardTableViewController.swift; sourceTree = "<group>"; };
 		47D15F371F348C8000335BBA /* DiscreteGraphDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteGraphDataSource.swift; sourceTree = "<group>"; };
@@ -198,7 +194,6 @@
 			isa = PBXGroup;
 			children = (
 				47D15F2F1F348A1400335BBA /* ProfileViewController.swift */,
-				47D15F2E1F348A1400335BBA /* ProfileStaticTableViewCell.swift */,
 				47D15F2D1F348A1400335BBA /* ProfileHeaderView.swift */,
 			);
 			path = Profile;
@@ -210,7 +205,6 @@
 				47D15F361F348C8000335BBA /* DashboardTableViewController.swift */,
 				47D15F371F348C8000335BBA /* DiscreteGraphDataSource.swift */,
 				47D15F351F348C8000335BBA /* LineGraphDataSource.swift */,
-				47D15F341F348C8000335BBA /* PieChartDataSource.swift */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";
@@ -432,12 +426,10 @@
 				47CE6AD61F2908E0006E90DD /* CSVWriter.swift in Sources */,
 				47E7CBB81F2918DE00092680 /* ResultService.swift in Sources */,
 				4728AB021F29F3CB0084EFB1 /* SettingsViewController.swift in Sources */,
-				47D15F381F348C8000335BBA /* PieChartDataSource.swift in Sources */,
 				47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */,
 				4764C4B01F275C22009AC457 /* IntroductionViewController.swift in Sources */,
 				47C1DA141F28EE8200F69A75 /* LayoutIntroStep.swift in Sources */,
 				4764C4991F274B3E009AC457 /* SearchView.swift in Sources */,
-				47D15F301F348A1400335BBA /* ProfileStaticTableViewCell.swift in Sources */,
 				4764C49B1F275269009AC457 /* SearchStep.swift in Sources */,
 				4764C4B21F275CE1009AC457 /* OnboardingViewController.swift in Sources */,
 				47B5C8D31F25519200EDF07C /* RoundedButton.swift in Sources */,

@@ -15,7 +15,6 @@ class StudyViewController: UIViewController {
     var settings: StudySettings!
     var stateMachine: StudyStateMachine!
     
-    @IBOutlet weak var exportResultsButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stateLabel: UILabel!
     @IBOutlet weak var warningButton: UIButton!
@@ -37,18 +36,6 @@ class StudyViewController: UIViewController {
         } else {
             uploadStudyResults()
         }
-    }
-    
-    @IBAction func exportResultsButtonPressed(_ sender: UIButton) {
-        guard resultService.fileService.isResultAvailable else { return }
-        
-        present(createActivityViewControllerFor(items: [resultService.fileService.csvFilePath]), animated: true, completion: nil)
-    }
-    
-    @IBAction func exportConsentFormPressed(_ sender: UIButton) {
-        guard let consentPath = UserDefaults.standard.url(forKey: SettingsString.consentPath.rawValue) else { return }
-        
-        present(createActivityViewControllerFor(items: [consentPath]), animated: true, completion: nil)
     }
     
     @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
@@ -73,7 +60,7 @@ class StudyViewController: UIViewController {
         
         settings = loadLocalSettings()
         
-        if remoteDataService.isResultUploaded == false && resultService.fileService.isResultAvailable {
+        if remoteDataService.isResultUploaded == false && resultService.fileService.areResultsAvailable {
             uploadStudyResults { (error) in
                 if let _ = error {
                     self.stateMachine.enter(UploadingFailedState.self)
@@ -84,8 +71,6 @@ class StudyViewController: UIViewController {
         } else {
             self.loadRemoteSettings()
         }
-        
-        exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
     }
     
     // MARK: - Private
@@ -101,8 +86,13 @@ class StudyViewController: UIViewController {
     }
     
     private func uploadStudyResults(_ completion: ((Error?)->())? = nil) {
+        guard let resultPath = resultService.fileService.mostRecentResultPath else {
+            stateMachine.enter(DataAvailableState.self)
+            return
+        }
+        
         stateMachine.enter(UploadingState.self)
-        remoteDataService.uploadStudyResults(participantGroup: settings.group, csvURL: resultService.fileService.csvFilePath, consentURL: resultService.fileService.consentPath) { (error) in
+        remoteDataService.uploadStudyResults(participantGroup: settings.group, csvURL: resultPath, consentURL: resultService.fileService.consentPath) { (error) in
             DispatchQueue.main.async {
                 if let completion = completion {
                     completion(error)
@@ -143,21 +133,6 @@ class StudyViewController: UIViewController {
             }
         }
     }
-    
-    private func createActivityViewControllerFor(items: [Any]) -> UIActivityViewController {
-        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        activityVC.excludedActivityTypes = [
-            .assignToContact,
-            .saveToCameraRoll,
-            .postToFlickr,
-            .postToVimeo,
-            .postToTencentWeibo,
-            .postToTwitter,
-            .postToFacebook,
-            .openInIBooks
-        ]
-        return activityVC
-    }
 }
 
 extension StudyViewController: ORKTaskViewControllerDelegate {
@@ -183,9 +158,6 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             // Save results
             resultService.lastResults = searchResults
             resultService.isParticipantGroupAssigned = true
-            
-            // Activate export button
-            exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
             
             // Reset after completion of every task
             remoteDataService.isResultUploaded = true

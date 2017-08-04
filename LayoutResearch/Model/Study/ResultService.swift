@@ -22,9 +22,9 @@ class ResultService {
     func saveResultsToCSV(results: [SearchResult]) {
         guard results.count != 0 else { return }
         
-        fileService.removeResultIfExists()
+        fileService.removeResultsIfExist()
         
-        let optionalSream = OutputStream(url: fileService.csvFilePath, append: false)
+        let optionalSream = OutputStream(url: fileService.newResultPath, append: false)
         
         guard let stream = optionalSream else { return }
         
@@ -40,9 +40,6 @@ class ResultService {
             }
             
             writer.stream.close()
-            
-            // Save url
-            UserDefaults.standard.set(fileService.csvFilePath, forKey: SettingsString.resultCSVPath.rawValue)
             
             // Save number
             attemptNumber += 1
