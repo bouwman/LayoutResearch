@@ -11,14 +11,6 @@ import Foundation
 class ResultService {
     let fileService = LocalDataService()
     
-    var lastResults: [SearchResult]? {
-        didSet {
-            if let results = lastResults {
-                saveResultsToCSV(results: results)
-            }
-        }
-    }
-    
     func saveResultsToCSV(results: [SearchResult]) {
         guard results.count != 0 else { return }
         
@@ -40,29 +32,8 @@ class ResultService {
             }
             
             writer.stream.close()
-            
-            // Save number
-            attemptNumber += 1
         } catch {
             print("Error writing csv")
-        }
-    }
-    
-    var attemptNumber: Int {
-        set {
-            UserDefaults.standard.setValue(attemptNumber, forKey: SettingsString.attemptNumber.rawValue)
-        }
-        get {
-            return UserDefaults.standard.integer(forKey: SettingsString.attemptNumber.rawValue)
-        }
-    }
-    
-    var isParticipantGroupAssigned: Bool {
-        set {
-            UserDefaults.standard.setValue(isParticipantGroupAssigned, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
-        }
-        get {
-            return UserDefaults.standard.bool(forKey: SettingsString.isParticipantGroupAssigned.rawValue)
         }
     }
 }

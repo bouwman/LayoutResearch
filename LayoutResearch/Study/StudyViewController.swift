@@ -8,7 +8,7 @@
 
 import UIKit
 import ResearchKit
-
+/*
 class StudyViewController: UIViewController {
     var resultService = ResultService()
     var remoteDataService = RemoteDataService()
@@ -194,3 +194,4 @@ extension StudyViewController: SettingsViewControllerDelegate {
         self.settings = settings
     }
 }
+*/

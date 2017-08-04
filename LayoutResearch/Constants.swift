@@ -14,6 +14,7 @@ struct Const {
         static let visualConsentStep = "VisualConsentStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
+        static let activityCell = "ActivityCell"
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
