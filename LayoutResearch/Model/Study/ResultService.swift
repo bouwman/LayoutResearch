@@ -43,8 +43,29 @@ class ResultService {
             
             // Save url
             UserDefaults.standard.set(fileService.csvFilePath, forKey: SettingsString.resultCSVPath.rawValue)
+            
+            // Save number
+            attemptNumber += 1
         } catch {
             print("Error writing csv")
+        }
+    }
+    
+    var attemptNumber: Int {
+        set {
+            UserDefaults.standard.setValue(attemptNumber, forKey: SettingsString.attemptNumber.rawValue)
+        }
+        get {
+            return UserDefaults.standard.integer(forKey: SettingsString.attemptNumber.rawValue)
+        }
+    }
+    
+    var isParticipantGroupAssigned: Bool {
+        set {
+            UserDefaults.standard.setValue(isParticipantGroupAssigned, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: SettingsString.isParticipantGroupAssigned.rawValue)
         }
     }
 }

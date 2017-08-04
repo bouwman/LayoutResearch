@@ -81,6 +81,8 @@ class StudyViewController: UIViewController {
                     self.loadRemoteSettings()
                 }
             }
+        } else {
+            self.loadRemoteSettings()
         }
         
         exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
@@ -116,6 +118,11 @@ class StudyViewController: UIViewController {
     }
     
     func loadRemoteSettings() {
+        guard resultService.isParticipantGroupAssigned == false else {
+            self.stateMachine.enter(DataAvailableState.self)
+            return
+        }
+        
         stateMachine.enter(RetrievingDataState.self)
         remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
@@ -175,12 +182,13 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             
             // Save results
             resultService.lastResults = searchResults
+            resultService.isParticipantGroupAssigned = true
             
             // Activate export button
             exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
             
             // Reset after completion of every task
-            remoteDataService.setResultUploaded(false)
+            remoteDataService.isResultUploaded = true
             
             // Save last conducted study settings and study data to icloud
             uploadStudyResults()

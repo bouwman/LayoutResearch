@@ -38,11 +38,12 @@ class RemoteDataService {
     }
     
     var isResultUploaded: Bool {
-        return UserDefaults.standard.bool(forKey: SettingsString.resultWasUploaded.rawValue)
-    }
-    
-    func setResultUploaded(_ uploaded: Bool) {
-        UserDefaults.standard.set(uploaded, forKey: SettingsString.resultWasUploaded.rawValue)
+        set {
+            UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.resultWasUploaded.rawValue)
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: SettingsString.resultWasUploaded.rawValue)
+        }
     }
     
     var fetchingTriedAgain = false
@@ -125,7 +126,7 @@ class RemoteDataService {
                 if let error = error {
                     completion(error)
                 } else {
-                    self.setResultUploaded(true)
+                    self.isResultUploaded = true
                     completion(error)
                 }
             }

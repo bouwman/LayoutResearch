@@ -47,6 +47,11 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
+    var attemptNumber: Int {
+        return UserDefaults.standard.integer(forKey: SettingsString.attemptNumber.rawValue)
+    }
+    
+    
     init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool) {
         self.participantIdentifier = participantIdentifier
         self.targetItem = targetItem
@@ -70,10 +75,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["ParticipantId","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
+        return ["ParticipantId","Attempt","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
+        return [participantIdentifier,"\(attemptNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
     }
 }
