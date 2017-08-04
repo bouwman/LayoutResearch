@@ -30,7 +30,7 @@ struct Const {
         static let itemDistance: CGFloat = 10
         static let practiceTrialCount = 3
         static let targetFreqLowCount = 2
-        static let targetFreqHighCount = 4
+        static let targetFreqHighCount = 6
         static let distractorColorLowCount = 2
         static let distractorColorHighCount = 6
         static let colorIdFarApartCondition1 = 5
