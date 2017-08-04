@@ -9,18 +9,28 @@
 import UIKit
 
 class ActivitiesService {
-    private var dateFirstStarted: Date
+    var dateFirstStarted: Date {
+        didSet {
+            UserDefaults.standard.set(dateFirstStarted.timeIntervalSinceReferenceDate, forKey: SettingsString.firstActivityDate.rawValue)
+            activities = ActivitiesService.createActivitiesBasedOnDateOfFirstActivity(date: dateFirstStarted, extraDay: 0)
+        }
+    }
     
-    let activities: [StudyActivity]
+    var activities: [StudyActivity]
+    var resultService = ResultService()
+    var remoteDataService = RemoteDataService()
     
     init() {
-        dateFirstStarted = Date()
-        activities = [StudyActivity(startDate: dateFirstStarted, number: 0, type: .searchIcons),
-         StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 1, to: dateFirstStarted, wrappingComponents: false)!, number: 1, type: .searchIcons),
-         StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 2, to: dateFirstStarted, wrappingComponents: false)!, number: 2, type: .searchIcons),
-         StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 3, to: dateFirstStarted, wrappingComponents: false)!, number: 3, type: .searchIcons),
-         StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4, to: dateFirstStarted, wrappingComponents: false)!, number: 4, type: .searchIcons),
-        StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4, to: dateFirstStarted, wrappingComponents: false)!, number: 4, type: .survey)]
+        let savedDateOptional = resultService.fileService.firstActivityCompletionDate
+        var extraDay = 0
+        if let savedDate = savedDateOptional {
+            dateFirstStarted = savedDate
+        } else {
+            dateFirstStarted = Date()
+            extraDay = 1
+        }
+        
+        activities = ActivitiesService.createActivitiesBasedOnDateOfFirstActivity(date: dateFirstStarted, extraDay: extraDay)
     }
     
     var activeActivity: StudyActivity?
@@ -40,5 +50,14 @@ class ActivitiesService {
         get {
             return UserDefaults.standard.bool(forKey: SettingsString.isParticipantGroupAssigned.rawValue)
         }
+    }
+    
+    static func createActivitiesBasedOnDateOfFirstActivity(date: Date, extraDay: Int) -> [StudyActivity] {
+        return [StudyActivity(startDate: date, number: 0, type: .searchIcons),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 1 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .searchIcons),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 2 + extraDay, to: date, wrappingComponents: false)!, number: 2, type: .searchIcons),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 3 + extraDay, to: date, wrappingComponents: false)!, number: 3, type: .searchIcons),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 4, type: .searchIcons),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .survey)]
     }
 }

@@ -18,9 +18,11 @@ class LocalDataService {
     
     var existingResultsPaths: [URL] {
         var urls: [URL] = []
-        for i in 0..<attemptNumber {
-            let url = docURL.appendingPathComponent("result\(i).csv")
-            urls.append(url)
+        for i in 0...attemptNumber {
+            if resultFileExists(resultNumber: i) {
+                let url = docURL.appendingPathComponent("result\(i).csv")
+                urls.append(url)
+            }
         }
         return urls
     }
@@ -33,6 +35,11 @@ class LocalDataService {
         return docURL.appendingPathComponent("result\(attemptNumber).csv")
     }
     
+    var firstActivityCompletionDate: Date? {
+        let savedTime = UserDefaults.standard.double(forKey: SettingsString.firstActivityDate.rawValue)
+        return savedTime == 0 ? nil : Date(timeIntervalSinceReferenceDate: savedTime)
+    }
+    
     func saveConsent(data: Data?) {
         try! data?.write(to: consentPath)
         
@@ -42,7 +49,7 @@ class LocalDataService {
     }
     
     var areResultsAvailable: Bool {
-        return FileManager.default.fileExists(atPath: docURL.appendingPathComponent("result\(0).csv").path)
+        return existingResultsPaths.count != 0
     }
     
     var isConsentAvailable: Bool {
@@ -62,5 +69,9 @@ class LocalDataService {
             try! FileManager.default.removeItem(at: consentPath)
             UserDefaults.standard.removeObject(forKey: SettingsString.consentPath.rawValue)
         }
+    }
+    
+    func resultFileExists(resultNumber: Int) -> Bool {
+        return FileManager.default.fileExists(atPath: docURL.appendingPathComponent("result\(resultNumber).csv").path)
     }
 }

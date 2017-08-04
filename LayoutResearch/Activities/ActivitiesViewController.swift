@@ -13,6 +13,7 @@ import ResearchKit
 enum ActivityType {
     case searchIcons, survey
 }
+
 class StudyActivity {
     var startDate: Date
     var number: Int
@@ -52,12 +53,19 @@ class StudyActivity {
         let seconds = Int(time) % 60
         return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
+    
+    var description: String {
+        switch type {
+        case .searchIcons:
+            return "Search task \(number + 1)"
+        case .survey:
+            return "Survey"
+        }
+    }
 }
 
 class ActivitiesViewController: UITableViewController {
     var service = ActivitiesService()
-    var resultService = ResultService()
-    var remoteDataService = RemoteDataService()
     var settings: StudySettings!
     var timer: Timer?
     var triedLoadingSettings = false
@@ -68,15 +76,23 @@ class ActivitiesViewController: UITableViewController {
         tableView.estimatedRowHeight = 70
         tableView.rowHeight = UITableViewAutomaticDimension
         
+        settings = loadLocalSettings()
+        
+        updateAllActivities()
+    }
+    
+    private func updateAllActivities() {
         for (i, activity) in service.activities.enumerated() {
-            if remoteDataService.isResultUploaded(resultNumber: activity.number) == false && resultService.fileService.areResultsAvailable {
+            if service.remoteDataService.isResultUploaded(resultNumber: activity.number) == false && service.resultService.fileService.resultFileExists(resultNumber: activity.number) {
                 uploadResultsOf(activity: activity, forRow: i)
             } else if service.isParticipantGroupAssigned == false && activity.isStartable {
                 loadRemoteSettingsFor(activity: activity, forRow: i)
             } else if service.isParticipantGroupAssigned && activity.isStartable  {
                 activity.stateMachine.enter(DataAvailableState.self)
+                self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
             } else if activity.isStartable == false {
                 activity.stateMachine.enter(TimeRemainingState.self)
+                self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
             }
         }
     }
@@ -90,7 +106,7 @@ class ActivitiesViewController: UITableViewController {
             }
         }
         
-        tableView.reloadRows(at: indexPathToReload, with: .fade)
+        tableView.reloadRows(at: indexPathToReload, with: .none)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +129,7 @@ class ActivitiesViewController: UITableViewController {
         let activity = service.activities[indexPath.row]
         
         cell.isUserInteractionEnabled = activity.isStartable
-        cell.titleLabel?.text = "Search task \(activity.number)"
+        cell.titleLabel?.text = activity.description
         cell.detailLabel?.text = activity.isStartable ? "" : activity.timeRemainingString
         
         if let cellState = activity.stateMachine.currentState as? ActivityState {
@@ -154,12 +170,12 @@ class ActivitiesViewController: UITableViewController {
     
     func loadRemoteSettingsFor(activity: StudyActivity, forRow row: Int) {
         activity.stateMachine.enter(RetrievingDataState.self)
-        remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
+        service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
                 if let lastGroup = lastGroup {
                     self.settings.group = lastGroup.next
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
-                    self.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
+                    self.service.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
                         // Optional, so ignore result
                     })
                     activity.stateMachine.enter(DataAvailableState.self)
@@ -177,13 +193,15 @@ class ActivitiesViewController: UITableViewController {
     
     func uploadResultsOf(activity: StudyActivity, forRow row: Int) {
         activity.stateMachine.enter(UploadingState.self)
-        remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
-            if let _ = error {
-                activity.stateMachine.enter(UploadFailedState.self)
-            } else {
-                activity.stateMachine.enter(UploadCompleteState.self)
+        service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+            DispatchQueue.main.async {
+                if let _ = error {
+                    activity.stateMachine.enter(UploadFailedState.self)
+                } else {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                }
+                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
             }
-            self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
         })
     }
     
@@ -205,13 +223,13 @@ class ActivitiesViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navVC = segue.destination as? UINavigationController {
-            if let settingsVC = navVC.topViewController as? SettingsViewController {
+            if let settingsVC = navVC.childViewControllers.first as? SettingsViewController {
                 settingsVC.settings = settings
                 settingsVC.delegate = self
             }
         }
     }
-
+    
 }
 
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
@@ -235,17 +253,21 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             }
             
             // Save results
-            resultService.saveResultsToCSV(results: searchResults)
+            service.resultService.saveResultsToCSV(results: searchResults)
             service.isParticipantGroupAssigned = true
             
             let activity = service.activeActivity!
             
             // Reset after completion of every task
-            remoteDataService.setIsResultUploadedFor(resultNumber: activity.number, isResultUploaded: false)
-            
-            // Save last conducted study settings and study data to icloud
-            uploadResultsOf(activity: activity, forRow: service.activities.index(where: { $0 === activity})!)
+            service.remoteDataService.setIsResultUploadedFor(resultNumber: activity.number, isResultUploaded: false)
             service.activeActivity = nil
+            
+            // Recreate activities to suite current data
+            if activity.number == 0 {
+                service.dateFirstStarted = Date()
+            }
+            
+            updateAllActivities()
             
             // Dismiss
             dismiss(animated: true, completion: nil)

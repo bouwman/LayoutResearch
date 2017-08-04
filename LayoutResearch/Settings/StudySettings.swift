@@ -46,16 +46,20 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     }
     
     var next: ParticipantGroup {
-        let currentIndex = allGroups.index(of: self)!
-        if currentIndex == allGroups.count - 1 {
-            return allGroups.first!
+        let currentIndex = ParticipantGroup.allGroups.index(of: self)!
+        if currentIndex == ParticipantGroup.allGroups.count - 1 {
+            return ParticipantGroup.allGroups.first!
         } else {
-            return allGroups[currentIndex + 1]
+            return ParticipantGroup.allGroups[currentIndex + 1]
         }
     }
     
-    private var allGroups: [ParticipantGroup] {
+    private static var allGroups: [ParticipantGroup] {
         return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l]
+    }
+    
+    static var random: ParticipantGroup {
+        return ParticipantGroup.allGroups[randomInt(min: 0, max: allGroups.count - 1)]
     }
 }
 
@@ -126,6 +130,6 @@ struct StudySettings {
     }
     
     static func defaultSettingsForParticipant(_ participant: String) -> StudySettings {
-        return StudySettings(participant: participant, group: Const.StudyParameters.group, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetFreqLowCount: Const.StudyParameters.targetFreqLowCount, targetFreqHighCount: Const.StudyParameters.targetFreqHighCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
+        return StudySettings(participant: participant, group: ParticipantGroup.random, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetFreqLowCount: Const.StudyParameters.targetFreqLowCount, targetFreqHighCount: Const.StudyParameters.targetFreqHighCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
     }
 }

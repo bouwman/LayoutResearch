@@ -25,7 +25,6 @@ struct Const {
         static let shapeCount: Int = 27
     }
     struct StudyParameters {
-        static let group: ParticipantGroup = .i
         static let rowCount = 6
         static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0
@@ -49,6 +48,7 @@ enum SettingsString: String {
     case consentPath
     case resultWasUploaded
     case attemptNumber
+    case firstActivityDate
     case isParticipantGroupAssigned
     case participantGivenName
     case participantFamilyName
@@ -146,6 +146,10 @@ extension Sequence {
 
 func -(left: IndexPath, right: IndexPath) -> IndexPath {
     return IndexPath(row: left.row - right.row, section: left.section - right.section)
+}
+
+func randomInt(min: Int, max:Int) -> Int {
+    return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
 extension Sequence where Iterator.Element == Sequence {

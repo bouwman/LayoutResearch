@@ -33,103 +33,13 @@
             </objects>
             <point key="canvasLocation" x="158" y="-90"/>
         </scene>
-        <!--Activities-->
-        <scene sceneID="E3M-kV-s1A">
-            <objects>
-                <viewController id="fSj-ck-ZbI" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="W7y-Xs-dxL">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2x4-ex-AhU" customClass="RoundedButton" customModule="LayoutResearch" customModuleProvider="target">
-                                <rect key="frame" x="134.5" y="308.5" width="106" height="50"/>
-                                <color key="backgroundColor" red="0.20486970245838165" green="0.47176262736320496" blue="0.96604371070861816" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="VS9-d7-AQ4"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
-                                <state key="normal" title="Start Task">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="didPressStart:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="meF-Kh-FdF"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="86M-q3-Q9r">
-                                <rect key="frame" x="302" y="28" width="57" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Settings">
-                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <segue destination="vKG-OD-IgQ" kind="show" id="bzz-iJ-ObW"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You need to be connected to the internet to start this study." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uab-LE-dDC">
-                                <rect key="frame" x="37.5" y="433" width="300" height="34"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="319" id="X7G-GR-Ocy"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r9w-eZ-QP7">
-                                <rect key="frame" x="162" y="386" width="51" height="29"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
-                                <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
-                                <state key="normal" title="⚠️"/>
-                                <connections>
-                                    <action selector="didPressWarningButton:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="RaW-Sc-zoi"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="MC7-zm-vTh">
-                                <rect key="frame" x="177.5" y="390.5" width="20" height="20"/>
-                            </activityIndicatorView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="2x4-ex-AhU" firstAttribute="centerY" secondItem="W7y-Xs-dxL" secondAttribute="centerY" priority="750" id="5eQ-Lj-eSH"/>
-                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="uab-LE-dDC" secondAttribute="trailing" constant="18" id="5lR-lO-waD"/>
-                            <constraint firstItem="MC7-zm-vTh" firstAttribute="centerX" secondItem="r9w-eZ-QP7" secondAttribute="centerX" id="70Y-Nv-aLV"/>
-                            <constraint firstItem="uab-LE-dDC" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="79e-Yg-Lfy"/>
-                            <constraint firstItem="r9w-eZ-QP7" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="8qj-5n-ggN"/>
-                            <constraint firstItem="MC7-zm-vTh" firstAttribute="centerY" secondItem="r9w-eZ-QP7" secondAttribute="centerY" id="9at-oe-RDK"/>
-                            <constraint firstItem="2x4-ex-AhU" firstAttribute="centerX" secondItem="W7y-Xs-dxL" secondAttribute="centerX" id="CBo-eB-yKC"/>
-                            <constraint firstItem="86M-q3-Q9r" firstAttribute="top" secondItem="xBf-7S-Jh7" secondAttribute="top" constant="8" id="D8h-zn-YDp"/>
-                            <constraint firstItem="uab-LE-dDC" firstAttribute="top" secondItem="r9w-eZ-QP7" secondAttribute="bottom" constant="18" id="MfL-Nu-RM2"/>
-                            <constraint firstItem="xBf-7S-Jh7" firstAttribute="trailing" secondItem="86M-q3-Q9r" secondAttribute="trailing" constant="16" id="NeM-8T-7dk"/>
-                            <constraint firstItem="86M-q3-Q9r" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W7y-Xs-dxL" secondAttribute="leading" constant="20" symbolic="YES" id="Ob8-mT-mIM"/>
-                            <constraint firstItem="r9w-eZ-QP7" firstAttribute="top" secondItem="2x4-ex-AhU" secondAttribute="bottom" constant="28" id="Pug-EZ-rFh"/>
-                            <constraint firstItem="uab-LE-dDC" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="W7y-Xs-dxL" secondAttribute="leading" constant="18" id="dLa-bx-QNq"/>
-                        </constraints>
-                        <viewLayoutGuide key="safeArea" id="xBf-7S-Jh7"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="Activities" id="ViC-3t-O0w"/>
-                    <connections>
-                        <outlet property="activityIndicator" destination="MC7-zm-vTh" id="56F-6H-CC5"/>
-                        <outlet property="startButton" destination="2x4-ex-AhU" id="kQv-39-TZc"/>
-                        <outlet property="stateLabel" destination="uab-LE-dDC" id="se0-eT-QIw"/>
-                        <outlet property="warningButton" destination="r9w-eZ-QP7" id="Ppp-L3-WQ2"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5BZ-5f-UBe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-274" y="2759"/>
-        </scene>
         <!--Settings-->
         <scene sceneID="Jpl-0J-3l5">
             <objects>
                 <viewControllerPlaceholder storyboardName="Settings" id="vKG-OD-IgQ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QFG-3e-XpO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="327" y="2758"/>
+            <point key="canvasLocation" x="1053" y="2522"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="6av-h0-wJN">
@@ -530,18 +440,17 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                             <inset key="contentEdgeInsets" minX="12" minY="0.0" maxX="12" maxY="0.0"/>
                                             <state key="normal" title="⚠️"/>
-                                            <connections>
-                                                <action selector="didPressWarningButton:" destination="fSj-ck-ZbI" eventType="touchUpInside" id="1VZ-Lw-IZc"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="ujq-C5-8v4" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sIA-i9-P7Y" secondAttribute="trailing" constant="18" id="6lK-od-5Hb"/>
                                         <constraint firstItem="ujq-C5-8v4" firstAttribute="centerY" secondItem="Jni-zX-cgr" secondAttribute="centerY" id="7SD-3t-UEC"/>
                                         <constraint firstItem="Jni-zX-cgr" firstAttribute="centerY" secondItem="Xgp-Nf-d89" secondAttribute="centerY" id="AKZ-id-isJ"/>
                                         <constraint firstAttribute="trailing" secondItem="Jni-zX-cgr" secondAttribute="trailing" constant="16" id="DKd-Hi-vIP"/>
                                         <constraint firstItem="sIA-i9-P7Y" firstAttribute="centerY" secondItem="2we-TP-yOL" secondAttribute="centerY" id="JHV-36-f99"/>
                                         <constraint firstItem="2we-TP-yOL" firstAttribute="top" secondItem="Xgp-Nf-d89" secondAttribute="topMargin" constant="4" id="JXh-nk-Ldx"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="2we-TP-yOL" secondAttribute="bottom" constant="4" id="L7H-mw-75A"/>
+                                        <constraint firstItem="Jni-zX-cgr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sIA-i9-P7Y" secondAttribute="trailing" constant="18" id="Moa-LI-j7F"/>
                                         <constraint firstItem="ujq-C5-8v4" firstAttribute="centerX" secondItem="Jni-zX-cgr" secondAttribute="centerX" id="gkE-iE-IdX"/>
                                         <constraint firstItem="sIA-i9-P7Y" firstAttribute="leading" secondItem="2we-TP-yOL" secondAttribute="trailing" constant="16" id="soa-dM-GvV"/>
                                         <constraint firstItem="2we-TP-yOL" firstAttribute="centerY" secondItem="Xgp-Nf-d89" secondAttribute="centerY" id="wG4-y6-Slm"/>
@@ -561,7 +470,13 @@
                             <outlet property="delegate" destination="GPq-8L-4eZ" id="Y58-go-oHu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Activities" id="4XE-cx-vD6"/>
+                    <navigationItem key="navigationItem" title="Activities" id="4XE-cx-vD6">
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="IAY-2o-Bkz">
+                            <connections>
+                                <segue destination="vKG-OD-IgQ" kind="presentation" id="sww-Sa-ELW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iq2-u0-jD6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
