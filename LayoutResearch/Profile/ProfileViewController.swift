@@ -32,10 +32,10 @@ import UIKit
 import ResearchKit
 
 class ProfileViewController: UITableViewController {
-    
-    @IBOutlet var applicationNameLabel: UILabel!
-    
+        
     let fileService = LocalDataService()
+    
+    @IBOutlet weak var nameLabel: UILabel!
     
     // MARK: UIViewController
     
@@ -45,6 +45,11 @@ class ProfileViewController: UITableViewController {
         // Ensure the table view automatically sizes its rows.
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        let firstName = UserDefaults.standard.string(forKey: SettingsString.participantGivenName.rawValue) ?? "Unknown"
+        let lastName = UserDefaults.standard.string(forKey: SettingsString.participantFamilyName.rawValue) ?? "Name"
+        
+        nameLabel.text = firstName + " " + lastName
     }
     
     // MARK: UITableViewDataSource

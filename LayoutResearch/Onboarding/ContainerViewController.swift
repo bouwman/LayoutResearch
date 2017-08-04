@@ -103,6 +103,8 @@ extension ContainerViewController: ORKTaskViewControllerDelegate {
                 UserDefaults.standard.set(false, forKey: SettingsString.isParticipating.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantIdentifier.rawValue)
                 UserDefaults.standard.setValue(0, forKey: SettingsString.attemptNumber.rawValue)
+                UserDefaults.standard.removeObject(forKey: SettingsString.participantGivenName.rawValue)
+                UserDefaults.standard.removeObject(forKey: SettingsString.participantFamilyName.rawValue)
                 // TODO: Keep this for local testing
                 // UserDefaults.standard.setValue(false, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
                 toOnboarding()

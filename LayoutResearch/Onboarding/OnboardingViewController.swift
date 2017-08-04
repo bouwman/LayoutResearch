@@ -74,6 +74,10 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         self.fileService.saveConsent(data: data)
                     })
                     
+                    // Save name
+                    UserDefaults.standard.set(signatureResult.signature?.familyName, forKey: SettingsString.participantFamilyName.rawValue)
+                    UserDefaults.standard.set(signatureResult.signature?.givenName, forKey: SettingsString.participantGivenName.rawValue)
+
                     // Show study
                     performSegue(withIdentifier: "unwindToStudy", sender: nil)
                 } else {

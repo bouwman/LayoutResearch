@@ -621,7 +621,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Profile" id="lEP-fg-VJH"/>
                     <connections>
-                        <outlet property="applicationNameLabel" destination="0O7-EK-lDW" id="rh2-jw-3d3"/>
+                        <outlet property="nameLabel" destination="wOh-uW-dOd" id="swb-Xf-no1"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Snw-eQ-O2j" userLabel="First Responder" sceneMemberID="firstResponder"/>

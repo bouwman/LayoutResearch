@@ -49,6 +49,8 @@ enum SettingsString: String {
     case resultWasUploaded
     case attemptNumber
     case isParticipantGroupAssigned
+    case participantGivenName
+    case participantFamilyName
     case icloudUserId
     case participantIdentifier
     case participantGroup
