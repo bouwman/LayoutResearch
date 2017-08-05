@@ -8,14 +8,13 @@
 
 import UIKit
 import ResearchKit
-
+/*
 class StudyViewController: UIViewController {
     var resultService = ResultService()
     var remoteDataService = RemoteDataService()
     var settings: StudySettings!
     var stateMachine: StudyStateMachine!
     
-    @IBOutlet weak var exportResultsButton: UIButton!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var stateLabel: UILabel!
     @IBOutlet weak var warningButton: UIButton!
@@ -39,18 +38,6 @@ class StudyViewController: UIViewController {
         }
     }
     
-    @IBAction func exportResultsButtonPressed(_ sender: UIButton) {
-        guard resultService.fileService.isResultAvailable else { return }
-        
-        present(createActivityViewControllerFor(items: [resultService.fileService.csvFilePath]), animated: true, completion: nil)
-    }
-    
-    @IBAction func exportConsentFormPressed(_ sender: UIButton) {
-        guard let consentPath = UserDefaults.standard.url(forKey: SettingsString.consentPath.rawValue) else { return }
-        
-        present(createActivityViewControllerFor(items: [consentPath]), animated: true, completion: nil)
-    }
-    
     @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
         // Settings vc gets dismissed
     }
@@ -72,9 +59,18 @@ class StudyViewController: UIViewController {
         stateMachine = StudyStateMachine(studyViewController: self)
         
         settings = loadLocalSettings()
-        loadRemoteSettings()
         
-        exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
+        if remoteDataService.isResultUploaded == false && resultService.fileService.areResultsAvailable {
+            uploadStudyResults { (error) in
+                if let _ = error {
+                    self.stateMachine.enter(UploadingFailedState.self)
+                } else {
+                    self.loadRemoteSettings()
+                }
+            }
+        } else {
+            self.loadRemoteSettings()
+        }
     }
     
     // MARK: - Private
@@ -89,26 +85,43 @@ class StudyViewController: UIViewController {
         }
     }
     
-    private func uploadStudyResults() {
+    private func uploadStudyResults(_ completion: ((Error?)->())? = nil) {
+        guard let resultPath = resultService.fileService.mostRecentResultPath else {
+            stateMachine.enter(DataAvailableState.self)
+            return
+        }
+        
         stateMachine.enter(UploadingState.self)
-        remoteDataService.uploadStudyResults(participantGroup: settings.group, csvURL: resultService.fileService.csvFilePath, consentURL: resultService.fileService.consentPath) { (error) in
+        remoteDataService.uploadStudyResults(participantGroup: settings.group, csvURL: resultPath, consentURL: resultService.fileService.consentPath) { (error) in
             DispatchQueue.main.async {
-                if let _ = error {
-                    self.stateMachine.enter(UploadingFailedState.self)
+                if let completion = completion {
+                    completion(error)
                 } else {
-                    self.stateMachine.enter(DataAvailableState.self)
+                    if let _ = error {
+                        self.stateMachine.enter(UploadingFailedState.self)
+                    } else {
+                        self.stateMachine.enter(DataAvailableState.self)
+                    }
                 }
             }
         }
     }
     
-    private func loadRemoteSettings() {
+    func loadRemoteSettings() {
+        guard resultService.isParticipantGroupAssigned == false else {
+            self.stateMachine.enter(DataAvailableState.self)
+            return
+        }
+        
         stateMachine.enter(RetrievingDataState.self)
         remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
                 if let lastGroup = lastGroup {
                     self.settings.group = lastGroup.next
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+                    self.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
+                        // Optional, so ignore result
+                    })
                     self.stateMachine.enter(DataAvailableState.self)
                 } else {
                     self.stateMachine.enter(DataNotAvailableState.self)
@@ -119,21 +132,6 @@ class StudyViewController: UIViewController {
                 }
             }
         }
-    }
-    
-    private func createActivityViewControllerFor(items: [Any]) -> UIActivityViewController {
-        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        activityVC.excludedActivityTypes = [
-            .assignToContact,
-            .saveToCameraRoll,
-            .postToFlickr,
-            .postToVimeo,
-            .postToTencentWeibo,
-            .postToTwitter,
-            .postToFacebook,
-            .openInIBooks
-        ]
-        return activityVC
     }
 }
 
@@ -159,9 +157,10 @@ extension StudyViewController: ORKTaskViewControllerDelegate {
             
             // Save results
             resultService.lastResults = searchResults
+            resultService.isParticipantGroupAssigned = true
             
-            // Activate export button
-            exportResultsButton.isEnabled = resultService.fileService.isResultAvailable
+            // Reset after completion of every task
+            remoteDataService.isResultUploaded = true
             
             // Save last conducted study settings and study data to icloud
             uploadStudyResults()
@@ -195,3 +194,4 @@ extension StudyViewController: SettingsViewControllerDelegate {
         self.settings = settings
     }
 }
+*/

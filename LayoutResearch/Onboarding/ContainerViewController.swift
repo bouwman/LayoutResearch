@@ -44,7 +44,11 @@ class ContainerViewController: UIViewController {
     // MARK: Unwind segues
     
     @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
-        toStudy()
+        if RemoteDataService.isICloudContainerAvailable {
+            toStudy()
+        } else {
+            toICloudError()
+        }
     }
     
     @IBAction func unwindToWithdrawl(_ segue: UIStoryboardSegue) {
@@ -94,10 +98,14 @@ extension ContainerViewController: ORKTaskViewControllerDelegate {
              the study and transition to the onboarding view.
              */
             if reason == .completed {
-                fileService.removeResultIfExists()
+                fileService.removeAllResults()
                 fileService.removeConsentIfExists()
                 UserDefaults.standard.set(false, forKey: SettingsString.isParticipating.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantIdentifier.rawValue)
+                UserDefaults.standard.removeObject(forKey: SettingsString.participantGivenName.rawValue)
+                UserDefaults.standard.removeObject(forKey: SettingsString.participantFamilyName.rawValue)
+                // TODO: Keep this for local testing
+                // UserDefaults.standard.setValue(false, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
                 toOnboarding()
             }
             

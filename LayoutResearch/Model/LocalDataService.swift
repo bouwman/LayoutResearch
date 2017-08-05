@@ -10,8 +10,31 @@ import UIKit
 
 class LocalDataService {
     let docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last!
-    var csvFilePath: URL { return docURL.appendingPathComponent("result.csv") }
     var consentPath: URL { return docURL.appendingPathComponent("signature.pdf") }
+    
+    var existingResultsPaths: [URL] {
+        var urls: [URL] = []
+        for i in 0..<Const.StudyParameters.searchActivityCount {
+            if resultFileExists(resultNumber: i) {
+                let url = docURL.appendingPathComponent("result\(i).csv")
+                urls.append(url)
+            }
+        }
+        return urls
+    }
+    
+    func existingPathFor(resultNumber: Int) -> URL? {
+        return resultFileExists(resultNumber: resultNumber) ? docURL.appendingPathComponent("result\(resultNumber).csv") : nil
+    }
+    
+    func createPathFor(resultNumber: Int) -> URL? {
+        return resultFileExists(resultNumber: resultNumber) ? nil : docURL.appendingPathComponent("result\(resultNumber).csv")
+    }
+    
+    var firstActivityCompletionDate: Date? {
+        let savedTime = UserDefaults.standard.double(forKey: SettingsString.firstActivityDate.rawValue)
+        return savedTime == 0 ? nil : Date(timeIntervalSinceReferenceDate: savedTime)
+    }
     
     func saveConsent(data: Data?) {
         try! data?.write(to: consentPath)
@@ -21,18 +44,23 @@ class LocalDataService {
         UserDefaults.standard.set(consentPath, forKey: SettingsString.consentPath.rawValue)
     }
     
-    var isResultAvailable: Bool {
-        return FileManager.default.fileExists(atPath: csvFilePath.path)
+    var areResultsAvailable: Bool {
+        return existingResultsPaths.count != 0
     }
     
     var isConsentAvailable: Bool {
         return FileManager.default.fileExists(atPath: consentPath.path)
     }
     
-    func removeResultIfExists() {
-        if isResultAvailable {
-            try! FileManager.default.removeItem(at: csvFilePath)
-            UserDefaults.standard.removeObject(forKey: SettingsString.resultCSVPath.rawValue)
+    func removeResultIfExist(resultNumber: Int) {
+        if let existingURL = existingPathFor(resultNumber: resultNumber) {
+            try! FileManager.default.removeItem(at: existingURL)
+        }
+    }
+    
+    func removeAllResults() {
+        for url in existingResultsPaths {
+            try! FileManager.default.removeItem(at: url)
         }
     }
     
@@ -41,5 +69,9 @@ class LocalDataService {
             try! FileManager.default.removeItem(at: consentPath)
             UserDefaults.standard.removeObject(forKey: SettingsString.consentPath.rawValue)
         }
+    }
+    
+    func resultFileExists(resultNumber: Int) -> Bool {
+        return FileManager.default.fileExists(atPath: docURL.appendingPathComponent("result\(resultNumber).csv").path)
     }
 }

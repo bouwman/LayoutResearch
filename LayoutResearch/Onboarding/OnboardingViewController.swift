@@ -39,20 +39,44 @@ class OnboardingViewController: UIViewController {
     // MARK: IB actions
     
     @IBAction func joinButtonTapped(_ sender: UIButton) {
+        let choiceAnswer = ORKBooleanAnswerFormat(yesString: "YES", noString: "NO")
+        let ageItem = ORKFormItem(identifier: "eligibilityItemAge", text: "Are you 18 or older?", answerFormat: choiceAnswer)
+        let englishItem = ORKFormItem(identifier: "eligibilityItemEnglish", text: "Are you comfortable with reading and writing on this device in English?", answerFormat: choiceAnswer)
+        
+        ageItem.isOptional = false
+        englishItem.isOptional = false
+        
+        let eligibilityStep = ORKFormStep(identifier: "EligibilityStep")
+        eligibilityStep.formItems = [ageItem, englishItem]
+        eligibilityStep.isOptional = false
+        
         let consentStep = ORKVisualConsentStep(identifier: Const.Identifiers.visualConsentStep, document: consentDocument)
-        
         let signature = consentDocument.signatures!.first!
-        
         let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: signature, in: consentDocument)
         
         reviewConsentStep.text = "Review the consent form."
-        reviewConsentStep.reasonForConsent = "Consent to join the Developer Health Research Study."
+        reviewConsentStep.reasonForConsent = "Consent to join the Visual search in circular icon arrangements study."
         
         let completionStep = ORKCompletionStep(identifier: "CompletionStep")
         completionStep.title = "Welcome aboard."
         completionStep.text = "Thank you for joining this study."
         
-        let orderedTask = ORKOrderedTask(identifier: "Join", steps: [consentStep, reviewConsentStep, completionStep])
+        let notEligibleStep = ORKCompletionStep(identifier: "NotEligibleStep")
+        notEligibleStep.title = "Sorry"
+        notEligibleStep.text = "Thank you for your interest in our study. Unfortunately you are not eligible to take part in this study."
+        
+        let ageSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: ageItem.identifier)
+        let englishSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: ageItem.identifier)
+        let agePredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: ageSelector, expectedAnswer: true)
+        let englishPredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: englishSelector, expectedAnswer: true)
+        let eligibilityRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [(agePredicate, reviewConsentStep.identifier), (englishPredicate, reviewConsentStep.identifier)], defaultStepIdentifierOrNil: notEligibleStep.identifier)
+        let endAfterNotEligibleRule = ORKDirectStepNavigationRule(destinationStepIdentifier: "")
+        
+        let orderedTask = ORKNavigableOrderedTask(identifier: "Join", steps: [consentStep, eligibilityStep, notEligibleStep, reviewConsentStep, completionStep])
+        orderedTask.setNavigationRule(eligibilityRule, forTriggerStepIdentifier: eligibilityStep.identifier)
+        
+        orderedTask.setNavigationRule(endAfterNotEligibleRule, forTriggerStepIdentifier: notEligibleStep.identifier)
+        
         let taskViewController = ORKTaskViewController(task: orderedTask, taskRun: nil)
         taskViewController.delegate = self
         
@@ -74,6 +98,10 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         self.fileService.saveConsent(data: data)
                     })
                     
+                    // Save name
+                    UserDefaults.standard.set(signatureResult.signature?.familyName, forKey: SettingsString.participantFamilyName.rawValue)
+                    UserDefaults.standard.set(signatureResult.signature?.givenName, forKey: SettingsString.participantGivenName.rawValue)
+
                     // Show study
                     performSegue(withIdentifier: "unwindToStudy", sender: nil)
                 } else {

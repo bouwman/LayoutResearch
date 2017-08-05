@@ -23,13 +23,13 @@ protocol SearchViewDelegate {
     func didSelect(item: SearchItemProtocol?, atIndex index: IndexPath?)
 }
 
-@IBDesignable class SearchView: UIView {
-    @IBInspectable var itemDiameter: CGFloat {
+class SearchView: UIView {
+    var itemDiameter: CGFloat {
         didSet {
             layoutButtons()
         }
     }
-    @IBInspectable var distance: CGFloat {
+    var distance: CGFloat {
         didSet {
             if distance <= 0 {
                 distance = 0.001
@@ -54,7 +54,7 @@ protocol SearchViewDelegate {
         }
     }
     
-    @IBInspectable var layoutIdForIB: Int = 1 {
+    var layoutIdForIB: Int = 1 {
         didSet {
             switch layoutIdForIB {
             case 1:
@@ -110,6 +110,10 @@ protocol SearchViewDelegate {
         frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
     }    
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     @objc func didPress(button: RoundedButton) {
         guard let delegate = delegate else { return }
         
@@ -124,25 +128,6 @@ protocol SearchViewDelegate {
         }
         
         delegate.didSelect(item: item, atIndex: index)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.itemDiameter = Const.StudyParameters.itemDiameter
-        self.distance = Const.StudyParameters.itemDistance
-        self.layout = .grid
-        self.topMargin = 0
-        self.items = SearchView.createDefaultItems()
-        
-        super.init(coder: aDecoder)
-        
-        // Map buttons to items
-        createButtonsForItems()
-        
-        // Layout buttons
-        layoutButtons()
-        
-        // Set frame based on layout
-        frame = CGRect(x: 0, y: 0, width: intrinsicContentSize.width, height: intrinsicContentSize.height)
     }
     
     private func createButtonsForItems() {
@@ -210,7 +195,6 @@ protocol SearchViewDelegate {
                     let unevenColumn = Double(column).truncatingRemainder(dividingBy: 2)
                     let xPosition = CGFloat(column) * xOffset
                     let yPosition = topMargin + CGFloat(row) * offset
-                    
                     // For all even columns (2, 4, ...)
                     if unevenColumn == 0 {
                         button.frame.origin.y = yPosition + yOffset
@@ -235,7 +219,7 @@ protocol SearchViewDelegate {
         }        
     }
     
-    private static func createDefaultItems() -> [[SearchItemProtocol]] {
+    static func createDefaultItems() -> [[SearchItemProtocol]] {
         var items: [[SearchItemProtocol]] = []
         
         var counter = 1

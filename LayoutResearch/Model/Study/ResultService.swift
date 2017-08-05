@@ -11,20 +11,14 @@ import Foundation
 class ResultService {
     let fileService = LocalDataService()
     
-    var lastResults: [SearchResult]? {
-        didSet {
-            if let results = lastResults {
-                saveResultsToCSV(results: results)
-            }
-        }
-    }
-    
-    func saveResultsToCSV(results: [SearchResult]) {
+    func saveResultToCSV(resultNumber: Int, results: [SearchResult]) {
         guard results.count != 0 else { return }
         
-        fileService.removeResultIfExists()
+        fileService.removeResultIfExist(resultNumber: resultNumber)
         
-        let optionalSream = OutputStream(url: fileService.csvFilePath, append: false)
+        guard let url = fileService.createPathFor(resultNumber: resultNumber) else { return }
+        
+        let optionalSream = OutputStream(url: url, append: false)
         
         guard let stream = optionalSream else { return }
         
@@ -40,9 +34,6 @@ class ResultService {
             }
             
             writer.stream.close()
-            
-            // Save url
-            UserDefaults.standard.set(fileService.csvFilePath, forKey: SettingsString.resultCSVPath.rawValue)
         } catch {
             print("Error writing csv")
         }

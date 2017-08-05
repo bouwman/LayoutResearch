@@ -18,8 +18,9 @@ class SearchStep: ORKActiveStep {
     var itemDiameter: CGFloat
     var itemDistance: CGFloat
     var isPractice: Bool
+    var activityNumber: Int
     
-    init(identifier: String, participantIdentifier: String, items: [[SearchItemProtocol]], targetItem: SearchItemProtocol, targetFrequency: Int, layout: LayoutType, organisation: OrganisationType, itemDiameter: CGFloat, itemDistance: CGFloat, isPractice: Bool) {
+    init(identifier: String, participantIdentifier: String, items: [[SearchItemProtocol]], targetItem: SearchItemProtocol, targetFrequency: Int, layout: LayoutType, organisation: OrganisationType, itemDiameter: CGFloat, itemDistance: CGFloat, isPractice: Bool, activityNumber: Int) {
         self.participantIdentifier = participantIdentifier
         self.items = items
         self.targetItem = targetItem
@@ -29,6 +30,7 @@ class SearchStep: ORKActiveStep {
         self.itemDiameter = itemDiameter
         self.itemDistance = itemDistance
         self.isPractice = isPractice
+        self.activityNumber = activityNumber
         
         super.init(identifier: identifier)
     }

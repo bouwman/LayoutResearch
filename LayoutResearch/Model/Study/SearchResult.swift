@@ -39,6 +39,7 @@ class SearchResult: ORKResult {
     var itemLocation: IndexPath
     var sameColorCount: Int
     var targetFrequency: Int
+    var activityNumber: Int
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
     var searchTime: TimeInterval?
@@ -47,7 +48,7 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool) {
+    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool, activityNumber: Int) {
         self.participantIdentifier = participantIdentifier
         self.targetItem = targetItem
         self.layout = layout
@@ -57,6 +58,7 @@ class SearchResult: ORKResult {
         self.sameColorCount = sameColorCount
         self.targetFrequency = targetFrequency
         self.isPractice = isPractice
+        self.activityNumber = activityNumber
         
         super.init(identifier: identifier)
     }
@@ -70,10 +72,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["ParticipantId","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
+        return ["ParticipantId","Attempt","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error"]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
+        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
     }
 }

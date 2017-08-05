@@ -39,6 +39,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         let searchView = SearchView(itemDiameter: searchStep.itemDiameter, distance: searchStep.itemDistance, layout: searchStep.layout, topMargin: topMargin, items: searchStep.items)
         
         searchView.delegate = self
+        searchView.alpha = 0.0
         
         customView = searchView
         
@@ -57,13 +58,17 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         // Setup result
         let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         startTime = Date()
+        
+        UIView.animate(withDuration: 0.6, delay: 0.3, options: .curveEaseOut, animations: {
+            self.customView?.alpha = 1.0
+        }, completion: nil)
     }
     
     private func indexOf(searchedItem: SearchItemProtocol, inItems items: [[SearchItemProtocol]]) -> IndexPath? {

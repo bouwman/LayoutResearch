@@ -13,6 +13,8 @@ struct Const {
         static let consetReviewStep = "ConsentReviewStep"
         static let visualConsentStep = "VisualConsentStep"
         static let selectionCell = "SelectionCell"
+        static let profileDataCell = "ProfileDataCell"
+        static let activityCell = "ActivityCell"
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
@@ -23,20 +25,21 @@ struct Const {
         static let shapeCount: Int = 27
     }
     struct StudyParameters {
-        static let group: ParticipantGroup = .i
         static let rowCount = 6
         static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0
         static let itemDistance: CGFloat = 10
         static let practiceTrialCount = 3
         static let targetFreqLowCount = 2
-        static let targetFreqHighCount = 4
+        static let targetFreqHighCount = 6
         static let distractorColorLowCount = 2
         static let distractorColorHighCount = 6
         static let colorIdFarApartCondition1 = 5
         static let colorIdFarApartCondition2 = 6
+        static let colorIdApartCondition = 2
         static let itemDistanceApartCondition = 1
         static let itemDistanceFurtherApartCondition = 2...3
+        static let searchActivityCount = 5
     }
 }
 
@@ -44,7 +47,11 @@ enum SettingsString: String {
     case versionOfLastRun
     case isParticipating
     case consentPath
-    case resultCSVPath
+    case resultWasUploaded
+    case firstActivityDate
+    case isParticipantGroupAssigned
+    case participantGivenName
+    case participantFamilyName
     case icloudUserId
     case participantIdentifier
     case participantGroup
@@ -139,6 +146,10 @@ extension Sequence {
 
 func -(left: IndexPath, right: IndexPath) -> IndexPath {
     return IndexPath(row: left.row - right.row, section: left.section - right.section)
+}
+
+func randomInt(min: Int, max:Int) -> Int {
+    return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
 extension Sequence where Iterator.Element == Sequence {
