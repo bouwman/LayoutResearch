@@ -10,60 +10,6 @@ import UIKit
 import GameplayKit
 import ResearchKit
 
-enum ActivityType {
-    case searchIcons, survey
-}
-
-class StudyActivity {
-    var startDate: Date
-    var number: Int
-    var type: ActivityType
-    var stateMachine = ActivityStateMachine()
-    
-    init(startDate: Date, number: Int, type: ActivityType) {
-        self.startDate = startDate
-        self.number = number
-        self.type = type
-    }
-    
-    var isStartable: Bool {
-        return timeRemaining <= 0
-    }
-    
-    var daysRemaining: Int {
-        return Int(timeRemaining) / (60*60*24)
-    }
-    
-    var timeRemaining: TimeInterval {
-        return startDate.timeIntervalSince(Date())
-    }
-    
-    var timeRemainingString: String {
-        let days = daysRemaining
-        if days > 0 {
-            return days == 1 ? "\(days) Day" : "\(days) Days"
-        } else {
-            return timeToString(time: timeRemaining)
-        }
-    }
-    
-    private func timeToString(time: TimeInterval) -> String {
-        let hours = Int(time) / 3600
-        let minutes = Int(time) / 60 % 60
-        let seconds = Int(time) % 60
-        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
-    
-    var description: String {
-        switch type {
-        case .searchIcons:
-            return "Search task \(number + 1)"
-        case .survey:
-            return "Survey"
-        }
-    }
-}
-
 class ActivitiesViewController: UITableViewController {
     var service = ActivitiesService()
     var settings: StudySettings!
@@ -75,6 +21,7 @@ class ActivitiesViewController: UITableViewController {
         
         tableView.estimatedRowHeight = 70
         tableView.rowHeight = UITableViewAutomaticDimension
+        refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
         
         settings = loadLocalSettings()
         
@@ -83,18 +30,39 @@ class ActivitiesViewController: UITableViewController {
     
     private func updateAllActivities() {
         for (i, activity) in service.activities.enumerated() {
-            if service.remoteDataService.isResultUploaded(resultNumber: activity.number) == false && service.resultService.fileService.resultFileExists(resultNumber: activity.number) {
-                uploadResultsOf(activity: activity, forRow: i)
-            } else if service.isParticipantGroupAssigned == false && activity.isStartable {
-                loadRemoteSettingsFor(activity: activity, forRow: i)
-            } else if service.isParticipantGroupAssigned && activity.isStartable  {
-                activity.stateMachine.enter(DataAvailableState.self)
-                self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
-            } else if activity.isStartable == false {
-                activity.stateMachine.enter(TimeRemainingState.self)
-                self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .automatic)
+            let isUploaded = service.remoteDataService.isResultUploaded(resultNumber: activity.number)
+            let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
+            
+            if resultExists {
+                if isUploaded {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else {
+                    uploadResultsOf(activity: activity, forRow: i)
+                }
+            } else {
+                if activity.timeRemaining <= 0 {
+                    if service.isParticipantGroupAssigned {
+                        activity.stateMachine.enter(DataAvailableState.self)
+                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    } else {
+                        loadRemoteSettingsFor(activity: activity, forRow: i)
+                    }
+                } else {
+                    activity.stateMachine.enter(TimeRemainingState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    
+                }
             }
         }
+    }
+    
+    @objc func handleRefresh(refreshControl: UIRefreshControl) {
+        updateAllActivities()
+        // Stop after 4 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+            refreshControl.endRefreshing()
+        })
     }
     
     @objc func updateTimer() {
@@ -146,18 +114,23 @@ class ActivitiesViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let activity = service.activities[indexPath.row]
         start(activity: activity)
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
     }
     
     // MARK: - Private
     
     func start(activity: StudyActivity) {
-        let studyService = StudyService(settings: settings)
+        let studyService = StudyService(settings: settings, activityNumber: activity.number)
         let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
         let taskVC = ORKTaskViewController(task: task, taskRun: nil)
         
@@ -238,6 +211,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
         case .completed:
             // Retrieve results
             let taskResults = taskViewController.result.results!
+            let activity = service.activeActivity!
             var searchResults: [SearchResult] = []
             
             for result in taskResults {
@@ -251,12 +225,10 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
                     }
                 }
             }
-            
             // Save results
-            service.resultService.saveResultsToCSV(results: searchResults)
+            service.resultService.saveResultToCSV(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
-            let activity = service.activeActivity!
             
             // Reset after completion of every task
             service.remoteDataService.setIsResultUploadedFor(resultNumber: activity.number, isResultUploaded: false)

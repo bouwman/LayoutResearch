@@ -98,11 +98,10 @@ extension ContainerViewController: ORKTaskViewControllerDelegate {
              the study and transition to the onboarding view.
              */
             if reason == .completed {
-                fileService.removeResultsIfExist()
+                fileService.removeAllResults()
                 fileService.removeConsentIfExists()
                 UserDefaults.standard.set(false, forKey: SettingsString.isParticipating.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantIdentifier.rawValue)
-                UserDefaults.standard.setValue(0, forKey: SettingsString.attemptNumber.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantGivenName.rawValue)
                 UserDefaults.standard.removeObject(forKey: SettingsString.participantFamilyName.rawValue)
                 // TODO: Keep this for local testing

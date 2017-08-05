@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -459,6 +458,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="detailLabel" destination="EfV-0h-tho" id="U8W-2r-aJp"/>
+                                    <outlet property="icon" destination="2we-TP-yOL" id="3rK-An-2Xm"/>
                                     <outlet property="spinnerView" destination="Jni-zX-cgr" id="AeV-t8-f8s"/>
                                     <outlet property="statusButton" destination="ujq-C5-8v4" id="T0B-EG-BxA"/>
                                     <outlet property="titleLabel" destination="gve-zt-k8p" id="KQs-m4-IX2"/>
@@ -477,6 +477,10 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="bzk-cj-OlU">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iq2-u0-jD6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -491,11 +495,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <view key="tableHeaderView" contentMode="scaleToFill" id="B9c-Y2-ehc" customClass="ProfileHeaderView" customModule="LayoutResearch" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="164"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="177"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="beq-xc-hKu">
-                                    <rect key="frame" x="10" y="98" width="194" height="50"/>
+                                    <rect key="frame" x="16" y="111" width="194" height="50"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Currently Participating In " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.80000001192092896" translatesAutoresizingMaskIntoConstraints="NO" id="kob-Pt-9FZ">
                                             <rect key="frame" x="0.0" y="0.0" width="194" height="19.5"/>
@@ -511,8 +515,12 @@
                                         </label>
                                     </subviews>
                                 </stackView>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8j-nw-804">
-                                    <rect key="frame" x="263" y="104" width="104" height="38"/>
+                                <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X8j-nw-804">
+                                    <rect key="frame" x="259" y="117" width="108" height="38"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="108" id="RDZ-TU-3Fk"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                     <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                                     <state key="normal" title="Leave Study">
                                         <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -523,14 +531,14 @@
                                     </connections>
                                 </button>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profilePlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="Lea-yC-L0I">
-                                    <rect key="frame" x="10" y="10" width="77" height="77"/>
+                                    <rect key="frame" x="16" y="16" width="77" height="77"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="77" id="cIh-1x-bNR"/>
                                         <constraint firstAttribute="height" constant="77" id="pxZ-79-hSC"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOh-uW-dOd">
-                                    <rect key="frame" x="95" y="41" width="260" height="20.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOh-uW-dOd">
+                                    <rect key="frame" x="111" y="48.5" width="244" height="20.5"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -538,22 +546,22 @@
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
+                                <constraint firstItem="wOh-uW-dOd" firstAttribute="centerY" secondItem="Lea-yC-L0I" secondAttribute="centerY" constant="4" id="0ZW-Kj-HID"/>
                                 <constraint firstAttribute="bottom" secondItem="beq-xc-hKu" secondAttribute="bottom" constant="16" id="1JJ-xa-PiD"/>
-                                <constraint firstItem="beq-xc-hKu" firstAttribute="top" secondItem="Lea-yC-L0I" secondAttribute="bottom" constant="11" id="8QE-JB-ldw"/>
+                                <constraint firstItem="beq-xc-hKu" firstAttribute="top" secondItem="Lea-yC-L0I" secondAttribute="bottom" constant="18" id="8QE-JB-ldw"/>
                                 <constraint firstItem="X8j-nw-804" firstAttribute="centerY" secondItem="beq-xc-hKu" secondAttribute="centerY" id="BCb-cp-voC"/>
                                 <constraint firstAttribute="trailing" secondItem="wOh-uW-dOd" secondAttribute="trailing" constant="20" symbolic="YES" id="MHH-Cv-4T2"/>
-                                <constraint firstItem="beq-xc-hKu" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="10" id="QS3-gZ-M6h"/>
-                                <constraint firstItem="Lea-yC-L0I" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="10" id="a1d-ex-2BG"/>
-                                <constraint firstItem="wOh-uW-dOd" firstAttribute="firstBaseline" secondItem="Lea-yC-L0I" secondAttribute="centerY" constant="8" id="h5z-U1-YX4"/>
+                                <constraint firstItem="beq-xc-hKu" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="16" id="QS3-gZ-M6h"/>
+                                <constraint firstItem="Lea-yC-L0I" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="16" id="a1d-ex-2BG"/>
                                 <constraint firstItem="X8j-nw-804" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="beq-xc-hKu" secondAttribute="trailing" constant="20" id="k81-Zw-QzY"/>
-                                <constraint firstItem="Lea-yC-L0I" firstAttribute="top" secondItem="B9c-Y2-ehc" secondAttribute="top" constant="10" id="pSG-DH-9IY"/>
+                                <constraint firstItem="Lea-yC-L0I" firstAttribute="top" secondItem="B9c-Y2-ehc" secondAttribute="top" constant="16" id="pSG-DH-9IY"/>
                                 <constraint firstAttribute="trailing" secondItem="X8j-nw-804" secondAttribute="trailing" constant="8" id="tQg-Rd-TCs"/>
-                                <constraint firstItem="wOh-uW-dOd" firstAttribute="leading" secondItem="Lea-yC-L0I" secondAttribute="trailing" constant="8" symbolic="YES" id="xEH-5M-wEw"/>
+                                <constraint firstItem="wOh-uW-dOd" firstAttribute="leading" secondItem="Lea-yC-L0I" secondAttribute="trailing" constant="18" id="xEH-5M-wEw"/>
                             </constraints>
                         </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileDataCell" textLabel="dGg-bc-5Wy" style="IBUITableViewCellStyleDefault" id="Kh9-FA-mjF">
-                                <rect key="frame" x="0.0" y="219.5" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="232.5" width="375" height="49"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Kh9-FA-mjF" id="UBd-wm-R0D">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48.5"/>

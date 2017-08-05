@@ -34,14 +34,6 @@ class ActivitiesService {
     }
     
     var activeActivity: StudyActivity?
-    var attemptNumber: Int {
-        set {
-            UserDefaults.standard.setValue(attemptNumber, forKey: SettingsString.attemptNumber.rawValue)
-        }
-        get {
-            return UserDefaults.standard.integer(forKey: SettingsString.attemptNumber.rawValue)
-        }
-    }
     
     var isParticipantGroupAssigned: Bool {
         set {

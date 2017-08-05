@@ -55,39 +55,42 @@ class ProfileViewController: UITableViewController {
     // MARK: UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fileService.existingResultsPaths.count + 1
+        return section == 0 ? 1 : fileService.existingResultsPaths.count
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Const.Identifiers.profileDataCell, for: indexPath)
         
-        if indexPath.row > 0 {
-            cell.textLabel?.text = "Result \(indexPath.row + 1)"
+        if indexPath.section == 0 {
+            cell.textLabel?.text = "Consent Form.pdf"
         } else {
-            cell.textLabel?.text = "Consent Form"
+            cell.textLabel?.text = "Result \(indexPath.row + 1).csv"
         }
 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "Files" : nil
+        return section == 0 ? "Consent file" : "Result files"
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        if indexPath.row > 0 {
-            exportResult(resultNumber: indexPath.row)
-        } else {
+        if indexPath.section == 0 {
             exportConsentForm()
+        } else {
+            exportResult(resultNumber: indexPath.row)
         }
     }
     
     func exportResult(resultNumber: Int) {
-        guard fileService.areResultsAvailable else { return }
+        guard let result = fileService.existingPathFor(resultNumber: resultNumber) else { return }
         
-        let result = fileService.existingResultsPaths[resultNumber]
         present(createActivityViewControllerFor(items: [result]), animated: true, completion: nil)
     }
     

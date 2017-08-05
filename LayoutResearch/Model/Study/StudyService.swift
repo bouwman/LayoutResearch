@@ -25,13 +25,15 @@ struct SearchItem: SearchItemProtocol, CustomStringConvertible {
 
 class StudyService {
     var steps: [ORKStep] = []
+    var activityNumber: Int
     var settings: StudySettings
     
     private var searchItems: [[SearchItemProtocol]] = []
     private var targetItems: [SearchItemProtocol] = []
     
-    init(settings: StudySettings) {
+    init(settings: StudySettings, activityNumber: Int) {
         self.settings = settings
+        self.activityNumber = activityNumber
         
         // Create base item array
         var counter = 1
@@ -193,7 +195,7 @@ class StudyService {
                 
         let searchStepIdentifier = "\(index)"
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: target, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice, activityNumber: activityNumber)
         
         descriptionStep.title = "Search"
         descriptionStep.text = "Find this item in the next layout as quickly as possible"

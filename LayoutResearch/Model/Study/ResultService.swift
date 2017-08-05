@@ -11,12 +11,14 @@ import Foundation
 class ResultService {
     let fileService = LocalDataService()
     
-    func saveResultsToCSV(results: [SearchResult]) {
+    func saveResultToCSV(resultNumber: Int, results: [SearchResult]) {
         guard results.count != 0 else { return }
         
-        fileService.removeResultsIfExist()
+        fileService.removeResultIfExist(resultNumber: resultNumber)
         
-        let optionalSream = OutputStream(url: fileService.newResultPath, append: false)
+        guard let url = fileService.createPathFor(resultNumber: resultNumber) else { return }
+        
+        let optionalSream = OutputStream(url: url, append: false)
         
         guard let stream = optionalSream else { return }
         

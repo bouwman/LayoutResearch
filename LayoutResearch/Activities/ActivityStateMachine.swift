@@ -18,6 +18,7 @@ class ActivityStateMachine: GKStateMachine {
         let uploadFailed = UploadFailedState()
         let uploadComplete = UploadCompleteState()
         let timeRemaining = TimeRemainingState()
+        let unknown = UnknownState()
         
         retrieve.activityCell = activityCell
         dataAvailable.activityCell = activityCell
@@ -26,10 +27,11 @@ class ActivityStateMachine: GKStateMachine {
         uploadFailed.activityCell = activityCell
         uploadComplete.activityCell = activityCell
         timeRemaining.activityCell = activityCell
+        unknown.activityCell = activityCell
         
-        super.init(states: [retrieve, dataAvailable, dataNotAvailable, upload, uploadFailed, uploadComplete, timeRemaining])
+        super.init(states: [retrieve, dataAvailable, dataNotAvailable, upload, uploadFailed, uploadComplete, timeRemaining, unknown])
         
-        enter(DataNotAvailableState.self)
+        enter(UnknownState.self)
     }
 }
 
@@ -69,7 +71,7 @@ class DataAvailableState: ActivityState {
     override func didEnter(from previousState: GKState?) {
         if let cell = activityCell {
             cell.statusButton?.isHidden = true
-            cell.detailLabel?.text = "Ready to start!"
+            cell.detailLabel?.text = "Ready to start"
         }
     }
     
@@ -86,7 +88,7 @@ class DataNotAvailableState: ActivityState {
     override func didEnter(from previousState: GKState?) {
         if let cell = activityCell {
             cell.statusButton?.isHidden = false
-            cell.detailLabel?.text = "You need to be connected to the internet to start this study."
+            cell.detailLabel?.text = "Server connection failed"
         }
     }
     
@@ -125,7 +127,7 @@ class UploadFailedState: ActivityState {
     override func didEnter(from previousState: GKState?) {
         if let cell = activityCell {
             cell.statusButton?.isHidden = false
-            cell.detailLabel?.text = "Uploading study results failed. Press to try again."
+            cell.detailLabel?.text = "Uploading result failed"
         }
     }
     
@@ -144,7 +146,7 @@ class UploadCompleteState: ActivityState {
     override func didEnter(from previousState: GKState?) {
         if let cell = activityCell {
             cell.statusButton?.isHidden = true
-            cell.detailLabel?.text = "Upload completed."
+            cell.detailLabel?.text = "Completed"
         }
     }
     
@@ -167,6 +169,31 @@ class TimeRemainingState: ActivityState {
     
     override func willExit(to nextState: GKState) {
         
+    }
+}
+
+class UnknownState: ActivityState {
+    override func isValidNextState(_ stateClass: AnyClass) -> Bool {
+        return stateClass == DataAvailableState.self ||
+            stateClass == DataNotAvailableState.self ||
+            stateClass == RetrievingDataState.self ||
+            stateClass == UploadingState.self ||
+            stateClass == UploadFailedState.self ||
+            stateClass == UploadCompleteState.self ||
+            stateClass == TimeRemainingState.self
+    }
+    
+    override func didEnter(from previousState: GKState?) {
+        if let cell = activityCell {
+            cell.statusButton?.isHidden = false
+            cell.detailLabel?.text = "Unknow error"
+        }
+    }
+    
+    override func willExit(to nextState: GKState) {
+        if let cell = activityCell {
+            cell.statusButton?.isHidden = true
+        }
     }
 }
 

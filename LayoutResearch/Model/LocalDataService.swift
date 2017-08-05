@@ -12,13 +12,9 @@ class LocalDataService {
     let docURL = (FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)).last!
     var consentPath: URL { return docURL.appendingPathComponent("signature.pdf") }
     
-    var attemptNumber: Int {
-        return UserDefaults.standard.integer(forKey: SettingsString.attemptNumber.rawValue)
-    }
-    
     var existingResultsPaths: [URL] {
         var urls: [URL] = []
-        for i in 0...attemptNumber {
+        for i in 0..<Const.StudyParameters.searchActivityCount {
             if resultFileExists(resultNumber: i) {
                 let url = docURL.appendingPathComponent("result\(i).csv")
                 urls.append(url)
@@ -27,12 +23,12 @@ class LocalDataService {
         return urls
     }
     
-    var mostRecentResultPath: URL? {
-        return areResultsAvailable ? existingResultsPaths.last : nil
+    func existingPathFor(resultNumber: Int) -> URL? {
+        return resultFileExists(resultNumber: resultNumber) ? docURL.appendingPathComponent("result\(resultNumber).csv") : nil
     }
     
-    var newResultPath: URL {
-        return docURL.appendingPathComponent("result\(attemptNumber).csv")
+    func createPathFor(resultNumber: Int) -> URL? {
+        return resultFileExists(resultNumber: resultNumber) ? nil : docURL.appendingPathComponent("result\(resultNumber).csv")
     }
     
     var firstActivityCompletionDate: Date? {
@@ -56,11 +52,15 @@ class LocalDataService {
         return FileManager.default.fileExists(atPath: consentPath.path)
     }
     
-    func removeResultsIfExist() {
-        if areResultsAvailable {
-            for url in existingResultsPaths {
-                try! FileManager.default.removeItem(at: url)
-            }
+    func removeResultIfExist(resultNumber: Int) {
+        if let existingURL = existingPathFor(resultNumber: resultNumber) {
+            try! FileManager.default.removeItem(at: existingURL)
+        }
+    }
+    
+    func removeAllResults() {
+        for url in existingResultsPaths {
+            try! FileManager.default.removeItem(at: url)
         }
     }
     

@@ -45,9 +45,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
-        if let activitiesVC = window?.rootViewController?.childViewControllers.first?.childViewControllers[1].childViewControllers.first as? ActivitiesViewController {
-            let firstActivity = activitiesVC.service.activities.first!
-            activitiesVC.loadRemoteSettingsFor(activity: firstActivity, forRow: 0)
+        if let tabbarChilds = window?.rootViewController?.childViewControllers.first?.childViewControllers, tabbarChilds.count > 0 {
+            if let activitiesVC = tabbarChilds[1].childViewControllers.first as? ActivitiesViewController {
+                let firstActivity = activitiesVC.service.activities.first!
+                activitiesVC.loadRemoteSettingsFor(activity: firstActivity, forRow: 0)
+            }
         }
     }
     

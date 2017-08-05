@@ -39,6 +39,7 @@ struct Const {
         static let colorIdApartCondition = 2
         static let itemDistanceApartCondition = 1
         static let itemDistanceFurtherApartCondition = 2...3
+        static let searchActivityCount = 5
     }
 }
 
@@ -47,7 +48,6 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultWasUploaded
-    case attemptNumber
     case firstActivityDate
     case isParticipantGroupAssigned
     case participantGivenName
