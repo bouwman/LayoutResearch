@@ -130,15 +130,21 @@ class ActivitiesViewController: UITableViewController {
     // MARK: - Private
     
     func start(activity: StudyActivity) {
-        let studyService = StudyService(settings: settings, activityNumber: activity.number)
-        let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
-        let taskVC = ORKTaskViewController(task: task, taskRun: nil)
-        
-        taskVC.delegate = self
-        
-        service.activeActivity = activity
-        
-        present(taskVC, animated: true, completion: nil)
+        switch activity.type {
+        case .searchIcons:
+            let studyService = StudyService(settings: settings, activityNumber: activity.number)
+            let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
+            let taskVC = ORKTaskViewController(task: task, taskRun: nil)
+            
+            taskVC.delegate = self
+            
+            service.activeActivity = activity
+            
+            present(taskVC, animated: true, completion: nil)
+        case .survey:
+            // TODO add survey
+            break
+        }
     }
     
     func loadRemoteSettingsFor(activity: StudyActivity, forRow row: Int) {
