@@ -48,7 +48,8 @@ enum SettingsString: String {
     case isParticipating
     case consentPath
     case resultWasUploaded
-    case firstActivityDate
+    case lastActivityCompletionDate
+    case lastActivityNumber
     case isParticipantGroupAssigned
     case participantGivenName
     case participantFamilyName

@@ -85,7 +85,11 @@ class ActivitiesViewController: UITableViewController {
         for (i, activity) in service.activities.enumerated() {
             if activity.daysRemaining <= 0 && activity.timeRemaining > 0 {
                 indexPathToReload.append(IndexPath(row: i, section: 0))
-            } else if activity.timeRemaining < 0.5 && activity.timeRemaining > -0.5 {
+            } else if activity.timeRemaining < 1 && activity.timeRemaining > -1 {
+                if activity.number > (service.lastActivityNumber ?? 0) + 1 {
+                    let oneDayBack = Calendar.current.date(byAdding: .day, value: -1, to: Date(), wrappingComponents: false)!
+                    service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
+                }
                 updateAllActivities()
             }
         }
@@ -161,6 +165,9 @@ class ActivitiesViewController: UITableViewController {
         case .survey:
             // TODO add survey
             break
+        case .reward:
+            // TODO add email
+            break
         }
     }
     
@@ -224,6 +231,10 @@ class ActivitiesViewController: UITableViewController {
         application.registerForRemoteNotifications()
     }
     
+    private func createNewNotificationFor(activity: StudyActivity) {
+        
+    }
+    
     // MARK: - Navigation
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -264,15 +275,16 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             service.resultService.saveResultToCSV(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
-            
             // Reset after completion of every task
             service.remoteDataService.setIsResultUploadedFor(resultNumber: activity.number, isResultUploaded: false)
-            service.activeActivity = nil
             
             // Recreate activities to suite current data
-            if activity.number == 0 {
-                service.dateFirstStarted = Date()
-            }
+            service.lastActivityNumber = activity.number
+            service.setLastActivityDate(Date(), forActivityNumber: activity.number)
+            service.activeActivity = nil
+            
+            // Create reminder
+            createNewNotificationFor(activity: activity)
             
             updateAllActivities()
             

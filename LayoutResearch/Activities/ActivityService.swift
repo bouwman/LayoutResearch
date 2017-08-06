@@ -9,31 +9,45 @@
 import UIKit
 
 class ActivitiesService {
-    var dateFirstStarted: Date {
-        didSet {
-            UserDefaults.standard.set(dateFirstStarted.timeIntervalSinceReferenceDate, forKey: SettingsString.firstActivityDate.rawValue)
-            activities = ActivitiesService.createActivitiesBasedOnDateOfFirstActivity(date: dateFirstStarted, extraDay: 0)
-        }
-    }
-    
     var activities: [StudyActivity]
     var resultService = ResultService()
     var remoteDataService = RemoteDataService()
+    var activeActivity: StudyActivity?
     
     init() {
-        let savedDateOptional = resultService.fileService.firstActivityCompletionDate
-        var extraDay = 0
-        if let savedDate = savedDateOptional {
-            dateFirstStarted = savedDate
-        } else {
-            dateFirstStarted = Date()
-            extraDay = 1
+        let timeInterval = UserDefaults.standard.double(forKey: SettingsString.lastActivityCompletionDate.rawValue)
+        var date = timeInterval == 0 ? Date() : Date(timeIntervalSinceReferenceDate: timeInterval)
+        let number = UserDefaults.standard.object(forKey: SettingsString.lastActivityNumber.rawValue) as? Int
+
+        // Make sure later activities don't become available, if last activity is older than 24 h
+        let oneDayBack = Calendar.current.date(byAdding: .day, value: -1, to: Date(), wrappingComponents: false)!
+        if date < oneDayBack {
+            date = oneDayBack
         }
         
-        activities = ActivitiesService.createActivitiesBasedOnDateOfFirstActivity(date: dateFirstStarted, extraDay: extraDay)
+        activities = ActivitiesService.createActivitiesBasedOnLastActivityDate(lastDate: date, activityNumber: number)
     }
     
-    var activeActivity: StudyActivity?
+    var lastActivityDate: Date {
+        get {
+            let timeInterval = UserDefaults.standard.double(forKey: SettingsString.lastActivityCompletionDate.rawValue)
+            return timeInterval == 0 ? Date() : Date(timeIntervalSinceReferenceDate: timeInterval)
+        }
+    }
+    
+    func setLastActivityDate(_ date: Date, forActivityNumber number: Int?) {
+        UserDefaults.standard.set(date.timeIntervalSinceReferenceDate, forKey: SettingsString.lastActivityCompletionDate.rawValue)
+        activities = ActivitiesService.createActivitiesBasedOnLastActivityDate(lastDate: date, activityNumber: number)
+    }
+    
+    var lastActivityNumber: Int? {
+        get {
+            return UserDefaults.standard.object(forKey: SettingsString.lastActivityNumber.rawValue) as? Int
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: SettingsString.lastActivityNumber.rawValue)
+        }
+    }
     
     var isParticipantGroupAssigned: Bool {
         set {
@@ -44,12 +58,27 @@ class ActivitiesService {
         }
     }
     
-    static func createActivitiesBasedOnDateOfFirstActivity(date: Date, extraDay: Int) -> [StudyActivity] {
-        return [StudyActivity(startDate: date, number: 0, type: .search),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 1 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .search),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 2 + extraDay, to: date, wrappingComponents: false)!, number: 2, type: .search),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 3 + extraDay, to: date, wrappingComponents: false)!, number: 3, type: .search),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 4, type: .search),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .survey)]
+    static func createActivitiesBasedOnLastActivityDate(lastDate: Date, activityNumber: Int?) -> [StudyActivity] {
+        let extraDay = activityNumber == nil ? 1 : 0
+        let number = activityNumber ?? 0
+        var activities: [StudyActivity] = []
+        
+        for i in 0..<Const.StudyParameters.searchActivityCount {
+            let activity: StudyActivity
+            if i <= number {
+                activity = StudyActivity(startDate: lastDate, number: i, type: .search)
+            } else {
+                activity = StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: i - number + extraDay, to: lastDate, wrappingComponents: false)!, number: i, type: .search)
+            }
+            activities.append(activity)
+        }
+        
+        // Survey
+        activities.append(StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: activities.count + extraDay, to: lastDate, wrappingComponents: false)!, number: activities.count, type: .survey))
+        
+        // Reward
+        activities.append(StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: activities.count + extraDay, to: lastDate, wrappingComponents: false)!, number: activities.count + 1, type: .reward))
+        
+        return activities
     }
 }
