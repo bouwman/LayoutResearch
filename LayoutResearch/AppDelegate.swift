@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UserNotifications
 import CloudKit
 
 @UIApplicationMain
@@ -18,7 +17,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         checkAppUpgrade()
-        registerNotifications(application)
         
         // Load remote settings if settings changed while app was terminated
         if let options: NSDictionary = launchOptions as NSDictionary? {
@@ -98,18 +96,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UserDefaults.standard.set(currentVersion, forKey: SettingsString.versionOfLastRun.rawValue)
         UserDefaults.standard.synchronize()
-    }
-    
-    private func registerNotifications(_ application: UIApplication) {
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
-                // Handle Error
-            })
-        } else if #available(iOS 9.0, *){
-            let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
-            application.registerUserNotificationSettings(settings)
-        }
-        application.registerForRemoteNotifications()
     }
 }
 

@@ -10,7 +10,11 @@ import UIKit
 import GameplayKit
 
 enum ActivityType {
-    case searchIcons, survey
+    case search, survey
+    
+    var iconName: String {
+        return "activity " + String(describing: self)
+    }
 }
 
 class StudyActivity {
@@ -55,7 +59,7 @@ class StudyActivity {
     
     var description: String {
         switch type {
-        case .searchIcons:
+        case .search:
             return "Search task"
         case .survey:
             return "Survey"

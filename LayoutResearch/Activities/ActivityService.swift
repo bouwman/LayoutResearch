@@ -45,11 +45,11 @@ class ActivitiesService {
     }
     
     static func createActivitiesBasedOnDateOfFirstActivity(date: Date, extraDay: Int) -> [StudyActivity] {
-        return [StudyActivity(startDate: date, number: 0, type: .searchIcons),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 1 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .searchIcons),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 2 + extraDay, to: date, wrappingComponents: false)!, number: 2, type: .searchIcons),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 3 + extraDay, to: date, wrappingComponents: false)!, number: 3, type: .searchIcons),
-                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 4, type: .searchIcons),
+        return [StudyActivity(startDate: date, number: 0, type: .search),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 1 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .search),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 2 + extraDay, to: date, wrappingComponents: false)!, number: 2, type: .search),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 3 + extraDay, to: date, wrappingComponents: false)!, number: 3, type: .search),
+                StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 4, type: .search),
                 StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: 4 + extraDay, to: date, wrappingComponents: false)!, number: 1, type: .survey)]
     }
 }

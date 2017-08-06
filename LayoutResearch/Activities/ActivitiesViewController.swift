@@ -9,6 +9,7 @@
 import UIKit
 import GameplayKit
 import ResearchKit
+import UserNotifications
 
 class ActivitiesViewController: UITableViewController {
     var service = ActivitiesService()
@@ -19,13 +20,26 @@ class ActivitiesViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Large title for iOS 11
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+        
+        // Self sizing cells
         tableView.estimatedRowHeight = 70
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Pull to refresh
         refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
         
+        // Load local settings
         settings = loadLocalSettings()
         
+        // Update activities
         updateAllActivities()
+        
+        // Register for notifications
+        registerNotifications()
     }
     
     private func updateAllActivities() {
@@ -71,6 +85,8 @@ class ActivitiesViewController: UITableViewController {
         for (i, activity) in service.activities.enumerated() {
             if activity.daysRemaining <= 0 && activity.timeRemaining > 0 {
                 indexPathToReload.append(IndexPath(row: i, section: 0))
+            } else if activity.timeRemaining < 0.5 && activity.timeRemaining > -0.5 {
+                updateAllActivities()
             }
         }
         
@@ -99,6 +115,7 @@ class ActivitiesViewController: UITableViewController {
         cell.isUserInteractionEnabled = activity.isStartable
         cell.titleLabel?.text = activity.description
         cell.detailLabel?.text = activity.isStartable ? "" : activity.timeRemainingString
+        cell.icon.image = UIImage(named: activity.type.iconName)
         
         if let cellState = activity.stateMachine.currentState as? ActivityState {
             cellState.activityCell = cell
@@ -131,7 +148,7 @@ class ActivitiesViewController: UITableViewController {
     
     func start(activity: StudyActivity) {
         switch activity.type {
-        case .searchIcons:
+        case .search:
             let studyService = StudyService(settings: settings, activityNumber: activity.number)
             let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
             let taskVC = ORKTaskViewController(task: task, taskRun: nil)
@@ -194,8 +211,17 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
-        // Settings vc gets dismissed
+    private func registerNotifications() {
+        let application = UIApplication.shared
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
+                // Handle Error
+            })
+        } else if #available(iOS 9.0, *){
+            let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
+            application.registerUserNotificationSettings(settings)
+        }
+        application.registerForRemoteNotifications()
     }
     
     // MARK: - Navigation
@@ -209,6 +235,9 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
+    @IBAction func unwindToStudy(_ segue: UIStoryboardSegue) {
+        // Settings vc gets dismissed
+    }
 }
 
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
