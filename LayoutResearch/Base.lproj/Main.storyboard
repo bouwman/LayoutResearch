@@ -431,7 +431,7 @@
                                             <rect key="frame" x="20" y="20" width="30" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="2we-TP-yOL" secondAttribute="height" multiplier="1:1" id="KOg-RH-yKq"/>
-                                                <constraint firstAttribute="height" constant="30" id="yB7-Ls-S9s"/>
+                                                <constraint firstAttribute="height" priority="999" constant="30" id="yB7-Ls-S9s"/>
                                             </constraints>
                                         </imageView>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ujq-C5-8v4">
