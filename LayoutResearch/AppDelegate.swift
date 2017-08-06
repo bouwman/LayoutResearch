@@ -8,12 +8,12 @@
 
 import UIKit
 import CloudKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         checkAppUpgrade()
@@ -43,12 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         
-        if let tabbarChilds = window?.rootViewController?.childViewControllers.first?.childViewControllers, tabbarChilds.count > 1 {
-            if let activitiesVC = tabbarChilds[1].childViewControllers.first as? ActivitiesViewController {
-                let firstActivity = activitiesVC.service.activities.first!
-                activitiesVC.loadRemoteSettingsFor(activity: firstActivity, forRow: 0)
-            }
-        }
+        // Clear badges
+        application.applicationIconBadgeNumber = 0
+        
+        // Reload remote settings
+        reloadRemoteSettings()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -59,16 +58,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
-        if let _ = notification as? CKQueryNotification {
-            if let activitiesVC = window?.rootViewController?.childViewControllers.first?.childViewControllers[1].childViewControllers.first as? ActivitiesViewController {
-                let firstActivity = activitiesVC.service.activities.first!
-                activitiesVC.loadRemoteSettingsFor(activity: firstActivity, forRow: 0)
+    // MARK: - Helper
+    
+    var activitiesViewController: ActivitiesViewController? {
+        if let tabbarChilds = window?.rootViewController?.childViewControllers.first?.childViewControllers, tabbarChilds.count > 1 {
+            if let activitiesVC = tabbarChilds[1].childViewControllers.first as? ActivitiesViewController {
+                return activitiesVC
             }
         }
+        return nil
     }
-
+    
+    func reloadRemoteSettings() {
+        if let firstActivity = activitiesViewController?.service.activities.first {
+            activitiesViewController?.loadRemoteSettingsFor(activity: firstActivity, forRow: 0)
+        }
+    }
+    
     func checkAppUpgrade() {
         let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String
         let versionOfLastRun = UserDefaults.standard.string(forKey: SettingsString.versionOfLastRun.rawValue)
@@ -78,14 +84,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } else if versionOfLastRun != currentVersion {
             // App was updated since last run
             // Reset settings
-            let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
-            let settings: StudySettings
-            if let participant = participantOptional {
-                settings = StudySettings.defaultSettingsForParticipant(participant)
-            } else {
-                settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
-            }
-            settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
+            //            let participantOptional = UserDefaults.standard.string(forKey: SettingsString.participantIdentifier.rawValue)
+            //            let settings: StudySettings
+            //            if let participant = participantOptional {
+            //                settings = StudySettings.defaultSettingsForParticipant(participant)
+            //            } else {
+            //                settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
+            //            }
+            //            settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
         } else {
             // nothing changed
         }
@@ -93,5 +99,40 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UserDefaults.standard.set(currentVersion, forKey: SettingsString.versionOfLastRun.rawValue)
         UserDefaults.standard.synchronize()
     }
+    
+    // MARK: - Notification
+    
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let notification = CKNotification(fromRemoteNotificationDictionary: userInfo)
+        
+        if let _ = notification as? CKQueryNotification {
+            // Reload remote settings
+            reloadRemoteSettings()
+        }
+    }
 }
 
+@available(iOS 10.0, *)
+class NotificationHandler: NSObject, UNUserNotificationCenterDelegate {
+    static let sharedInstance = NotificationHandler()
+    private override init() {}
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // Reset badge
+        UIApplication.shared.applicationIconBadgeNumber = 0
+        
+        // Show no alert when app open
+        completionHandler([])
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        switch response.actionIdentifier {
+        case UNNotificationDismissActionIdentifier:
+            completionHandler()
+        case UNNotificationDefaultActionIdentifier: // App was opened from notification
+            completionHandler()
+        default:
+            completionHandler()
+        }
+    }
+}

@@ -17,6 +17,8 @@ class ActivitiesViewController: UITableViewController {
     var timer: Timer?
     var triedLoadingSettings = false
     
+    // MARK: - Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -35,41 +37,27 @@ class ActivitiesViewController: UITableViewController {
         // Load local settings
         settings = loadLocalSettings()
         
-        // Update activities
-        updateAllActivities()
-        
         // Register for notifications
         registerNotifications()
     }
     
-    private func updateAllActivities() {
-        for (i, activity) in service.activities.enumerated() {
-            let isUploaded = service.remoteDataService.isResultUploaded(resultNumber: activity.number)
-            let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
-            
-            if resultExists {
-                if isUploaded {
-                    activity.stateMachine.enter(UploadCompleteState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                } else {
-                    uploadResultsOf(activity: activity, forRow: i)
-                }
-            } else {
-                if activity.timeRemaining <= 0 {
-                    if service.isParticipantGroupAssigned {
-                        activity.stateMachine.enter(DataAvailableState.self)
-                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                    } else {
-                        loadRemoteSettingsFor(activity: activity, forRow: i)
-                    }
-                } else {
-                    activity.stateMachine.enter(TimeRemainingState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                    
-                }
-            }
-        }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Update activities
+        updateAllActivities()
+        
+        // Create timer and update ui for time
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    // MARK: - IB actions
     
     @objc func handleRefresh(refreshControl: UIRefreshControl) {
         updateAllActivities()
@@ -80,34 +68,27 @@ class ActivitiesViewController: UITableViewController {
     }
     
     @objc func updateTimer() {
+        guard service.lastActivityNumber ?? 0 < service.activities.count else { return }
         var indexPathToReload: [IndexPath] = []
         
         for (i, activity) in service.activities.enumerated() {
-            if activity.daysRemaining <= 0 && activity.timeRemaining > 0 {
+            if activity.timeRemaining > 0 && activity.daysRemaining <= 0 {
                 indexPathToReload.append(IndexPath(row: i, section: 0))
-            } else if activity.timeRemaining < 1 && activity.timeRemaining > -1 {
-                if activity.number > (service.lastActivityNumber ?? 0) + 1 {
+            } else if activity.timeRemaining < 0 {
+                // Reset next row if countdown reaches 0 while other task is not completed
+                let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
+                if activity.number == nextOrSecondActivityNumber {
                     let oneDayBack = Calendar.current.date(byAdding: .day, value: -1, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
+                    updateAllActivities()
+                } else if let number = service.lastActivityNumber, activity.number == number {
+                    // Always update row of current activity
+                    indexPathToReload.append(IndexPath(row: i, section: 0))
                 }
-                updateAllActivities()
             }
         }
         
         tableView.reloadRows(at: indexPathToReload, with: .none)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        timer?.invalidate()
-        timer = nil
     }
 
     // MARK: - Table view
@@ -148,7 +129,7 @@ class ActivitiesViewController: UITableViewController {
         return nil
     }
     
-    // MARK: - Private
+    // MARK: - Helper
     
     func start(activity: StudyActivity) {
         switch activity.type {
@@ -171,7 +152,40 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
+    private func updateAllActivities() {
+        for (i, activity) in service.activities.enumerated() {
+            let isUploaded = service.remoteDataService.isResultUploaded(resultNumber: activity.number)
+            let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
+            
+            if resultExists {
+                if isUploaded {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else {
+                    uploadResultsOf(activity: activity, forRow: i)
+                }
+            } else {
+                if activity.timeRemaining <= 0 {
+                    if service.isParticipantGroupAssigned {
+                        activity.stateMachine.enter(DataAvailableState.self)
+                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    } else {
+                        loadRemoteSettingsFor(activity: activity, forRow: i)
+                    }
+                } else {
+                    activity.stateMachine.enter(TimeRemainingState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                }
+            }
+        }
+    }
+    
     func loadRemoteSettingsFor(activity: StudyActivity, forRow row: Int) {
+        guard service.isParticipantGroupAssigned == false else {
+            activity.stateMachine.enter(DataAvailableState.self)
+            return
+        }
+        
         activity.stateMachine.enter(RetrievingDataState.self)
         service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
@@ -185,7 +199,7 @@ class ActivitiesViewController: UITableViewController {
                 } else {
                     activity.stateMachine.enter(DataNotAvailableState.self)
                 }
-                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
                 if let userId = userId {
                     // Save user id locally
                     UserDefaults.standard.set(userId.recordName, forKey: SettingsString.icloudUserId.rawValue)
@@ -203,7 +217,7 @@ class ActivitiesViewController: UITableViewController {
                 } else {
                     activity.stateMachine.enter(UploadCompleteState.self)
                 }
-                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .automatic)
+                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
             }
         })
     }
@@ -222,17 +236,50 @@ class ActivitiesViewController: UITableViewController {
         let application = UIApplication.shared
         if #available(iOS 10.0, *) {
             UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
-                // Handle Error
+                if granted {
+                    DispatchQueue.main.async {
+                        application.registerForRemoteNotifications()
+                        UNUserNotificationCenter.current().delegate = NotificationHandler.sharedInstance
+                    }
+                }
             })
-        } else if #available(iOS 9.0, *){
+        } else if #available(iOS 9.0, *) {
             let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
             application.registerUserNotificationSettings(settings)
+            application.registerForRemoteNotifications()
         }
-        application.registerForRemoteNotifications()
     }
     
     private func createNewNotificationFor(activity: StudyActivity) {
+        guard activity.timeRemaining >= 0 else { return }
         
+        let title = "New activity available"
+        let body = "The next activity for the study is due. Please perform this activity within the next few hours."
+        
+        if #available(iOS 10.0, *) {
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.badge = 1
+            content.sound = UNNotificationSound.default()
+            
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: activity.timeRemaining, repeats: false)
+            let request = UNNotificationRequest(identifier: activity.identifier, content: content, trigger: trigger)
+            
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: { (error) in
+                // Does not matter if successful
+            })
+        } else {
+            let notification = UILocalNotification()
+            notification.fireDate = activity.startDate
+            notification.alertTitle = title
+            notification.alertBody = body
+            notification.applicationIconBadgeNumber = 1
+            notification.soundName = UILocalNotificationDefaultSoundName
+            
+            UIApplication.shared.scheduleLocalNotification(notification)
+        }
+
     }
     
     // MARK: - Navigation
@@ -250,6 +297,8 @@ class ActivitiesViewController: UITableViewController {
         // Settings vc gets dismissed
     }
 }
+
+// MARK: - ORKTaskViewControllerDelegate
 
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
@@ -312,6 +361,8 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
         }
     }
 }
+
+// MARK: - SettingsViewControllerDelegate
 
 extension ActivitiesViewController: SettingsViewControllerDelegate {
     func settingsViewController(viewController: SettingsViewController, didChangeSettings settings: StudySettings) {

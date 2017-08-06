@@ -71,4 +71,8 @@ class StudyActivity {
     var description: String {
         return type.title
     }
+    
+    var identifier: String {
+        return ("Activity \(number) " + description)
+    }
 }
