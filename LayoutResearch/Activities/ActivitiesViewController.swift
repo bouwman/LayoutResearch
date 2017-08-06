@@ -46,15 +46,14 @@ class ActivitiesViewController: UITableViewController {
         // Update activities
         updateAllActivities()
         
-        // Create timer and update ui for time
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
+        // Start timer
+        startUIUpdateTimer()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        timer?.invalidate()
-        timer = nil
+        stopUIUpateTimer()
     }
     
     // MARK: - IB actions
@@ -279,7 +278,16 @@ class ActivitiesViewController: UITableViewController {
             
             UIApplication.shared.scheduleLocalNotification(notification)
         }
-
+    }
+    
+    private func startUIUpdateTimer() {
+        // Create timer
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
+    }
+    
+    private func stopUIUpateTimer() {
+        timer?.invalidate()
+        timer = nil
     }
     
     // MARK: - Navigation
@@ -367,5 +375,17 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
 extension ActivitiesViewController: SettingsViewControllerDelegate {
     func settingsViewController(viewController: SettingsViewController, didChangeSettings settings: StudySettings) {
         self.settings = settings
+    }
+}
+
+// MARK: - UIScrollViewDelegate
+
+extension ActivitiesViewController {
+    override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        stopUIUpateTimer()
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        startUIUpdateTimer()
     }
 }
