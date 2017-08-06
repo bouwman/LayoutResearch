@@ -76,6 +76,6 @@ class SearchResult: ORKResult {
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
+        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",String(describing: distanceCondition ?? nil),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)"]
     }
 }
