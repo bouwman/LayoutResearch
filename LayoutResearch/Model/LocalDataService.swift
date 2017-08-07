@@ -31,8 +31,8 @@ class LocalDataService {
         return resultFileExists(resultNumber: resultNumber) ? nil : docURL.appendingPathComponent("result\(resultNumber).csv")
     }
     
-    var firstActivityCompletionDate: Date? {
-        let savedTime = UserDefaults.standard.double(forKey: SettingsString.firstActivityDate.rawValue)
+    var lastActivityCompletionDate: Date? {
+        let savedTime = UserDefaults.standard.double(forKey: SettingsString.lastActivityCompletionDate.rawValue)
         return savedTime == 0 ? nil : Date(timeIntervalSinceReferenceDate: savedTime)
     }
     

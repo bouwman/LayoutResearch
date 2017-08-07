@@ -66,7 +66,7 @@ class OnboardingViewController: UIViewController {
         notEligibleStep.text = "Thank you for your interest in our study. Unfortunately you are not eligible to take part in this study."
         
         let ageSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: ageItem.identifier)
-        let englishSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: ageItem.identifier)
+        let englishSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: englishItem.identifier)
         let agePredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: ageSelector, expectedAnswer: true)
         let englishPredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: englishSelector, expectedAnswer: true)
         let eligibilityRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [(agePredicate, reviewConsentStep.identifier), (englishPredicate, reviewConsentStep.identifier)], defaultStepIdentifierOrNil: notEligibleStep.identifier)

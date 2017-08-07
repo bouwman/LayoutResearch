@@ -53,6 +53,11 @@ class DashboardTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Large title for iOS 11
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        }
+        
         // Set the data source for each graph
         discreteGraph.dataSource = discreteGraphDataSource
         lineGraph.dataSource = lineGraphDataSource
@@ -81,6 +86,14 @@ class DashboardTableViewController: UITableViewController {
         if let animatableChart = animatableChartInCell(cell) {
             animatableChart.animateWithDuration(0.5)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return CGFloat.leastNormalMagnitude
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return nil
     }
     
     // MARK: Convenience

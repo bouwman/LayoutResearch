@@ -31,12 +31,4 @@ class ActivityCell: UITableViewCell {
             }
         }
     }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        if isUserInteractionEnabled {
-            icon.tintColor = tintColor
-        } else {
-            icon?.tintColor = UIColor.black
-        }
-    }
 }
