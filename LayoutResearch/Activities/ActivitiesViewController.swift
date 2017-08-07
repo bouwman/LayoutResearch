@@ -39,7 +39,6 @@ class ActivitiesViewController: UITableViewController {
         
         // Register for notifications
         registerNotifications()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -145,11 +144,12 @@ class ActivitiesViewController: UITableViewController {
             present(taskVC, animated: true, completion: nil)
         case .survey:
             service.surveyService.startSurvey(fromViewController: self, onSurveyCompletion: { (completed) in
-                // TODO: Make reward available
+                self.updateAllActivities()
             })
         case .reward:
-            // TODO add email
-            break
+            service.rewardService.startRewardTask(fromViewController: self, onCompletion: { (completed) in
+                self.updateAllActivities()
+            })
         }
     }
     
@@ -183,11 +183,23 @@ class ActivitiesViewController: UITableViewController {
             case .survey:
                 if service.remoteDataService.isSurveyResultUploaded {
                     activity.stateMachine.enter(UploadCompleteState.self)
-                } else {
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else if service.surveyService.preferredLayout != nil {
                     uploadResultsOf(activity: activity, forRow: i)
+                } else {
+                    activity.stateMachine.enter(TimeRemainingState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
                 }
             case .reward:
-                break
+                if service.remoteDataService.isParticipantsEmailUploaded {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else if service.rewardService.participantEmail != nil {
+                    uploadResultsOf(activity: activity, forRow: i)
+                } else {
+                    activity.stateMachine.enter(TimeRemainingState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                }
             }
         }
     }
@@ -226,32 +238,31 @@ class ActivitiesViewController: UITableViewController {
         switch activity.type {
         case .search:
             service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
-                DispatchQueue.main.async {
-                    if let _ = error {
-                        activity.stateMachine.enter(UploadFailedState.self)
-                    } else {
-                        activity.stateMachine.enter(UploadCompleteState.self)
-                    }
-                    self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
-                }
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
-            if let preferredLayout = UserDefaults.standard.string(forKey: SettingsString.preferredLayout.rawValue) {
+            if let preferredLayout = service.surveyService.preferredLayout {
                 service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, completion: { (error) in
-                    DispatchQueue.main.async {
-                        DispatchQueue.main.async {
-                            if let _ = error {
-                                activity.stateMachine.enter(UploadFailedState.self)
-                            } else {
-                                activity.stateMachine.enter(UploadCompleteState.self)
-                            }
-                            self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
-                        }
-                    }
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
                 })
             }
         case .reward:
-            break
+            if let email = service.rewardService.participantEmail {
+                service.remoteDataService.uploadEmail(participantsEmail: email, completion: { (error) in
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
+                })
+            }
+        }
+    }
+    
+    private func updateUploadStateOf(activity: StudyActivity, atRow row: Int, afterError error: Error?) {
+        DispatchQueue.main.async {
+            if let _ = error {
+                activity.stateMachine.enter(UploadFailedState.self)
+            } else {
+                activity.stateMachine.enter(UploadCompleteState.self)
+            }
+            self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
         }
     }
     

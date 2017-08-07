@@ -52,12 +52,14 @@ enum SettingsString: String {
     case consentPath
     case searchResultWasUploaded
     case surveyResultWasUploaded
+    case participantsEmailWasUploaded
     case lastActivityCompletionDate
     case lastActivityNumber
     case isParticipantGroupAssigned
     case preferredLayout
     case participantGivenName
     case participantFamilyName
+    case participantEmail
     case participantAge
     case icloudUserId
     case participantIdentifier

@@ -42,7 +42,7 @@ class StudyActivity {
     
     var isStartable: Bool {
         if type == .reward {
-            return isStudyCompleted
+            return isStudyCompleted && isRewardSignupComplete == false
         } else {
             return timeRemaining <= 0 && stateMachine.currentState is DataAvailableState
         }
@@ -50,6 +50,10 @@ class StudyActivity {
     
     var isStudyCompleted: Bool {
         return UserDefaults.standard.object(forKey: SettingsString.preferredLayout.rawValue) != nil
+    }
+    
+    var isRewardSignupComplete: Bool {
+        return UserDefaults.standard.object(forKey: SettingsString.participantEmail.rawValue) != nil
     }
     
     var daysRemaining: Int {

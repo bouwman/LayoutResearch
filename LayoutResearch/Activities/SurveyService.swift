@@ -12,6 +12,10 @@ import ResearchKit
 class SurveyService: NSObject {
     var surveyCompletion: ((Bool) -> ())?
     
+    var preferredLayout: String? {
+        return UserDefaults.standard.string(forKey: SettingsString.preferredLayout.rawValue)
+    }
+    
     func startSurvey(fromViewController: UIViewController, onSurveyCompletion completion: @escaping (Bool) -> ()) {
         surveyCompletion = completion
         
