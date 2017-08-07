@@ -26,6 +26,11 @@ private struct CloudRecords {
         static let user = "user"
         static let pdf = "pdf"
     }
+    struct SurveyResult {
+        static let typeName = "SurveyResult"
+        static let user = "user"
+        static let preferredLayout = "preferredLayout"
+    }
 }
 
 class RemoteDataService {
@@ -41,12 +46,21 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
         
-    func isResultUploaded(resultNumber: Int) -> Bool {
-        return UserDefaults.standard.bool(forKey: SettingsString.resultWasUploaded.rawValue + "\(resultNumber)")
+    func isSearchResultUploaded(resultNumber: Int) -> Bool {
+        return UserDefaults.standard.bool(forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
+    }
+    
+    var isSurveyResultUploaded: Bool {
+        set {
+            UserDefaults.standard.set(newValue, forKey: SettingsString.surveyResultWasUploaded.rawValue)
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: SettingsString.surveyResultWasUploaded.rawValue)
+        }
     }
     
     func setIsResultUploadedFor(resultNumber: Int, isResultUploaded: Bool) {
-        UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.resultWasUploaded.rawValue + "\(resultNumber)")
+        UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
     }
     
     func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
@@ -140,7 +154,7 @@ class RemoteDataService {
                 completion(errorUser)
                 return
             }
-            let consentRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
+            let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
             
             consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .deleteSelf)
             consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
@@ -150,6 +164,33 @@ class RemoteDataService {
             
             operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                 if let error = error {
+                    completion(error)
+                } else {
+                    completion(error)
+                }
+            }
+            
+            self.publicDB.add(operation)
+        }
+    }
+    
+    func uploadSurveyResult(preferredLayout: String, completion: @escaping (Error?) -> ()) {
+        container.fetchUserRecordID { (userId, errorUser) in
+            guard let userId = userId else {
+                completion(errorUser)
+                return
+            }
+            let surveyRecord = CKRecord(recordType: CloudRecords.SurveyResult.typeName)
+            
+            surveyRecord[CloudRecords.SurveyResult.user] = CKReference(recordID: userId, action: .deleteSelf)
+            surveyRecord[CloudRecords.SurveyResult.preferredLayout] = preferredLayout as NSString
+            
+            let operation = CKModifyRecordsOperation(recordsToSave: [surveyRecord], recordIDsToDelete: nil)
+            operation.qualityOfService = .userInitiated
+            
+            operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                if let error = error {
+                    self.isSurveyResultUploaded = true
                     completion(error)
                 } else {
                     completion(error)

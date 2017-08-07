@@ -30,6 +30,7 @@
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
 		4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */; };
 		479480681F2A9B0A002F1C47 /* LocalDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 479480671F2A9B0A002F1C47 /* LocalDataService.swift */; };
+		4799637C1F38898900C58EE6 /* SurveyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4799637B1F38898900C58EE6 /* SurveyService.swift */; };
 		47B307501F30F92300AF2795 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47B3074F1F30F92300AF2795 /* CloudKit.framework */; };
 		47B307521F310A1F00AF2795 /* RemoteDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B307511F310A1F00AF2795 /* RemoteDataService.swift */; };
 		47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */; };
@@ -79,6 +80,7 @@
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
 		4792C3AC1F29EBEE00D99BEA /* Settings.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		479480671F2A9B0A002F1C47 /* LocalDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataService.swift; sourceTree = "<group>"; };
+		4799637B1F38898900C58EE6 /* SurveyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyService.swift; sourceTree = "<group>"; };
 		47B3074E1F30F91D00AF2795 /* LayoutResearch.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LayoutResearch.entitlements; sourceTree = "<group>"; };
 		47B3074F1F30F92300AF2795 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		47B307511F310A1F00AF2795 /* RemoteDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteDataService.swift; sourceTree = "<group>"; };
@@ -260,6 +262,7 @@
 				47BAC75F1F34DFBB00ED54DD /* ActivityService.swift */,
 				47FE19BD1F34BFEE00344887 /* ActivityCell.swift */,
 				47C15EE11F35B50A0097D1CC /* StudyActivity.swift */,
+				4799637B1F38898900C58EE6 /* SurveyService.swift */,
 			);
 			path = Activities;
 			sourceTree = "<group>";
@@ -456,6 +459,7 @@
 				4764C4991F274B3E009AC457 /* SearchView.swift in Sources */,
 				4764C49B1F275269009AC457 /* SearchStep.swift in Sources */,
 				4764C4B21F275CE1009AC457 /* OnboardingViewController.swift in Sources */,
+				4799637C1F38898900C58EE6 /* SurveyService.swift in Sources */,
 				47B5C8D31F25519200EDF07C /* RoundedButton.swift in Sources */,
 				47DF756D1F27F5AA00A6FC52 /* SearchResult.swift in Sources */,
 			);

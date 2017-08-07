@@ -41,7 +41,15 @@ class StudyActivity {
     }
     
     var isStartable: Bool {
-        return timeRemaining <= 0 && stateMachine.currentState is DataAvailableState
+        if type == .reward {
+            return isStudyCompleted
+        } else {
+            return timeRemaining <= 0 && stateMachine.currentState is DataAvailableState
+        }
+    }
+    
+    var isStudyCompleted: Bool {
+        return UserDefaults.standard.object(forKey: SettingsString.preferredLayout.rawValue) != nil
     }
     
     var daysRemaining: Int {

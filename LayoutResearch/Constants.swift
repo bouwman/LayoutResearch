@@ -14,6 +14,7 @@ struct Const {
         static let eligibilityStep = "EligibilityStep"
         static let eligibilityItemAge = "EligibilityItemAge"
         static let visualConsentStep = "VisualConsentStep"
+        static let layoutSurveyStep = "LayoutSurveyStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
         static let activityCell = "ActivityCell"
@@ -49,10 +50,12 @@ enum SettingsString: String {
     case versionOfLastRun
     case isParticipating
     case consentPath
-    case resultWasUploaded
+    case searchResultWasUploaded
+    case surveyResultWasUploaded
     case lastActivityCompletionDate
     case lastActivityNumber
     case isParticipantGroupAssigned
+    case preferredLayout
     case participantGivenName
     case participantFamilyName
     case participantAge
@@ -71,6 +74,10 @@ enum SettingsString: String {
 }
 
 extension UIColor {
+    static func globalTint() -> UIColor {
+        return UIColor(rgbHex: 0xFF2D55)
+    }
+    
     static func searchColorFor(id: Int) -> UIColor {
         if #available(iOS 11.0, *) {
             return UIColor(named: "Color\(id)") ?? UIColor.black

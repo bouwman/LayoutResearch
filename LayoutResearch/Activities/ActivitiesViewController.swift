@@ -39,13 +39,14 @@ class ActivitiesViewController: UITableViewController {
         
         // Register for notifications
         registerNotifications()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // Update activities
         updateAllActivities()
-        
+
         // Start timer
         startUIUpdateTimer()
     }
@@ -143,8 +144,9 @@ class ActivitiesViewController: UITableViewController {
             
             present(taskVC, animated: true, completion: nil)
         case .survey:
-            // TODO add survey
-            break
+            service.surveyService.startSurvey(fromViewController: self, onSurveyCompletion: { (completed) in
+                // TODO: Make reward available
+            })
         case .reward:
             // TODO add email
             break
@@ -153,28 +155,39 @@ class ActivitiesViewController: UITableViewController {
     
     private func updateAllActivities() {
         for (i, activity) in service.activities.enumerated() {
-            let isUploaded = service.remoteDataService.isResultUploaded(resultNumber: activity.number)
-            let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
-            
-            if resultExists {
-                if isUploaded {
+            switch activity.type {
+            case .search:
+                let isUploaded = service.remoteDataService.isSearchResultUploaded(resultNumber: activity.number)
+                let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
+                
+                if resultExists {
+                    if isUploaded {
+                        activity.stateMachine.enter(UploadCompleteState.self)
+                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    } else {
+                        uploadResultsOf(activity: activity, forRow: i)
+                    }
+                } else {
+                    if activity.timeRemaining <= 0 {
+                        if service.isParticipantGroupAssigned {
+                            activity.stateMachine.enter(DataAvailableState.self)
+                            self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                        } else {
+                            loadRemoteSettingsFor(activity: activity, forRow: i)
+                        }
+                    } else {
+                        activity.stateMachine.enter(TimeRemainingState.self)
+                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    }
+                }
+            case .survey:
+                if service.remoteDataService.isSurveyResultUploaded {
                     activity.stateMachine.enter(UploadCompleteState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
                 } else {
                     uploadResultsOf(activity: activity, forRow: i)
                 }
-            } else {
-                if activity.timeRemaining <= 0 {
-                    if service.isParticipantGroupAssigned {
-                        activity.stateMachine.enter(DataAvailableState.self)
-                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                    } else {
-                        loadRemoteSettingsFor(activity: activity, forRow: i)
-                    }
-                } else {
-                    activity.stateMachine.enter(TimeRemainingState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                }
+            case .reward:
+                break
             }
         }
     }
@@ -209,16 +222,37 @@ class ActivitiesViewController: UITableViewController {
     
     func uploadResultsOf(activity: StudyActivity, forRow row: Int) {
         activity.stateMachine.enter(UploadingState.self)
-        service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
-            DispatchQueue.main.async {
-                if let _ = error {
-                    activity.stateMachine.enter(UploadFailedState.self)
-                } else {
-                    activity.stateMachine.enter(UploadCompleteState.self)
+        
+        switch activity.type {
+        case .search:
+            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+                DispatchQueue.main.async {
+                    if let _ = error {
+                        activity.stateMachine.enter(UploadFailedState.self)
+                    } else {
+                        activity.stateMachine.enter(UploadCompleteState.self)
+                    }
+                    self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
                 }
-                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+            })
+        case .survey:
+            if let preferredLayout = UserDefaults.standard.string(forKey: SettingsString.preferredLayout.rawValue) {
+                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, completion: { (error) in
+                    DispatchQueue.main.async {
+                        DispatchQueue.main.async {
+                            if let _ = error {
+                                activity.stateMachine.enter(UploadFailedState.self)
+                            } else {
+                                activity.stateMachine.enter(UploadCompleteState.self)
+                            }
+                            self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+                        }
+                    }
+                })
             }
-        })
+        case .reward:
+            break
+        }
     }
     
     private func loadLocalSettings() -> StudySettings {
@@ -329,7 +363,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
                 }
             }
             // Save results
-            service.resultService.saveResultToCSV(resultNumber: activity.number, results: searchResults)
+            service.resultService.saveSearchResultToCSV(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
             // Reset after completion of every task

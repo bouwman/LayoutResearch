@@ -10,8 +10,9 @@ import UIKit
 
 class ActivitiesService {
     var activities: [StudyActivity]
-    var resultService = ResultService()
-    var remoteDataService = RemoteDataService()
+    let resultService = ResultService()
+    let remoteDataService = RemoteDataService()
+    let surveyService = SurveyService()
     var activeActivity: StudyActivity?
     
     init() {
