@@ -11,6 +11,8 @@ import UIKit
 struct Const {
     struct Identifiers {
         static let consetReviewStep = "ConsentReviewStep"
+        static let eligibilityStep = "EligibilityStep"
+        static let eligibilityItemAge = "EligibilityItemAge"
         static let visualConsentStep = "VisualConsentStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
@@ -53,6 +55,7 @@ enum SettingsString: String {
     case isParticipantGroupAssigned
     case participantGivenName
     case participantFamilyName
+    case participantAge
     case icloudUserId
     case participantIdentifier
     case participantGroup
