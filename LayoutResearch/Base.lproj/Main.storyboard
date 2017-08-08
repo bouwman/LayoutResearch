@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
+        <deployment version="4144" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,11 +15,14 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ContainerViewController" customModule="LayoutResearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="eHQ-zy-ocG"/>
+                        <viewControllerLayoutGuide type="bottom" id="FUb-cz-w36"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <segue destination="hJg-ZS-8wg" kind="custom" identifier="toOnboarding" customClass="ReplaceSegue" customModule="LayoutResearch" customModuleProvider="target" id="jCt-me-5U2"/>
@@ -59,7 +61,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to the study on visual search in circular icon arrangments." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Apg-Yr-kvY">
-                                <rect key="frame" x="18.5" y="189" width="338" height="49"/>
+                                <rect key="frame" x="31.5" y="172.5" width="312" height="82.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="Wp5-QZ-ryp"/>
                                 </constraints>
@@ -76,20 +78,19 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Apg-Yr-kvY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="18" id="20U-2d-7lw"/>
+                            <constraint firstItem="Apg-Yr-kvY" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1K4-Pt-nkY" secondAttribute="leading" constant="18" id="20U-2d-7lw"/>
                             <constraint firstItem="Apg-Yr-kvY" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="2Ta-yp-iaG"/>
-                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Tip-Na-0lu" secondAttribute="trailing" constant="92" id="6aR-8e-Di8"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Tip-Na-0lu" secondAttribute="trailing" constant="92" id="6aR-8e-Di8"/>
                             <constraint firstItem="nOP-j7-bah" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="CHy-y0-mgM"/>
                             <constraint firstItem="Apg-Yr-kvY" firstAttribute="centerY" secondItem="1K4-Pt-nkY" secondAttribute="centerY" constant="-120" id="DcO-wi-zPs"/>
                             <constraint firstItem="Tip-Na-0lu" firstAttribute="centerX" secondItem="1K4-Pt-nkY" secondAttribute="centerX" id="IzD-9y-mTe"/>
-                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nOP-j7-bah" secondAttribute="trailing" constant="50" id="Kwe-TE-c2z"/>
-                            <constraint firstItem="sJO-yB-Pr9" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Apg-Yr-kvY" secondAttribute="trailing" constant="18" id="Sss-ae-BLa"/>
-                            <constraint firstItem="Tip-Na-0lu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="92" id="eUJ-za-YR4"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nOP-j7-bah" secondAttribute="trailing" constant="50" id="Kwe-TE-c2z"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Apg-Yr-kvY" secondAttribute="trailing" constant="18" id="Sss-ae-BLa"/>
+                            <constraint firstItem="Tip-Na-0lu" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1K4-Pt-nkY" secondAttribute="leading" constant="92" id="eUJ-za-YR4"/>
                             <constraint firstItem="Tip-Na-0lu" firstAttribute="top" secondItem="nOP-j7-bah" secondAttribute="bottom" constant="-38" id="mMv-kp-4F9"/>
-                            <constraint firstItem="nOP-j7-bah" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="sJO-yB-Pr9" secondAttribute="leading" constant="50" id="nU2-aI-lHI"/>
+                            <constraint firstItem="nOP-j7-bah" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="1K4-Pt-nkY" secondAttribute="leading" constant="50" id="nU2-aI-lHI"/>
                             <constraint firstItem="nOP-j7-bah" firstAttribute="centerY" secondItem="1K4-Pt-nkY" secondAttribute="centerY" id="sH6-N0-Jr6"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="sJO-yB-Pr9"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zml-nD-7pV" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -109,7 +110,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The study aims to explore how different layouts affect search performance." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m5t-Rx-DJb">
-                                <rect key="frame" x="54" y="176.5" width="267.5" height="74"/>
+                                <rect key="frame" x="35" y="172.5" width="305.5" height="82.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="FuS-e8-Qwx"/>
                                 </constraints>
@@ -128,14 +129,13 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="liS-5E-Tt1" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="m5t-Rx-DJb" secondAttribute="trailing" constant="18" id="BmQ-XI-zGO"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="m5t-Rx-DJb" secondAttribute="trailing" constant="18" id="BmQ-XI-zGO"/>
                             <constraint firstItem="VrR-Tk-N3S" firstAttribute="centerX" secondItem="vRc-Kw-8w8" secondAttribute="centerX" id="Ffb-bG-WMn"/>
                             <constraint firstItem="m5t-Rx-DJb" firstAttribute="centerY" secondItem="vRc-Kw-8w8" secondAttribute="centerY" constant="-120" id="GcQ-xH-DS2"/>
-                            <constraint firstItem="m5t-Rx-DJb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="liS-5E-Tt1" secondAttribute="leading" constant="18" id="PK5-rZ-9dG"/>
+                            <constraint firstItem="m5t-Rx-DJb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vRc-Kw-8w8" secondAttribute="leading" constant="18" id="PK5-rZ-9dG"/>
                             <constraint firstItem="VrR-Tk-N3S" firstAttribute="centerY" secondItem="vRc-Kw-8w8" secondAttribute="centerY" constant="60" id="RPw-YG-FmJ"/>
                             <constraint firstItem="m5t-Rx-DJb" firstAttribute="centerX" secondItem="vRc-Kw-8w8" secondAttribute="centerX" id="izc-2e-xas"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="liS-5E-Tt1"/>
                     </view>
                     <connections>
                         <outlet property="centerView" destination="VrR-Tk-N3S" id="ADc-yQ-zPS"/>
@@ -159,7 +159,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Press the join button to learn more about the study and fill in the consent form." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faO-I8-psF">
-                                <rect key="frame" x="23.5" y="176.5" width="328.5" height="74"/>
+                                <rect key="frame" x="19" y="172.5" width="338" height="82.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="I4Z-Lh-c0U"/>
                                 </constraints>
@@ -170,12 +170,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="faO-I8-psF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Wjx-wP-OGu" secondAttribute="leading" constant="18" id="cR7-nx-o51"/>
+                            <constraint firstItem="faO-I8-psF" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aAe-EP-sN7" secondAttribute="leading" constant="18" id="cR7-nx-o51"/>
                             <constraint firstItem="faO-I8-psF" firstAttribute="centerX" secondItem="aAe-EP-sN7" secondAttribute="centerX" id="uwD-cQ-wsZ"/>
-                            <constraint firstItem="Wjx-wP-OGu" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="faO-I8-psF" secondAttribute="trailing" constant="18" id="y23-CI-u9H"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="faO-I8-psF" secondAttribute="trailing" constant="18" id="y23-CI-u9H"/>
                             <constraint firstItem="faO-I8-psF" firstAttribute="centerY" secondItem="aAe-EP-sN7" secondAttribute="centerY" constant="-120" id="zSW-G0-YrU"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Wjx-wP-OGu"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3wa-Ad-fKn" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -186,12 +185,16 @@
         <scene sceneID="aAM-ON-S5C">
             <objects>
                 <viewController id="ERw-Rd-WPJ" customClass="RemoteErrorViewController" customModule="LayoutResearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QDp-Dx-2pu"/>
+                        <viewControllerLayoutGuide type="bottom" id="pVw-Eu-DSr"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Jyy-28-80P">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The app can only be used when signed into iCloud. Go to settings, enable iCloud and press the try again button." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biq-Fh-vlt">
-                                <rect key="frame" x="18" y="296.5" width="339" height="74"/>
+                                <rect key="frame" x="19" y="278.5" width="337" height="110.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="339" id="poQ-LL-s1y"/>
                                 </constraints>
@@ -200,14 +203,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dUu-iD-fWE">
-                                <rect key="frame" x="155.5" y="432.5" width="63" height="30"/>
+                                <rect key="frame" x="155.5" y="451" width="63" height="30"/>
                                 <state key="normal" title="Try again"/>
                                 <connections>
                                     <action selector="didPressTryAgainButton:" destination="ERw-Rd-WPJ" eventType="touchUpInside" id="Ve0-TZ-Bzs"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lTh-oe-wjt">
-                                <rect key="frame" x="152" y="155.5" width="71" height="91"/>
+                                <rect key="frame" x="152" y="137.5" width="71" height="91"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="66"/>
                                 <state key="normal" title="⚠️"/>
                             </button>
@@ -223,7 +226,6 @@
                             <constraint firstItem="dUu-iD-fWE" firstAttribute="centerX" secondItem="biq-Fh-vlt" secondAttribute="centerX" id="lLe-g8-K7m"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="biq-Fh-vlt" secondAttribute="trailing" constant="18" id="wvr-eq-Wk3"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="nR0-ni-aNB"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fkw-QM-AXW" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -273,12 +275,11 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="07M-Of-OE8" secondAttribute="trailing" id="0mU-yS-fyy"/>
                             <constraint firstItem="9kc-Vl-bvF" firstAttribute="centerX" secondItem="x97-Fk-3WO" secondAttribute="centerX" id="R2y-dt-Oym"/>
-                            <constraint firstItem="07M-Of-OE8" firstAttribute="top" secondItem="jhe-5g-77N" secondAttribute="top" constant="67.5" id="dnL-BL-gUP"/>
+                            <constraint firstItem="07M-Of-OE8" firstAttribute="top" secondItem="aRs-gA-bg7" secondAttribute="bottom" constant="67.5" id="an6-84-DYe"/>
                             <constraint firstItem="9kc-Vl-bvF" firstAttribute="top" secondItem="07M-Of-OE8" secondAttribute="bottom" constant="8" id="hTy-36-Ydy"/>
                             <constraint firstItem="07M-Of-OE8" firstAttribute="leading" secondItem="x97-Fk-3WO" secondAttribute="leading" id="nXM-ZQ-qz6"/>
                             <constraint firstItem="lao-kj-YZt" firstAttribute="top" secondItem="9kc-Vl-bvF" secondAttribute="bottom" constant="20" id="pxB-x8-pbf"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="jhe-5g-77N"/>
                     </view>
                     <connections>
                         <segue destination="IFZ-fO-j6a" kind="unwind" identifier="unwindToStudy" unwindAction="unwindToStudy:" id="DFp-9N-632"/>
@@ -477,7 +478,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="bzk-cj-OlU">
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="bzk-cj-OlU">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </refreshControl>
@@ -538,7 +539,7 @@
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOh-uW-dOd">
-                                    <rect key="frame" x="104" y="41.5" width="251" height="24"/>
+                                    <rect key="frame" x="104" y="40.5" width="251" height="26.5"/>
                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -567,8 +568,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="48.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dGg-bc-5Wy">
-                                            <rect key="frame" x="16" y="0.0" width="344" height="48.5"/>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dGg-bc-5Wy">
+                                            <rect key="frame" x="15" y="0.0" width="345" height="48.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                             <nil key="textColor"/>
@@ -628,7 +629,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="0fB-0N-Lnf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -651,7 +652,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="aGA-pq-KtT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -674,7 +675,7 @@
                     </tabBarItem>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="THj-ks-HBy">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

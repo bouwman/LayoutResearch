@@ -210,8 +210,8 @@ class SearchStepViewController: ORKActiveStepViewController {
             }
         }
         
-        let rowDistance = shortestRowDistance <= searchItems.count ? shortestRowDistance : nil
-        let columnDistance = shortestColumnDistance <= searchItems.first!.count ? shortestColumnDistance : nil
+        let rowDistance: Int? = shortestRowDistance <= searchItems.count ? shortestRowDistance : nil
+        let columnDistance: Int? = shortestColumnDistance <= searchItems.first!.count ? shortestColumnDistance : nil
         
         return (shortestDistance, rowDistance , columnDistance, closeNeighboursCount)
     }
