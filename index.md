@@ -1,6 +1,6 @@
-
-# Icon Layout Study
-
+---
+title: Icon Layout Study
+---
 Welcome to the visual search study on 'The Effect of Icon Arrangements in Circular Layouts' at the University College London.
 
 To enroll in our study download the Layout Research app on the App Store®.
@@ -21,7 +21,7 @@ You can participate in the study if you meet all of the following requirements:
 * you are 18 years old or older
 * you can read and understand English in order to provide informed consent and follow instructions
 
-## What Happens to Your Data
+## What Happens to Your Data?
 
 Only UCL researchers will analyse these data. With your permission, we may want to use this data for teaching, conferences, presentations, publications, and/or thesis work.
 
@@ -37,6 +37,12 @@ Feel free to use this code to create your own study.
 
 The app is mainly build around Apple's ResearchKit framework. For further details and documentation visit
 https://github.com/ResearchKit/ResearchKit
+
+# Support
+
+If you encounter any issues or have questions regarding the app, please [create a new issue on the github page](https://github.com/bouwman/LayoutResearch/issues).
+
+For topics regarding the study or any privacy issues, please contact support@layoutresearch.org.
 
 # Privacy
 
