@@ -45,7 +45,7 @@ class ActivitiesViewController: UITableViewController {
         super.viewWillAppear(animated)
         // Update activities
         updateAllActivities()
-        start(activity: service.activities.last!)
+        
         // Start timer
         startUIUpdateTimer()
     }

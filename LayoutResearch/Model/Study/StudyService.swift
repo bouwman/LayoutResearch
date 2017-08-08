@@ -89,9 +89,19 @@ class StudyService {
         for (i, layout) in layouts.enumerated() {
             // Not add layout intro after intro
             if i != 0 {
+                // Take a break
+                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
+                waitStep.title = "Break"
+                waitStep.text = "Take a short break before you continue."
+                waitStep.stepDuration = 15
+                waitStep.shouldStartTimerAutomatically = true
+                waitStep.shouldShowDefaultTimer = true
+                steps.append(waitStep)
+                
+                // Introduce new layout
                 let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
                 newLayoutStep.title = "New Layout"
-                newLayoutStep.text = "The next layout will be different"
+                newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
             }
             // Different target order for every layout
@@ -198,7 +208,7 @@ class StudyService {
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice, activityNumber: activityNumber)
         
         descriptionStep.title = "Search"
-        descriptionStep.text = "Find this item in the next layout as quickly as possible"
+        descriptionStep.text = "Find this item as quickly as possible."
         
         steps.append(descriptionStep)
         steps.append(searchStep)
