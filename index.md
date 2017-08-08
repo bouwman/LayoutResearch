@@ -1,3 +1,8 @@
+---
+layout: default
+title: Icon Layout Study
+---
+
 # Icon Layout Study
 
 This app lets users participate in visual search study at the University College London.
