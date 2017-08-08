@@ -1,6 +1,5 @@
----
-title: Icon Layout Study
----
+# Icon Layout Study
+
 Welcome to the visual search study on 'The Effect of Icon Arrangements in Circular Layouts' at the University College London.
 
 To enroll in our study download the Layout Research app on the App Store®.
