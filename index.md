@@ -25,7 +25,7 @@ Only UCL researchers will analyse these data. With your permission, we may want 
 
 All data will be handled according to the Data Protection Act 1998 and will be kept anonymous.
 
-Read our privacy policy for the Layout Research app.
+Read our [privacy policy](https://bouwman.github.io/layoutresearch/privacy/) for the Layout Research app.
 
 ## Study Investigators
 
