@@ -62,13 +62,13 @@ class StudyService {
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
-        introStep.text = "Try to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select an item you are taken to the next trial. There is no chance to repeat the trial."
+        introStep.text = "Please read this carefully.\n\nTry to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. The 'Next' button will appear after 1 second. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select the correct item you are taken to the next trial. If you selected the wrong trial, the description of the item will be shown again."
         steps.append(introStep)
         
         // Create practice intro step
         let practiceIntroStep = ORKActiveStep(identifier: "PracticeIntroStep")
         practiceIntroStep.title = "Practice"
-        practiceIntroStep.text = "Use the next few trials to become familiar with the search task."
+        practiceIntroStep.text = "Use the next few trials to become familiar with the search task. Press next to begin."
         steps.append(practiceIntroStep)
         
         // Create practice steps
@@ -82,7 +82,7 @@ class StudyService {
         // Create experiment start step
         let normalIntroStep = ORKActiveStep(identifier: "NormalIntroStep")
         normalIntroStep.title = "Start of Experiment"
-        normalIntroStep.text = "Start the experiment by pressing the next button"
+        normalIntroStep.text = "You have completed the practice trials. Press next to begin the experiment."
         steps.append(normalIntroStep)
         
         // Create normal steps
