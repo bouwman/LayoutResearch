@@ -128,7 +128,9 @@ class StudyService {
         
         // Swap first half with second half
         for i in 0..<half {
-            array.swapAt(i, half + i)
+            swap(&array[i], &array[half + i])
+            // TODO: Xcode 9
+//            array.swapAt(i, half + i)
         }
         // Shuffle all rows
         for (row, rowItems) in array.enumerated() {

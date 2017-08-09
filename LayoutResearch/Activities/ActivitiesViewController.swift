@@ -24,7 +24,7 @@ class ActivitiesViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
+//            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Self sizing cells
@@ -153,7 +153,7 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    private func updateAllActivities() {
+    func updateAllActivities() {
         for (i, activity) in service.activities.enumerated() {
             switch activity.type {
             case .search:
@@ -294,7 +294,7 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    private func createNewNotificationFor(activity: StudyActivity) {
+    func createNewNotificationFor(activity: StudyActivity) {
         guard activity.timeRemaining >= 0 else { return }
         
         let title = "New activity available"
@@ -325,12 +325,12 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    private func startUIUpdateTimer() {
+    func startUIUpdateTimer() {
         // Create timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
     }
     
-    private func stopUIUpateTimer() {
+    func stopUIUpateTimer() {
         timer?.invalidate()
         timer = nil
     }

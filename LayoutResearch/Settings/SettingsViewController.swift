@@ -123,7 +123,7 @@ class SettingsViewController: UITableViewController {
         return [.a, .b, .c, .d, .e, .f, .g, .h, .i, .j, .k, .l]
     }
     
-    private func updateUI() {
+    func updateUI() {
         guard let settings = settings else { return }
         
         participantGroupLabel?.text = settings.group.description

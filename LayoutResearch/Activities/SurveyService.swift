@@ -26,7 +26,7 @@ class SurveyService: NSObject {
         let imageFormat = ORKImageChoiceAnswerFormat(imageChoices: [imageVertical, imageGrid, imageHorizontal])
         
         // Steps
-        let questionStep = ORKQuestionStep(identifier: Const.Identifiers.layoutSurveyStep, title: "One last question", text: "Which layout did you prefer?", answer: imageFormat)
+        let questionStep = ORKQuestionStep(identifier: Const.Identifiers.layoutSurveyStep, title: "Survey", text: "Which layout did you prefer?", answer: imageFormat)
         questionStep.isOptional = false
         
         let completeStep = ORKCompletionStep(identifier: "CompletionStep")
