@@ -127,7 +127,7 @@ class UploadFailedState: ActivityState {
     override func didEnter(from previousState: GKState?) {
         if let cell = activityCell {
             cell.statusButton?.isHidden = false
-            cell.detailLabel?.text = "Uploading result failed"
+            cell.detailLabel?.text = "Upload failed"
         }
     }
     

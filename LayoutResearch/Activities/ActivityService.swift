@@ -76,11 +76,11 @@ class ActivitiesService {
         }
         
         // Survey
-        let survey = StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: activities.count + extraDay, to: lastDate, wrappingComponents: false)!, number: activities.count, type: .survey)
+        let survey = StudyActivity(startDate: activities.last!.startDate, number: activities.count, type: .survey)
         activities.append(survey)
         
         // Reward
-        let reward = StudyActivity(startDate: survey.startDate, number: activities.count + 1, type: .reward)
+        let reward = StudyActivity(startDate: survey.startDate, number: activities.count, type: .reward)
         activities.append(reward)
         
         return activities

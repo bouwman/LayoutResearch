@@ -41,9 +41,12 @@ class StudyActivity {
     }
     
     var isStartable: Bool {
-        if type == .reward {
+        switch type {
+        case .reward:
             return isStudyCompleted && isRewardSignupComplete == false
-        } else {
+        case .survey:
+            return isAllSearchTasksComplete && isSurveyComplete == false
+        case .search:
             return timeRemaining <= 0 && stateMachine.currentState is DataAvailableState
         }
     }
@@ -56,6 +59,15 @@ class StudyActivity {
         return UserDefaults.standard.object(forKey: SettingsString.participantEmail.rawValue) != nil
     }
     
+    var isAllSearchTasksComplete: Bool {
+        let lastActivityNumber = UserDefaults.standard.integer(forKey: SettingsString.lastActivityNumber.rawValue)
+        return lastActivityNumber == Const.StudyParameters.searchActivityCount - 1
+    }
+    
+    var isSurveyComplete: Bool {
+        return UserDefaults.standard.string(forKey: SettingsString.preferredLayout.rawValue) != nil
+    }
+    
     var daysRemaining: Int {
         return Int(timeRemaining) / (60*60*24)
     }
@@ -65,12 +77,20 @@ class StudyActivity {
     }
     
     var timeRemainingString: String {
-        let days = daysRemaining
-        if days > 0 {
-            return days == 1 ? "Available in \(days) day" : "Available in \(days) days"
-        } else {
-            return timeToString(time: timeRemaining)
+        switch type {
+        case .search:
+            let days = daysRemaining
+            if days > 0 {
+                return days == 1 ? "Available in \(days) day" : "Available in \(days) days"
+            } else {
+                return timeToString(time: timeRemaining)
+            }
+        case .survey:
+            return "Available after last search task"
+        case .reward:
+            return "Available after survey"
         }
+        
     }
     
     private func timeToString(time: TimeInterval) -> String {
