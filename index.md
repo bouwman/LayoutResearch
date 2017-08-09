@@ -4,6 +4,9 @@ Welcome to the visual search study on 'The Effect of Icon Arrangements in Circul
 
 To enroll in our study download the Layout Research app on the App Store®.
 
+![Alt text](https://github.com/bouwman/LayoutResearch/blob/gh-pages/Download_on_the_App_Store_Badge_US-UK_135x40.svg)
+<img src="https://github.com/bouwman/LayoutResearch/blob/gh-pages/Download_on_the_App_Store_Badge_US-UK_135x40.svg">
+
 ## About our Study
 
 Hexagonal layouts provide an alternative way of arranging greater amounts of round icons. A prominent area where round icons are employed are smartwatches. Compared to a grid layout, hexagonal layouts increase screen density while maintaining the same minimum distance between round icons as a grid layout.
