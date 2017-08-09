@@ -24,7 +24,7 @@ class ActivitiesViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-            navigationController?.navigationBar.prefersLargeTitles = true
+//            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Self sizing cells
@@ -143,34 +143,59 @@ class ActivitiesViewController: UITableViewController {
             
             present(taskVC, animated: true, completion: nil)
         case .survey:
-            // TODO add survey
-            break
+            service.surveyService.startSurvey(fromViewController: self, onSurveyCompletion: { (completed) in
+                self.updateAllActivities()
+            })
         case .reward:
-            // TODO add email
-            break
+            service.rewardService.startRewardTask(fromViewController: self, onCompletion: { (completed) in
+                self.updateAllActivities()
+            })
         }
     }
     
-    private func updateAllActivities() {
+    func updateAllActivities() {
         for (i, activity) in service.activities.enumerated() {
-            let isUploaded = service.remoteDataService.isResultUploaded(resultNumber: activity.number)
-            let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
-            
-            if resultExists {
-                if isUploaded {
-                    activity.stateMachine.enter(UploadCompleteState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
-                } else {
-                    uploadResultsOf(activity: activity, forRow: i)
-                }
-            } else {
-                if activity.timeRemaining <= 0 {
-                    if service.isParticipantGroupAssigned {
-                        activity.stateMachine.enter(DataAvailableState.self)
+            switch activity.type {
+            case .search:
+                let isUploaded = service.remoteDataService.isSearchResultUploaded(resultNumber: activity.number)
+                let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
+                
+                if resultExists {
+                    if isUploaded {
+                        activity.stateMachine.enter(UploadCompleteState.self)
                         self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
                     } else {
-                        loadRemoteSettingsFor(activity: activity, forRow: i)
+                        uploadResultsOf(activity: activity, forRow: i)
                     }
+                } else {
+                    if activity.timeRemaining <= 0 {
+                        if service.isParticipantGroupAssigned {
+                            activity.stateMachine.enter(DataAvailableState.self)
+                            self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                        } else {
+                            loadRemoteSettingsFor(activity: activity, forRow: i)
+                        }
+                    } else {
+                        activity.stateMachine.enter(TimeRemainingState.self)
+                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    }
+                }
+            case .survey:
+                if service.remoteDataService.isSurveyResultUploaded {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else if service.surveyService.preferredLayout != nil {
+                    uploadResultsOf(activity: activity, forRow: i)
+                } else {
+                    activity.stateMachine.enter(TimeRemainingState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                }
+            case .reward:
+                if service.remoteDataService.isParticipantsEmailUploaded {
+                    activity.stateMachine.enter(UploadCompleteState.self)
+                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                } else if service.rewardService.participantEmail != nil {
+                    uploadResultsOf(activity: activity, forRow: i)
                 } else {
                     activity.stateMachine.enter(TimeRemainingState.self)
                     self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
@@ -209,16 +234,36 @@ class ActivitiesViewController: UITableViewController {
     
     func uploadResultsOf(activity: StudyActivity, forRow row: Int) {
         activity.stateMachine.enter(UploadingState.self)
-        service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
-            DispatchQueue.main.async {
-                if let _ = error {
-                    activity.stateMachine.enter(UploadFailedState.self)
-                } else {
-                    activity.stateMachine.enter(UploadCompleteState.self)
-                }
-                self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+        
+        switch activity.type {
+        case .search:
+            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
+            })
+        case .survey:
+            if let preferredLayout = service.surveyService.preferredLayout {
+                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, completion: { (error) in
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
+                })
             }
-        })
+        case .reward:
+            if let email = service.rewardService.participantEmail {
+                service.remoteDataService.uploadEmail(participantsEmail: email, completion: { (error) in
+                    self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
+                })
+            }
+        }
+    }
+    
+    private func updateUploadStateOf(activity: StudyActivity, atRow row: Int, afterError error: Error?) {
+        DispatchQueue.main.async {
+            if let _ = error {
+                activity.stateMachine.enter(UploadFailedState.self)
+            } else {
+                activity.stateMachine.enter(UploadCompleteState.self)
+            }
+            self.tableView.reloadRows(at: [IndexPath(row: row, section: 0)], with: .none)
+        }
     }
     
     private func loadLocalSettings() -> StudySettings {
@@ -249,7 +294,7 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    private func createNewNotificationFor(activity: StudyActivity) {
+    func createNewNotificationFor(activity: StudyActivity) {
         guard activity.timeRemaining >= 0 else { return }
         
         let title = "New activity available"
@@ -280,12 +325,12 @@ class ActivitiesViewController: UITableViewController {
         }
     }
     
-    private func startUIUpdateTimer() {
+    func startUIUpdateTimer() {
         // Create timer
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ActivitiesViewController.updateTimer), userInfo: nil, repeats: true)
     }
     
-    private func stopUIUpateTimer() {
+    func stopUIUpateTimer() {
         timer?.invalidate()
         timer = nil
     }
@@ -329,7 +374,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
                 }
             }
             // Save results
-            service.resultService.saveResultToCSV(resultNumber: activity.number, results: searchResults)
+            service.resultService.saveSearchResultToCSV(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
             // Reset after completion of every task

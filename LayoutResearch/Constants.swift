@@ -11,7 +11,10 @@ import UIKit
 struct Const {
     struct Identifiers {
         static let consetReviewStep = "ConsentReviewStep"
+        static let eligibilityStep = "EligibilityStep"
+        static let eligibilityItemAge = "EligibilityItemAge"
         static let visualConsentStep = "VisualConsentStep"
+        static let layoutSurveyStep = "LayoutSurveyStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
         static let activityCell = "ActivityCell"
@@ -47,12 +50,17 @@ enum SettingsString: String {
     case versionOfLastRun
     case isParticipating
     case consentPath
-    case resultWasUploaded
+    case searchResultWasUploaded
+    case surveyResultWasUploaded
+    case participantsEmailWasUploaded
     case lastActivityCompletionDate
     case lastActivityNumber
     case isParticipantGroupAssigned
+    case preferredLayout
     case participantGivenName
     case participantFamilyName
+    case participantEmail
+    case participantAge
     case icloudUserId
     case participantIdentifier
     case participantGroup
@@ -68,10 +76,15 @@ enum SettingsString: String {
 }
 
 extension UIColor {
+    static func globalTint() -> UIColor {
+        return UIColor(rgbHex: 0xFF2D55)
+    }
+    
     static func searchColorFor(id: Int) -> UIColor {
-        if #available(iOS 11.0, *) {
-            return UIColor(named: "Color\(id)") ?? UIColor.black
-        } else {
+        // TODO: Xcode 9
+//        if #available(iOS 11.0, *) {
+//            return UIColor(named: "Color\(id)") ?? UIColor.black
+//        } else {
             switch id {
             case 0:
                 return UIColor.black
@@ -92,7 +105,7 @@ extension UIColor {
             default:
                 return UIColor.gray
             }
-        }
+//        }
     }
     
     convenience init(red: Int, green: Int, blue: Int) {
@@ -122,7 +135,8 @@ extension UIImage {
     }
 }
 
-extension MutableCollection {
+// Swift 3
+extension MutableCollection where Indices.Iterator.Element == Index {
     /// Shuffles the contents of this collection.
     mutating func shuffle() {
         let c = count
@@ -130,20 +144,45 @@ extension MutableCollection {
         
         for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
             let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            guard d != 0 else { continue }
             let i = index(firstUnshuffled, offsetBy: d)
-            swapAt(firstUnshuffled, i)
+            swap(&self[firstUnshuffled], &self[i])
         }
     }
 }
 
 extension Sequence {
     /// Returns an array with the contents of this sequence, shuffled.
-    func shuffled() -> [Element] {
+    func shuffled() -> [Iterator.Element] {
         var result = Array(self)
         result.shuffle()
         return result
     }
 }
+
+// Swift 4
+//extension MutableCollection {
+//    /// Shuffles the contents of this collection.
+//    mutating func shuffle() {
+//        let c = count
+//        guard c > 1 else { return }
+//        
+//        for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
+//            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+//            let i = index(firstUnshuffled, offsetBy: d)
+//            swapAt(firstUnshuffled, i)
+//        }
+//    }
+//}
+//
+//extension Sequence {
+//    /// Returns an array with the contents of this sequence, shuffled.
+//    func shuffled() -> [Element] {
+//        var result = Array(self)
+//        result.shuffle()
+//        return result
+//    }
+//}
 
 func -(left: IndexPath, right: IndexPath) -> IndexPath {
     return IndexPath(row: left.row - right.row, section: left.section - right.section)

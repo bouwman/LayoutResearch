@@ -62,13 +62,13 @@ class StudyService {
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
-        introStep.text = "Try to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select an item you are taken to the next trial. There is no chance to repeat the trial."
+        introStep.text = "Please read this carefully.\n\nTry to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. The 'Next' button will appear after 1 second. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select the correct item you are taken to the next trial. If you selected the wrong trial, the description of the item will be shown again."
         steps.append(introStep)
         
         // Create practice intro step
         let practiceIntroStep = ORKActiveStep(identifier: "PracticeIntroStep")
         practiceIntroStep.title = "Practice"
-        practiceIntroStep.text = "Use the next few trials to become familiar with the search task."
+        practiceIntroStep.text = "Use the next few trials to become familiar with the search task. Press next to begin."
         steps.append(practiceIntroStep)
         
         // Create practice steps
@@ -82,16 +82,26 @@ class StudyService {
         // Create experiment start step
         let normalIntroStep = ORKActiveStep(identifier: "NormalIntroStep")
         normalIntroStep.title = "Start of Experiment"
-        normalIntroStep.text = "Start the experiment by pressing the next button"
+        normalIntroStep.text = "You have completed the practice trials. Press next to begin the experiment."
         steps.append(normalIntroStep)
         
         // Create normal steps
         for (i, layout) in layouts.enumerated() {
             // Not add layout intro after intro
             if i != 0 {
+                // Take a break
+                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
+                waitStep.title = "Break"
+                waitStep.text = "Take a short break before you continue."
+                waitStep.stepDuration = 15
+                waitStep.shouldStartTimerAutomatically = true
+                waitStep.shouldShowDefaultTimer = true
+                steps.append(waitStep)
+                
+                // Introduce new layout
                 let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
                 newLayoutStep.title = "New Layout"
-                newLayoutStep.text = "The next layout will be different"
+                newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
             }
             // Different target order for every layout
@@ -118,7 +128,9 @@ class StudyService {
         
         // Swap first half with second half
         for i in 0..<half {
-            array.swapAt(i, half + i)
+            swap(&array[i], &array[half + i])
+            // TODO: Xcode 9
+//            array.swapAt(i, half + i)
         }
         // Shuffle all rows
         for (row, rowItems) in array.enumerated() {
@@ -198,7 +210,7 @@ class StudyService {
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice, activityNumber: activityNumber)
         
         descriptionStep.title = "Search"
-        descriptionStep.text = "Find this item in the next layout as quickly as possible"
+        descriptionStep.text = "Find this item as quickly as possible."
         
         steps.append(descriptionStep)
         steps.append(searchStep)

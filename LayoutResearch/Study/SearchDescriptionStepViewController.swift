@@ -10,6 +10,8 @@ import UIKit
 import ResearchKit
 
 class SearchDescriptionStepViewController: ORKActiveStepViewController {
+    var nextButton: UIButton?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,5 +32,37 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
         contentView.addSubview(button)
         
         customView = contentView
+        
+        // Find next button
+        for subview in self.view.subviews {
+            for subview1 in subview.subviews {
+                for subview2 in subview1.subviews {
+                    for subview3 in subview2.subviews {
+                        if let button = subview3 as? UIButton {
+                            nextButton = button
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Fade in button after 0.3 sec
+        nextButton?.isHidden = true
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        // Fade in button after 1 sec
+        nextButton?.alpha = 0.0
+        nextButton?.isHidden = false
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        UIView.animate(withDuration: 0.6, delay: 1, options: .curveEaseOut, animations: {
+            self.nextButton?.alpha = 1.0
+        }, completion: nil)
     }
 }

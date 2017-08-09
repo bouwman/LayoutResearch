@@ -26,6 +26,16 @@ private struct CloudRecords {
         static let user = "user"
         static let pdf = "pdf"
     }
+    struct SurveyResult {
+        static let typeName = "SurveyResult"
+        static let user = "user"
+        static let preferredLayout = "preferredLayout"
+    }
+    struct RewardSignup {
+        static let typeName = "RewardSignup"
+        static let user = "user"
+        static let email = "email"
+    }
 }
 
 class RemoteDataService {
@@ -41,12 +51,30 @@ class RemoteDataService {
         return FileManager.default.ubiquityIdentityToken != nil
     }
         
-    func isResultUploaded(resultNumber: Int) -> Bool {
-        return UserDefaults.standard.bool(forKey: SettingsString.resultWasUploaded.rawValue + "\(resultNumber)")
+    func isSearchResultUploaded(resultNumber: Int) -> Bool {
+        return UserDefaults.standard.bool(forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
+    }
+    
+    var isSurveyResultUploaded: Bool {
+        set {
+            UserDefaults.standard.set(newValue, forKey: SettingsString.surveyResultWasUploaded.rawValue)
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: SettingsString.surveyResultWasUploaded.rawValue)
+        }
+    }
+    
+    var isParticipantsEmailUploaded: Bool {
+        set {
+            UserDefaults.standard.set(newValue, forKey: SettingsString.participantsEmailWasUploaded.rawValue)
+        }
+        get {
+            return UserDefaults.standard.bool(forKey: SettingsString.participantsEmailWasUploaded.rawValue)
+        }
     }
     
     func setIsResultUploadedFor(resultNumber: Int, isResultUploaded: Bool) {
-        UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.resultWasUploaded.rawValue + "\(resultNumber)")
+        UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
     }
     
     func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
@@ -115,7 +143,7 @@ class RemoteDataService {
             }
             let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
             
-            resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .deleteSelf)
+            resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .none)
             resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
             
             let operation = CKModifyRecordsOperation(recordsToSave: [resultRecord], recordIDsToDelete: nil)
@@ -140,9 +168,9 @@ class RemoteDataService {
                 completion(errorUser)
                 return
             }
-            let consentRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
+            let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
             
-            consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .deleteSelf)
+            consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
             consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
             
             let operation = CKModifyRecordsOperation(recordsToSave: [consentRecord], recordIDsToDelete: nil)
@@ -152,6 +180,60 @@ class RemoteDataService {
                 if let error = error {
                     completion(error)
                 } else {
+                    completion(error)
+                }
+            }
+            
+            self.publicDB.add(operation)
+        }
+    }
+    
+    func uploadSurveyResult(preferredLayout: String, completion: @escaping (Error?) -> ()) {
+        container.fetchUserRecordID { (userId, errorUser) in
+            guard let userId = userId else {
+                completion(errorUser)
+                return
+            }
+            let surveyRecord = CKRecord(recordType: CloudRecords.SurveyResult.typeName)
+            
+            surveyRecord[CloudRecords.SurveyResult.user] = CKReference(recordID: userId, action: .none)
+            surveyRecord[CloudRecords.SurveyResult.preferredLayout] = preferredLayout as NSString
+            
+            let operation = CKModifyRecordsOperation(recordsToSave: [surveyRecord], recordIDsToDelete: nil)
+            operation.qualityOfService = .userInitiated
+            
+            operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                if let error = error {
+                    completion(error)
+                } else {
+                    self.isSurveyResultUploaded = true
+                    completion(error)
+                }
+            }
+            
+            self.publicDB.add(operation)
+        }
+    }
+    
+    func uploadEmail(participantsEmail: String, completion: @escaping (Error?) -> ()) {
+        container.fetchUserRecordID { (userId, errorUser) in
+            guard let userId = userId else {
+                completion(errorUser)
+                return
+            }
+            let rewardRecord = CKRecord(recordType: CloudRecords.RewardSignup.typeName)
+            
+            rewardRecord[CloudRecords.RewardSignup.user] = CKReference(recordID: userId, action: .none)
+            rewardRecord[CloudRecords.RewardSignup.email] = participantsEmail as NSString
+            
+            let operation = CKModifyRecordsOperation(recordsToSave: [rewardRecord], recordIDsToDelete: nil)
+            operation.qualityOfService = .userInitiated
+            
+            operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                if let error = error {
+                    completion(error)
+                } else {
+                    self.isParticipantsEmailUploaded = true
                     completion(error)
                 }
             }

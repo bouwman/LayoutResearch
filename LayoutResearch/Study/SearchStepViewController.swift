@@ -56,9 +56,16 @@ class SearchStepViewController: ORKActiveStepViewController {
             }
         }
         
+        // Load age
+        let age = UserDefaults.standard.integer(forKey: SettingsString.participantAge.rawValue)
+        
+        // Determine screen size
+        let screenSize = UIScreen.main.bounds
+        let screenSizeString = "\(screenSize.width)x\(screenSize.height)"
+        
         // Setup result
         let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber, participantAge: age, screenSize: screenSizeString)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -203,8 +210,8 @@ class SearchStepViewController: ORKActiveStepViewController {
             }
         }
         
-        let rowDistance = shortestRowDistance <= searchItems.count ? shortestRowDistance : nil
-        let columnDistance = shortestColumnDistance <= searchItems.first!.count ? shortestColumnDistance : nil
+        let rowDistance: Int? = shortestRowDistance <= searchItems.count ? shortestRowDistance : nil
+        let columnDistance: Int? = shortestColumnDistance <= searchItems.first!.count ? shortestColumnDistance : nil
         
         return (shortestDistance, rowDistance , columnDistance, closeNeighboursCount)
     }

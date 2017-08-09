@@ -39,17 +39,16 @@ class OnboardingViewController: UIViewController {
     // MARK: IB actions
     
     @IBAction func joinButtonTapped(_ sender: UIButton) {
-        let choiceAnswer = ORKBooleanAnswerFormat(yesString: "YES", noString: "NO")
-        let ageItem = ORKFormItem(identifier: "eligibilityItemAge", text: "Are you 18 or older?", answerFormat: choiceAnswer)
-        let englishItem = ORKFormItem(identifier: "eligibilityItemEnglish", text: "Are you comfortable with reading and writing on this device in English?", answerFormat: choiceAnswer)
+        let numberAnswer = ORKNumericAnswerFormat(style: .integer, unit: nil, minimum: 1, maximum: 99)
+        let ageItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemAge, text: "How old are you?", answerFormat: numberAnswer)
         
         ageItem.isOptional = false
-        englishItem.isOptional = false
         
-        let eligibilityStep = ORKFormStep(identifier: "EligibilityStep")
-        eligibilityStep.formItems = [ageItem, englishItem]
+        let eligibilityStep = ORKFormStep(identifier: Const.Identifiers.eligibilityStep)
+        eligibilityStep.formItems = [ageItem]
         eligibilityStep.isOptional = false
         
+        // Consent
         let consentStep = ORKVisualConsentStep(identifier: Const.Identifiers.visualConsentStep, document: consentDocument)
         let signature = consentDocument.signatures!.first!
         let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: signature, in: consentDocument)
@@ -57,24 +56,27 @@ class OnboardingViewController: UIViewController {
         reviewConsentStep.text = "Review the consent form."
         reviewConsentStep.reasonForConsent = "Consent to join the Visual search in circular icon arrangements study."
         
+        // Thank you
         let completionStep = ORKCompletionStep(identifier: "CompletionStep")
         completionStep.title = "Welcome aboard."
         completionStep.text = "Thank you for joining this study."
-        
         let notEligibleStep = ORKCompletionStep(identifier: "NotEligibleStep")
         notEligibleStep.title = "Sorry"
-        notEligibleStep.text = "Thank you for your interest in our study. Unfortunately you are not eligible to take part in this study."
+        notEligibleStep.text = "Thank you for your interest in our study. Unfortunately you are not eligible to take part in this study. You must be be over 18."
         
+        // Predicates
         let ageSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: ageItem.identifier)
-        let englishSelector = ORKResultSelector(stepIdentifier: eligibilityStep.identifier, resultIdentifier: englishItem.identifier)
-        let agePredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: ageSelector, expectedAnswer: true)
-        let englishPredicate = ORKResultPredicate.predicateForBooleanQuestionResult(with: englishSelector, expectedAnswer: true)
-        let eligibilityRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [(agePredicate, reviewConsentStep.identifier), (englishPredicate, reviewConsentStep.identifier)], defaultStepIdentifierOrNil: notEligibleStep.identifier)
+        let ageOK = ORKResultPredicate.predicateForNumericQuestionResult(with: ageSelector, minimumExpectedAnswerValue: 18)
+        let ageNotOK = ORKResultPredicate.predicateForNumericQuestionResult(with: ageSelector, maximumExpectedAnswerValue: 17)
+        
+        // Rules
+        let eligibilityRule = ORKPredicateStepNavigationRule(resultPredicatesAndDestinationStepIdentifiers: [(ageOK, reviewConsentStep.identifier), (ageNotOK, notEligibleStep.identifier)], defaultStepIdentifierOrNil: nil)
         let endAfterNotEligibleRule = ORKDirectStepNavigationRule(destinationStepIdentifier: "")
         
+        // Task
         let orderedTask = ORKNavigableOrderedTask(identifier: "Join", steps: [consentStep, eligibilityStep, notEligibleStep, reviewConsentStep, completionStep])
-        orderedTask.setNavigationRule(eligibilityRule, forTriggerStepIdentifier: eligibilityStep.identifier)
         
+        orderedTask.setNavigationRule(eligibilityRule, forTriggerStepIdentifier: eligibilityStep.identifier)
         orderedTask.setNavigationRule(endAfterNotEligibleRule, forTriggerStepIdentifier: notEligibleStep.identifier)
         
         let taskViewController = ORKTaskViewController(task: orderedTask, taskRun: nil)
@@ -89,8 +91,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
         switch reason {
             case .completed:
                 let result = taskViewController.result
-                if let stepResult = result.stepResult(forStepIdentifier: Const.Identifiers.consetReviewStep),
-                    let signatureResult = stepResult.results?.first as? ORKConsentSignatureResult {
+                if let consentStepResult = result.stepResult(forStepIdentifier: Const.Identifiers.consetReviewStep),
+                    let signatureResult = consentStepResult.results?.first as? ORKConsentSignatureResult {
                     signatureResult.apply(to: consentDocument)
                     
                     // Save pdf
@@ -101,6 +103,15 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                     // Save name
                     UserDefaults.standard.set(signatureResult.signature?.familyName, forKey: SettingsString.participantFamilyName.rawValue)
                     UserDefaults.standard.set(signatureResult.signature?.givenName, forKey: SettingsString.participantGivenName.rawValue)
+                    
+                    // Save age
+                    if let eligibilityStepResult = result.stepResult(forStepIdentifier: Const.Identifiers.eligibilityStep), let eligibilityResults = eligibilityStepResult.results {
+                        for eligibilityResult in eligibilityResults {
+                            if eligibilityResult.identifier == Const.Identifiers.eligibilityItemAge, let ageResult = eligibilityResult as? ORKNumericQuestionResult {
+                                UserDefaults.standard.set(ageResult.numericAnswer!, forKey: SettingsString.participantAge.rawValue)
+                            }
+                        }
+                    }
 
                     // Show study
                     performSegue(withIdentifier: "unwindToStudy", sender: nil)

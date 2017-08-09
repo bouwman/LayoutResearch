@@ -11,7 +11,7 @@ import Foundation
 class ResultService {
     let fileService = LocalDataService()
     
-    func saveResultToCSV(resultNumber: Int, results: [SearchResult]) {
+    func saveSearchResultToCSV(resultNumber: Int, results: [SearchResult]) {
         guard results.count != 0 else { return }
         
         fileService.removeResultIfExist(resultNumber: resultNumber)

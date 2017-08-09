@@ -10,8 +10,10 @@ import UIKit
 
 class ActivitiesService {
     var activities: [StudyActivity]
-    var resultService = ResultService()
-    var remoteDataService = RemoteDataService()
+    let resultService = ResultService()
+    let remoteDataService = RemoteDataService()
+    let surveyService = SurveyService()
+    let rewardService = RewardService()
     var activeActivity: StudyActivity?
     
     init() {
@@ -74,10 +76,12 @@ class ActivitiesService {
         }
         
         // Survey
-        activities.append(StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: activities.count + extraDay, to: lastDate, wrappingComponents: false)!, number: activities.count, type: .survey))
+        let survey = StudyActivity(startDate: activities.last!.startDate, number: activities.count, type: .survey)
+        activities.append(survey)
         
         // Reward
-        activities.append(StudyActivity(startDate: Calendar.current.date(byAdding: .day, value: activities.count + extraDay, to: lastDate, wrappingComponents: false)!, number: activities.count + 1, type: .reward))
+        let reward = StudyActivity(startDate: survey.startDate, number: activities.count, type: .reward)
+        activities.append(reward)
         
         return activities
     }
