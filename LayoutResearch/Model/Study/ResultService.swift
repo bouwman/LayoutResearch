@@ -47,9 +47,9 @@ class ResultService {
         var gridCount = 0
         var horiCount = 0
         var vertCount = 0
-
+        
         for result in results {
-            if let searchTime = result.searchTime, result.isError == false, searchTime != 0 {
+            if let searchTime = result.searchTime, result.isError == false, result.isPractice == false, searchTime != 0 {
                 switch result.layout {
                 case .grid:
                     gridSum += searchTime
@@ -64,9 +64,10 @@ class ResultService {
             }
         }
         
-        let gridAvg = gridSum / Double(gridCount)
-        let horiAvg = horiSum / Double(horiCount)
-        let vertAvg = horiSum / Double(horiCount)
+        
+        let gridAvg = gridCount > 0 ? gridSum / Double(gridCount) : 0
+        let horiAvg = horiCount > 0 ? horiSum / Double(horiCount) : 0
+        let vertAvg = vertCount > 0 ? horiSum / Double(horiCount) : 0
         
         UserDefaults.standard.set(gridAvg, forKey: SettingsString.avgTimeGridResult.rawValue + "\(resultNumber)")
         UserDefaults.standard.set(horiAvg, forKey: SettingsString.avgTimeHorResult.rawValue + "\(resultNumber)")
