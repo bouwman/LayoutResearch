@@ -73,6 +73,9 @@ enum SettingsString: String {
     case targetFreqHighCount
     case distractorColorLowCount
     case distractorColorHighCount
+    case avgTimeHexResult
+    case avgTimeVerResult
+    case avgTimeGridResult
 }
 
 extension UIColor {

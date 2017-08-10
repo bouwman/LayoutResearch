@@ -33,25 +33,19 @@ import ResearchKit
 class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     // MARK: Properties
     
-    var plotPoints =
-    [
-        [
-            ORKValueRange(value: 10),
-            ORKValueRange(value: 20),
-            ORKValueRange(value: 25),
-            ORKValueRange(),
-            ORKValueRange(value: 30),
-            ORKValueRange(value: 40),
-        ],
-        [
-            ORKValueRange(value: 2),
-            ORKValueRange(value: 4),
-            ORKValueRange(value: 8),
-            ORKValueRange(value: 16),
-            ORKValueRange(value: 32),
-            ORKValueRange(value: 64),
-        ]
-    ]
+    private var plotPoints: [[ORKValueRange]] {
+        if let dataPoints = dataPoints {
+            return dataPoints
+        } else {
+            return dummyPoints
+        }
+    }
+    
+    var dataPoints: [[ORKValueRange]]?
+    
+    init(dataPoints: [[ORKValueRange]]? = nil) {
+        self.dataPoints = dataPoints
+    }
     
     // MARK: ORKGraphChartViewDataSource
     
@@ -78,4 +72,24 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
         return "\(pointIndex + 1)"
     }
+    
+    // MARK: - Helper
+    
+    private var dummyPoints =
+        [
+            [
+                ORKValueRange(value: 10),
+                ORKValueRange(value: 20),
+                ORKValueRange(value: 25),
+                ORKValueRange(),
+                ORKValueRange(),
+                ],
+            [
+                ORKValueRange(value: 2),
+                ORKValueRange(value: 4),
+                ORKValueRange(value: 8),
+                ORKValueRange(value: 16),
+                ORKValueRange(value: 32),
+                ]
+    ]
 }
