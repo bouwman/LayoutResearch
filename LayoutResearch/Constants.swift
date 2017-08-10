@@ -73,7 +73,7 @@ enum SettingsString: String {
     case targetFreqHighCount
     case distractorColorLowCount
     case distractorColorHighCount
-    case avgTimeHexResult
+    case avgTimeHorResult
     case avgTimeVerResult
     case avgTimeGridResult
 }

@@ -375,6 +375,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             }
             // Save results
             service.resultService.saveSearchResultToCSV(resultNumber: activity.number, results: searchResults)
+            service.resultService.saveAvgSearchTimesFor(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
             // Reset after completion of every task

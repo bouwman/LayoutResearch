@@ -50,7 +50,7 @@ class DashboardService: NSObject {
         // Get latest values
         for i in 0..<Const.StudyParameters.searchActivityCount {
             let gridAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeGridResult.rawValue + "\(i)")
-            let hexAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeHexResult.rawValue + "\(i)")
+            let horAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeHorResult.rawValue + "\(i)")
             let verAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeVerResult.rawValue + "\(i)")
             var plot: [ORKValueRange] = []
             
@@ -60,8 +60,8 @@ class DashboardService: NSObject {
             } else if isFirstDataAvailable {
                 plot.append(ORKValueRange())
             }
-            if hexAvgFromDefaults != 0 {
-                plot.append(ORKValueRange(minimumValue: 0, maximumValue: hexAvgFromDefaults))
+            if horAvgFromDefaults != 0 {
+                plot.append(ORKValueRange(minimumValue: 0, maximumValue: horAvgFromDefaults))
             } else if isFirstDataAvailable {
                 plot.append(ORKValueRange())
             }
