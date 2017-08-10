@@ -135,18 +135,29 @@ class RemoteDataService {
         publicDB.add(operation)
     }
     
-    func uploadStudyResult(resultNumber: Int, csvURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
                 return
             }
+            
+            // Setup records
+            var records: [CKRecord] = []
             let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
             
             resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .none)
             resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
+            records.append(resultRecord)
             
-            let operation = CKModifyRecordsOperation(recordsToSave: [resultRecord], recordIDsToDelete: nil)
+            // Upload last settings if first activity
+            if resultNumber == 0 {
+                let settingsRecord = self.settingsRecordFor(participantGroup: group)
+                records.append(settingsRecord)
+            }
+            
+            // Create operation
+            let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
             operation.qualityOfService = .userInitiated
             
             operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in

@@ -33,25 +33,20 @@ import ResearchKit
 class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     // MARK: Properties
     
-    var plotPoints =
-    [
-        [
-            ORKValueRange(minimumValue: 0, maximumValue: 2),
-            ORKValueRange(minimumValue: 1, maximumValue: 4),
-            ORKValueRange(minimumValue: 2, maximumValue: 6),
-            ORKValueRange(minimumValue: 3, maximumValue: 8),
-            ORKValueRange(minimumValue: 5, maximumValue: 10),
-            ORKValueRange(minimumValue: 8, maximumValue: 13),
-        ],
-        [
-            ORKValueRange(value: 1),
-            ORKValueRange(minimumValue: 2, maximumValue: 6),
-            ORKValueRange(minimumValue: 3, maximumValue: 10),
-            ORKValueRange(minimumValue: 5, maximumValue: 11),
-            ORKValueRange(minimumValue: 7, maximumValue: 13),
-            ORKValueRange(minimumValue: 10, maximumValue: 13),
-        ]
-    ]
+    private var plotPoints: [[ORKValueRange]] {
+        if let dataPoints = dataPoints {
+            return dataPoints
+        } else {
+            return dummyPoints
+        }
+    }
+    
+    var dataPoints: [[ORKValueRange]]?
+    
+    init(dataPoints: [[ORKValueRange]]? = nil) {
+        self.dataPoints = dataPoints
+    }
+    
     
     // MARK: ORKGraphChartViewDataSource
     
@@ -70,4 +65,20 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
         return "\(pointIndex + 1)"
     }
+    
+    // MARK: - Helper
+    
+    private var dummyPoints =
+        [
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 6),
+                ],
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 11),
+                ORKValueRange(minimumValue: 0, maximumValue: 13),
+                ORKValueRange(minimumValue: 0, maximumValue: 13),
+                ]
+    ]
 }
