@@ -53,7 +53,7 @@ class ActivitiesService {
     
     var isParticipantGroupAssigned: Bool {
         set {
-            UserDefaults.standard.setValue(isParticipantGroupAssigned, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
+            UserDefaults.standard.setValue(newValue, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
         }
         get {
             return UserDefaults.standard.bool(forKey: SettingsString.isParticipantGroupAssigned.rawValue)
