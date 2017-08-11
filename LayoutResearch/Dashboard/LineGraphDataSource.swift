@@ -61,16 +61,25 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         return plotPoints[plotIndex].count
     }
     
-    func maximumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return 70
-    }
-    
     func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
         return 0
     }
     
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        return "Day \(pointIndex + 1)"
+    }
+    
+    func graphChartView(_ graphChartView: ORKGraphChartView, colorForPlotIndex plotIndex: Int) -> UIColor {
+        switch plotIndex {
+        case 0:
+            return UIColor(red: 90, green: 200, blue: 250)
+        case 1:
+            return UIColor(red: 0, green: 122, blue: 255)
+        case 2:
+            return UIColor(red: 88, green: 86, blue: 214)
+        default:
+            return UIColor.lightGray
+        }
     }
     
     // MARK: - Helper
@@ -82,7 +91,7 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 ORKValueRange(value: 20),
                 ORKValueRange(value: 25),
                 ORKValueRange(),
-                ORKValueRange(),
+                ORKValueRange(value: 16)
                 ],
             [
                 ORKValueRange(value: 2),
@@ -90,6 +99,13 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 ORKValueRange(value: 8),
                 ORKValueRange(value: 16),
                 ORKValueRange(value: 32),
+                ],
+            [
+                ORKValueRange(value: 3),
+                ORKValueRange(value: 7),
+                ORKValueRange(value: 5),
+                ORKValueRange(value: 20),
+                ORKValueRange(value: 30),
                 ]
     ]
 }
