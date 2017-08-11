@@ -60,6 +60,8 @@ class DashboardTableViewController: UITableViewController {
         // Set the data source for each graph
         discreteGraph.dataSource = service.discreteGraphDataSource
         lineGraph.dataSource = service.lineGraphDataSource
+        discreteGraph.noDataText = "No task results yet."
+        lineGraph.noDataText = "No task results yet."
         
         // Set the table view to automatically calculate the height of cells.
         tableView.estimatedRowHeight = tableView.rowHeight
