@@ -84,6 +84,44 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         }
     }
     
+    func maximumValue(for graphChartView: ORKGraphChartView) -> Double {
+        return maximumValue + 0.2
+    }
+    
+    func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
+        return minimumValue - 0.2
+    }
+    
+    var maximumValue: Double {
+        guard plotPoints.first!.count > 0 else { return 5 }
+        
+        var max = 0.0
+        for row in plotPoints {
+            let maxInRowOptional = row.max(by: { (left, right) -> Bool in
+                left.maximumValue > right.maximumValue
+            })
+            if let maxInRow = maxInRowOptional?.maximumValue, maxInRow > max {
+                max = maxInRow
+            }
+        }
+        return max
+    }
+    
+    var minimumValue: Double {
+        guard plotPoints.first!.count > 0 else { return 0 }
+        
+        var min = plotPoints.first!.first!.maximumValue
+        for row in plotPoints {
+            let maxInRowOptional = row.min(by: { (left, right) -> Bool in
+                left.maximumValue < right.maximumValue
+            })
+            if let maxInRow = maxInRowOptional?.maximumValue, maxInRow < min {
+                min = maxInRow
+            }
+        }
+        return min
+    }
+    
     // MARK: - Helper
     
     private var dummyPoints =

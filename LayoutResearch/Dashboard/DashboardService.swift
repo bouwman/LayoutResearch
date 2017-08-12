@@ -62,14 +62,19 @@ class DashboardService: NSObject {
         
         // Calc avg for each day and add to result array
         for day in avgsForEachDay {
-            var daylySum = 0.0
+            var dailySum = 0.0
             for layoutAvg in day {
-                daylySum += layoutAvg
+                dailySum += layoutAvg
             }
-            let daylyAvg = daylySum / Double(day.count)
-            var firstPlot = dataPoints.first!
-            firstPlot.append(ORKValueRange(value: daylyAvg))
-            dataPoints[0] = firstPlot
+            let dailyAvg = dailySum / Double(day.count)
+            let plotValue = dailyAvg.isNaN ? ORKValueRange() : ORKValueRange(value: dailyAvg)
+            if var firstPlot = dataPoints.first {
+                firstPlot.append(plotValue)
+                dataPoints[0] = firstPlot
+            } else {
+                let newPlotRow: [ORKValueRange] = [plotValue]
+                dataPoints.append(newPlotRow)
+            }
         }
         
         return dataPoints
@@ -77,32 +82,28 @@ class DashboardService: NSObject {
     
     private static var layoutDataPoints: [[ORKValueRange]]? {
         var dataPoints: [[ORKValueRange]] = []
-        var isFirstDataAvailable = false
+        
+        // Create a plot row for each layout
+        for _ in 0...2 {
+            let row: [ORKValueRange] = []
+            dataPoints.append(row)
+        }
         
         // Get latest values
-        for i in 0..<Const.StudyParameters.searchActivityCount {
+        for i in 3..<Const.StudyParameters.searchActivityCount {
             let gridAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeGridResult.rawValue + "\(i)")
             let horAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeHorResult.rawValue + "\(i)")
             let verAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeVerResult.rawValue + "\(i)")
-            var plot: [ORKValueRange] = []
             
-            if gridAvgFromDefaults != 0 {
-                plot.append(ORKValueRange(minimumValue: 0, maximumValue: gridAvgFromDefaults))
-                isFirstDataAvailable = true
-            } else if isFirstDataAvailable {
-                plot.append(ORKValueRange())
+            if gridAvgFromDefaults != 0 && gridAvgFromDefaults.isNaN == false {
+                dataPoints[0].append(ORKValueRange(minimumValue: 0, maximumValue: gridAvgFromDefaults))
             }
-            if horAvgFromDefaults != 0 {
-                plot.append(ORKValueRange(minimumValue: 0, maximumValue: horAvgFromDefaults))
-            } else if isFirstDataAvailable {
-                plot.append(ORKValueRange())
+            if horAvgFromDefaults != 0 && horAvgFromDefaults.isNaN == false {
+                dataPoints[1].append(ORKValueRange(minimumValue: 0, maximumValue: horAvgFromDefaults))
             }
-            if verAvgFromDefaults != 0 {
-                plot.append(ORKValueRange(minimumValue: 0, maximumValue: verAvgFromDefaults))
-            } else if isFirstDataAvailable {
-                plot.append(ORKValueRange())
+            if verAvgFromDefaults != 0 && verAvgFromDefaults.isNaN == false  {
+                dataPoints[2].append(ORKValueRange(minimumValue: 0, maximumValue: verAvgFromDefaults))
             }
-            dataPoints.append(plot)
         }
         
         // Return data points
