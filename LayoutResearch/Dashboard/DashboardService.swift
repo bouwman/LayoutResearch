@@ -17,7 +17,7 @@ class DashboardService: NSObject {
     override init() {
         if let dataPoints = DashboardService.layoutDataPoints {
             discreteGraphDataSource = DiscreteGraphDataSource(dataPoints: dataPoints)
-            lineGraphDataSource = LineGraphDataSource(dataPoints: dataPoints)
+            lineGraphDataSource = LineGraphDataSource(dataPoints: DashboardService.totalSearchTimeFor(discreteData: dataPoints))
             isDummyData = false
         } else {
             // Dummy data
@@ -33,7 +33,7 @@ class DashboardService: NSObject {
     func reloadDataSources() {
         if let dataPoints = DashboardService.layoutDataPoints {
             discreteGraphDataSource = DiscreteGraphDataSource(dataPoints: dataPoints)
-            lineGraphDataSource = LineGraphDataSource(dataPoints: dataPoints)
+            lineGraphDataSource = LineGraphDataSource(dataPoints: DashboardService.totalSearchTimeFor(discreteData: dataPoints))
             isDummyData = false
         } else {
             // Dummy data
@@ -41,6 +41,38 @@ class DashboardService: NSObject {
             lineGraphDataSource = LineGraphDataSource()
             isDummyData = true
         }
+    }
+    
+    private static func totalSearchTimeFor(discreteData: [[ORKValueRange]]) -> [[ORKValueRange]] {
+        var dataPoints: [[ORKValueRange]] = []
+        var avgsForEachDay: [[Double]] = []
+        
+        // Create a row for each day
+        for _ in discreteData.first! {
+            let row: [Double] = []
+            avgsForEachDay.append(row)
+        }
+        
+        // Save avg for each layout per day
+        for layoutDataPoints in discreteData {
+            for (day, dataPoint) in layoutDataPoints.enumerated() {
+                avgsForEachDay[day].append(dataPoint.maximumValue)
+            }
+        }
+        
+        // Calc avg for each day and add to result array
+        for day in avgsForEachDay {
+            var daylySum = 0.0
+            for layoutAvg in day {
+                daylySum += layoutAvg
+            }
+            let daylyAvg = daylySum / Double(day.count)
+            var firstPlot = dataPoints.first!
+            firstPlot.append(ORKValueRange(value: daylyAvg))
+            dataPoints[0] = firstPlot
+        }
+        
+        return dataPoints
     }
     
     private static var layoutDataPoints: [[ORKValueRange]]? {
