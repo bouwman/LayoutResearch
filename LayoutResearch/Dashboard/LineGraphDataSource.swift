@@ -37,7 +37,12 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         if let dataPoints = dataPoints {
             return dataPoints
         } else {
-            return dummyPoints
+            // Return empty array
+            var points: [[ORKValueRange]] = []
+            let data: [ORKValueRange] = []
+            points.append(data)
+            return points
+            // return dummyPoints
         }
     }
     
@@ -61,16 +66,12 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         return plotPoints[plotIndex].count
     }
     
-    func maximumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return 70
-    }
-    
     func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
         return 0
     }
     
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        return "Day \(pointIndex + 1)"
     }
     
     // MARK: - Helper
@@ -82,7 +83,7 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 ORKValueRange(value: 20),
                 ORKValueRange(value: 25),
                 ORKValueRange(),
-                ORKValueRange(),
+                ORKValueRange(value: 16)
                 ],
             [
                 ORKValueRange(value: 2),
@@ -90,6 +91,13 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 ORKValueRange(value: 8),
                 ORKValueRange(value: 16),
                 ORKValueRange(value: 32),
+                ],
+            [
+                ORKValueRange(value: 3),
+                ORKValueRange(value: 7),
+                ORKValueRange(value: 5),
+                ORKValueRange(value: 20),
+                ORKValueRange(value: 30),
                 ]
     ]
 }

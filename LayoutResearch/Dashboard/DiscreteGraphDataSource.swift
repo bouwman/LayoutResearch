@@ -37,7 +37,12 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         if let dataPoints = dataPoints {
             return dataPoints
         } else {
-            return dummyPoints
+            // Return empty array
+            var points: [[ORKValueRange]] = []
+            let data: [ORKValueRange] = []
+            points.append(data)
+            return points
+            // return dummyPoints
         }
     }
     
@@ -63,7 +68,20 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     }
     
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        return "Day \(pointIndex + 1)"
+    }
+    
+    func graphChartView(_ graphChartView: ORKGraphChartView, colorForPlotIndex plotIndex: Int) -> UIColor {
+        switch plotIndex {
+        case 0:
+            return UIColor(red: 90, green: 200, blue: 250)
+        case 1:
+            return UIColor(red: 0, green: 122, blue: 255)
+        case 2:
+            return UIColor(red: 88, green: 86, blue: 214)
+        default:
+            return UIColor.lightGray
+        }
     }
     
     // MARK: - Helper
@@ -74,11 +92,22 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 ORKValueRange(minimumValue: 0, maximumValue: 2),
                 ORKValueRange(minimumValue: 0, maximumValue: 4),
                 ORKValueRange(minimumValue: 0, maximumValue: 6),
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 6)
                 ],
             [
-                ORKValueRange(minimumValue: 0, maximumValue: 11),
-                ORKValueRange(minimumValue: 0, maximumValue: 13),
-                ORKValueRange(minimumValue: 0, maximumValue: 13),
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 5)
+                ],
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 5),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 6)
                 ]
     ]
 }
