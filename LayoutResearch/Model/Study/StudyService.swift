@@ -53,7 +53,7 @@ class StudyService {
         }
         
         // Create targets
-        targetItems = settings.targetGroup.targetItemsFrom(searchItems: searchItems)
+        targetItems = settings.group.targetItemsFrom(searchItems: searchItems)
         
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")

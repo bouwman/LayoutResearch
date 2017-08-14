@@ -65,7 +65,6 @@ enum SettingsString: String {
     case icloudUserId
     case participantIdentifier
     case participantGroup
-    case targetGroup
     case layoutItemDiameter
     case layoutItemDistance
     case layoutRowCount
