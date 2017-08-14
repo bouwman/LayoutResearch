@@ -356,7 +356,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed:
+        case .completed, .discarded:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -393,7 +393,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved, .discarded:
+        case .failed, .saved:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }
