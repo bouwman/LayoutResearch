@@ -211,11 +211,10 @@ class ActivitiesViewController: UITableViewController {
         }
         
         activity.stateMachine.enter(RetrievingDataState.self)
-        service.remoteDataService.fetchLastSettings { (lastGroup, lastTargetGroup, record, userId, error) in
+        service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
-                if let lastGroup = lastGroup, let lastTargetGroup = lastTargetGroup {
+                if let lastGroup = lastGroup{
                     self.settings.group = lastGroup.next()
-                    self.settings.targetGroup = lastTargetGroup.next()
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
                     self.service.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
                         // Optional, so ignore result
@@ -238,7 +237,7 @@ class ActivitiesViewController: UITableViewController {
         
         switch activity.type {
         case .search:
-            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, targetGroup: settings.targetGroup, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
@@ -357,7 +356,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed, .discarded:
+        case .completed:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -394,7 +393,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved:
+        case .failed, .saved, .discarded:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }
