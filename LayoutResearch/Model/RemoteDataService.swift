@@ -95,7 +95,7 @@ class RemoteDataService {
             query.sortDescriptors = [sortByCreationDate]
             operation.qualityOfService = .userInitiated
             operation.resultsLimit = 1
-            operation.desiredKeys = [CloudRecords.StudySettings.group]
+            operation.desiredKeys = [CloudRecords.StudySettings.group, CloudRecords.StudySettings.targetGroup]
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
@@ -116,7 +116,7 @@ class RemoteDataService {
                         if let error = error {
                             completion(nil, nil, nil, userId, error)
                         } else {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                                 // Try fetch again
                                 self.fetchLastSettings(completion: completion)
                             }
