@@ -47,22 +47,25 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
         }
         
         // Fade in button after 0.3 sec
-        nextButton?.isHidden = true
+//        nextButton?.isHidden = true
     }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        // Fade in button after 1 sec
-        nextButton?.alpha = 0.0
-        nextButton?.isHidden = false
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        UIView.animate(withDuration: 0.6, delay: 1, options: .curveEaseOut, animations: {
-            self.nextButton?.alpha = 1.0
-        }, completion: nil)
-    }
+//
+//
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        // Fade in button after 1 sec
+//        nextButton?.alpha = 0.0
+//        nextButton?.isHidden = false
+//        nextButton?.isUserInteractionEnabled = false
+//    }
+//
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//
+//        UIView.animate(withDuration: 0.2, delay: 0.2, options: .curveEaseOut, animations: {
+//            self.nextButton?.alpha = 1.0
+//        }, completion: { completed in
+//            self.nextButton?.isUserInteractionEnabled = true
+//        })
+//    }
 }

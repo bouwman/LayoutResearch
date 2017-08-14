@@ -73,7 +73,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         startTime = Date()
         
-        UIView.animate(withDuration: 0.6, delay: 0.3, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.3, options: .curveEaseOut, animations: {
             self.customView?.alpha = 1.0
         }, completion: nil)
     }

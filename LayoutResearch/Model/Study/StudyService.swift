@@ -53,11 +53,7 @@ class StudyService {
         }
         
         // Create targets
-        targetItems = pickStaticTargetItems()
-        
-        // Shuffle items at least once
-        shuffle2dArrayMaintainingColorDistance(&searchItems)
-        targetItems.shuffle()
+        targetItems = settings.targetGroup.targetItemsFrom(searchItems: searchItems)
         
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
@@ -90,13 +86,13 @@ class StudyService {
             // Not add layout intro after intro
             if i != 0 {
                 // Take a break
-                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
-                waitStep.title = "Break"
-                waitStep.text = "Take a short break before you continue."
-                waitStep.stepDuration = 15
-                waitStep.shouldStartTimerAutomatically = true
-                waitStep.shouldShowDefaultTimer = true
-                steps.append(waitStep)
+//                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
+//                waitStep.title = "Break"
+//                waitStep.text = "Take a short break before you continue."
+//                waitStep.stepDuration = 15
+//                waitStep.shouldStartTimerAutomatically = true
+//                waitStep.shouldShowDefaultTimer = true
+//                steps.append(waitStep)
                 
                 // Introduce new layout
                 let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
@@ -104,8 +100,6 @@ class StudyService {
                 newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
             }
-            // Different target order for every layout
-            targetItems.shuffle()
             
             // Create steps for every target
             for i in 0..<targetItems.count {
@@ -263,44 +257,6 @@ class StudyService {
                     }
                 }
             }
-        }
-    }
-    
-    private func pickStaticTargetItems() -> [SearchItemProtocol] {
-        var items: [SearchItemProtocol] = []
-        
-        // Color distractor count high
-        let colorDistractorCountHighFrequencyHighDistanceClose = searchItems[0][0] // Blue
-        let colorDistractorCountHighFrequencyLowDistanceClose = searchItems[1][0] // Blue
-        let colorDistractorCountHighFrequencyHighDistanceApart = searchItems[2][0] // Orange
-        let colorDistractorCountHighFrequencyLowDistanceApart = searchItems[5][0] // Orange
-        
-        // Color distractor count low
-        let colorDistractorCountLowFrequencyHighDistanceClose = searchItems[2][3] // Dark green
-        let colorDistractorCountLowFrequencyLowDistanceClose = searchItems[3][3] // Dark green
-        let colorDistractorCountLowFrequencyHighDistanceApart = searchItems[1][2] // Dark blue
-        let colorDistractorCountLowFrequencyLowDistanceApart = searchItems[4][1] // Dark blue
-        let colorDistractorCountLowFrequencyHighDistanceFarApart = searchItems[0][1] // Green
-        let colorDistractorCountLowFrequencyLowDistanceFarApart = searchItems[5][2] // Green
-
-        // Add items according to their frequency
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountHighFrequencyHighDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountHighFrequencyLowDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountHighFrequencyHighDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountHighFrequencyLowDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceFarApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceFarApart)
-
-        return items
-    }
-    
-    private func appendItemToArray(_ array: inout [SearchItemProtocol], times: Int, item: SearchItemProtocol) {
-        for _ in 0..<times {
-            array.append(item)
         }
     }
     
