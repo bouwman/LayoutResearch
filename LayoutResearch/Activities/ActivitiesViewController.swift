@@ -77,7 +77,7 @@ class ActivitiesViewController: UITableViewController {
                 // Reset next row if countdown reaches 0 while other task is not completed
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
-                    let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
+                    let oneDayBack = Calendar.current.date(byAdding: .second, value: -18, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
                 } else if let number = service.lastActivityNumber, activity.number == number {
