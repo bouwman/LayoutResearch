@@ -37,12 +37,12 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         if let dataPoints = dataPoints {
             return dataPoints
         } else {
-//            // Return empty array
-//            var points: [[ORKValueRange]] = []
-//            let data: [ORKValueRange] = []
-//            points.append(data)
-//            return points
-            return dummyPoints
+            // Return empty array
+            var points: [[ORKValueRange]] = []
+            let data: [ORKValueRange] = []
+            points.append(data)
+            return points
+//            return dummyPoints
         }
     }
     
