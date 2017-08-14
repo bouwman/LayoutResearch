@@ -55,10 +55,6 @@ class StudyService {
         // Create targets
         targetItems = pickStaticTargetItems()
         
-        // Shuffle items at least once
-        shuffle2dArrayMaintainingColorDistance(&searchItems)
-        targetItems.shuffle()
-        
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
@@ -104,8 +100,6 @@ class StudyService {
                 newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
             }
-            // Different target order for every layout
-            targetItems.shuffle()
             
             // Create steps for every target
             for i in 0..<targetItems.count {
@@ -267,41 +261,23 @@ class StudyService {
     }
     
     private func pickStaticTargetItems() -> [SearchItemProtocol] {
-        var items: [SearchItemProtocol] = []
-        
         // Color distractor count high
-        let colorDistractorCountHighFrequencyHighDistanceClose = searchItems[0][0] // Blue
-        let colorDistractorCountHighFrequencyLowDistanceClose = searchItems[1][0] // Blue
-        let colorDistractorCountHighFrequencyHighDistanceApart = searchItems[2][0] // Orange
-        let colorDistractorCountHighFrequencyLowDistanceApart = searchItems[5][0] // Orange
+        let a = searchItems[0][0] // Blue
+        let b = searchItems[1][0] // Blue
+        let c = searchItems[2][0] // Orange
+        let d = searchItems[5][0] // Orange
         
         // Color distractor count low
-        let colorDistractorCountLowFrequencyHighDistanceClose = searchItems[2][3] // Dark green
-        let colorDistractorCountLowFrequencyLowDistanceClose = searchItems[3][3] // Dark green
-        let colorDistractorCountLowFrequencyHighDistanceApart = searchItems[1][2] // Dark blue
-        let colorDistractorCountLowFrequencyLowDistanceApart = searchItems[4][1] // Dark blue
-        let colorDistractorCountLowFrequencyHighDistanceFarApart = searchItems[0][1] // Green
-        let colorDistractorCountLowFrequencyLowDistanceFarApart = searchItems[5][2] // Green
+        let e = searchItems[2][3] // Dark green
+        let f = searchItems[3][3] // Dark green
+        let g = searchItems[1][2] // Dark blue
+        let h = searchItems[4][1] // Dark blue
+        let i = searchItems[0][1] // Green
+        let j = searchItems[5][2] // Green
 
-        // Add items according to their frequency
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountHighFrequencyHighDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountHighFrequencyLowDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountHighFrequencyHighDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountHighFrequencyLowDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceClose)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceApart)
-        appendItemToArray(&items, times: settings.targetFreqHighCount, item: colorDistractorCountLowFrequencyHighDistanceFarApart)
-        appendItemToArray(&items, times: settings.targetFreqLowCount, item: colorDistractorCountLowFrequencyLowDistanceFarApart)
+        let items: [SearchItemProtocol] = [a, j, g, h, c, f, e, i, a, g, c, e, b, i, d, a, j, g, h, c, f, e, i, a, g, c, e, b, i, d]
 
         return items
-    }
-    
-    private func appendItemToArray(_ array: inout [SearchItemProtocol], times: Int, item: SearchItemProtocol) {
-        for _ in 0..<times {
-            array.append(item)
-        }
     }
     
     private func otherColorDistractorCountLowId(colorId: Int) -> Int {
