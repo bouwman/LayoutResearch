@@ -71,19 +71,37 @@ enum TargetGroup: String {
     }
     
     func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
-        // Color distractor count high
-        let a = searchItems[0][0] // Blue
-        let b = searchItems[1][0] // Blue
-        let c = searchItems[2][0] // Orange
-        let d = searchItems[5][0] // Orange
-        
-        // Color distractor count low
-        let e = searchItems[2][3] // Dark green
-        let f = searchItems[3][3] // Dark green
-        let g = searchItems[1][2] // Dark blue
-        let h = searchItems[4][1] // Dark blue
-        let i = searchItems[0][1] // Green
-        let j = searchItems[5][2] // Green
+        let a,b,c,d,e,f,g,h,i,j : SearchItemProtocol
+        switch self {
+        case .a:
+            // Color distractor count high
+            a = searchItems[2][1] // Blue
+            b = searchItems[1][3] // Blue
+            c = searchItems[1][1] // Orange
+            d = searchItems[4][3] // Orange
+            
+            // Color distractor count low
+            e = searchItems[2][2] // Dark green
+            f = searchItems[3][2] // Dark green
+            g = searchItems[1][2] // Dark blue
+            h = searchItems[4][1] // Dark blue
+            i = searchItems[0][2] // Green
+            j = searchItems[5][1] // Green
+        case .b:
+            // Color distractor count high
+            a = searchItems[4][2] // Pink
+            b = searchItems[5][2] // Pink
+            c = searchItems[3][1] // Orange
+            d = searchItems[2][0] // Orange
+            
+            // Color distractor count low
+            e = searchItems[3][2] // Dark green
+            f = searchItems[2][2] // Dark green
+            g = searchItems[4][1] // Dark blue
+            h = searchItems[1][2] // Dark blue
+            i = searchItems[5][1] // Green
+            j = searchItems[0][2] // Green
+        }
         
         let items: [SearchItemProtocol] = [a, j, g, h, c, f, e, i, a, g, c, e, b, i, d, a, j, g, h, c, f, e, i, a, g, c, e, b, i, d]
         

@@ -270,16 +270,16 @@ class StudyService {
     
     private var staticColors: [[Int]] {
         var colors: [[Int]] = []
-        let c = Const.StudyParameters.colorIdFarApartCondition1
-        let d = Const.StudyParameters.colorIdFarApartCondition2
-        let a = Const.StudyParameters.colorIdApartCondition
+        let c = Const.StudyParameters.colorIdFarApartCondition1 // 5
+        let d = Const.StudyParameters.colorIdFarApartCondition2 // 6
+        let a = Const.StudyParameters.colorIdApartCondition // 2
         
-        let colorRow1 = [1, c, 1, a, 0, 0, 0, 0, 0, 0]
+        let colorRow1 = [1, 1, c, a, 0, 0, 0, 0, 0, 0]
         let colorRow2 = [1, a, 3, 1, 0, 0, 0, 0, 0, 0]
-        let colorRow3 = [a, 1, 1, d, 0, 0, 0, 0, 0, 0]
-        let colorRow4 = [4, a, 4, d, 0, 0, 0, 0, 0, 0]
-        let colorRow5 = [4, 3, a, 4, 0, 0, 0, 0, 0, 0]
-        let colorRow6 = [a, 4, c, 4, 0, 0, 0, 0, 0, 0]
+        let colorRow3 = [a, 1, d, 1, 0, 0, 0, 0, 0, 0]
+        let colorRow4 = [4, a, d, 4, 0, 0, 0, 0, 0, 0]
+        let colorRow5 = [4, 3, 4, a, 0, 0, 0, 0, 0, 0]
+        let colorRow6 = [a, c, 4, 4, 0, 0, 0, 0, 0, 0]
         let colorRow7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         let colorRow9 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
