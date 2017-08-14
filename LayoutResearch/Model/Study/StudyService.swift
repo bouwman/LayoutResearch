@@ -53,7 +53,7 @@ class StudyService {
         }
         
         // Create targets
-        targetItems = pickStaticTargetItems()
+        targetItems = settings.targetGroup.targetItemsFrom(searchItems: searchItems)
         
         // Create intro step
         let introStep = ORKInstructionStep(identifier: "IntroStep")
@@ -258,26 +258,6 @@ class StudyService {
                 }
             }
         }
-    }
-    
-    private func pickStaticTargetItems() -> [SearchItemProtocol] {
-        // Color distractor count high
-        let a = searchItems[0][0] // Blue
-        let b = searchItems[1][0] // Blue
-        let c = searchItems[2][0] // Orange
-        let d = searchItems[5][0] // Orange
-        
-        // Color distractor count low
-        let e = searchItems[2][3] // Dark green
-        let f = searchItems[3][3] // Dark green
-        let g = searchItems[1][2] // Dark blue
-        let h = searchItems[4][1] // Dark blue
-        let i = searchItems[0][1] // Green
-        let j = searchItems[5][2] // Green
-
-        let items: [SearchItemProtocol] = [a, j, g, h, c, f, e, i, a, g, c, e, b, i, d, a, j, g, h, c, f, e, i, a, g, c, e, b, i, d]
-
-        return items
     }
     
     private func otherColorDistractorCountLowId(colorId: Int) -> Int {

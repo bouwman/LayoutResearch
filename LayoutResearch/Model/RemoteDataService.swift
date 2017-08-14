@@ -15,6 +15,7 @@ private struct CloudRecords {
     struct StudySettings {
         static let typeName = "StudySettings"
         static let group = "group"
+        static let targetGroup = "targetGroup"
     }
     struct StudyResult {
         static let typeName = "StudyResult"
@@ -77,10 +78,10 @@ class RemoteDataService {
         UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
     }
     
-    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
+    func fetchLastSettings(completion: @escaping (ParticipantGroup?, TargetGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
-                completion(nil, nil, nil, errorUser)
+                completion(nil, nil, nil, nil, errorUser)
                 return
             }
             
@@ -98,22 +99,27 @@ class RemoteDataService {
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
-                    recordFetched = true
-                    completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
+                    if let targetGroupString = record[CloudRecords.StudySettings.targetGroup] as? String {
+                        recordFetched = true
+                        completion(ParticipantGroup(rawValue: groupString), TargetGroup(rawValue: targetGroupString), record, userId, nil)
+                    }
                 }
+
             }
                         
             operation.queryCompletionBlock = { cursor, error in
                 if let error = error {
-                    completion(nil, nil, userId, error)
+                    completion(nil, nil, nil, userId, error)
                 } else if recordFetched == false {
                     // No records found so create new
-                    self.uploadLastSettings(.a, completion: { (error) in
+                    self.uploadLastSettings(.a, targetGroup: .a, completion: { (error) in
                         if let error = error {
-                            completion(nil, nil, userId, error)
+                            completion(nil, nil, nil, userId, error)
                         } else {
-                            // Try fetch again
-                            self.fetchLastSettings(completion: completion)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                                // Try fetch again
+                                self.fetchLastSettings(completion: completion)
+                            }
                         }
                     })
                 }
@@ -123,8 +129,8 @@ class RemoteDataService {
         }
     }
     
-    func uploadLastSettings(_ lastParticipantGroup: ParticipantGroup, completion: @escaping (Error?) -> ()) {
-        let settingsRecord = settingsRecordFor(participantGroup: lastParticipantGroup)
+    func uploadLastSettings(_ lastParticipantGroup: ParticipantGroup, targetGroup: TargetGroup, completion: @escaping (Error?) -> ()) {
+        let settingsRecord = settingsRecordFor(participantGroup: lastParticipantGroup, targetGroup: targetGroup)
         let operation = CKModifyRecordsOperation(recordsToSave: [settingsRecord], recordIDsToDelete: nil)
         operation.qualityOfService = .userInitiated
         
@@ -135,7 +141,7 @@ class RemoteDataService {
         publicDB.add(operation)
     }
     
-    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, targetGroup: TargetGroup, csvURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
@@ -152,7 +158,7 @@ class RemoteDataService {
             
             // Upload last settings if first activity
             if resultNumber == 0 {
-                let settingsRecord = self.settingsRecordFor(participantGroup: group)
+                let settingsRecord = self.settingsRecordFor(participantGroup: group, targetGroup: targetGroup)
                 records.append(settingsRecord)
             }
             
@@ -277,9 +283,10 @@ class RemoteDataService {
     
     // MARK: - Helper
     
-    private func settingsRecordFor(participantGroup: ParticipantGroup) -> CKRecord {
+    private func settingsRecordFor(participantGroup: ParticipantGroup, targetGroup: TargetGroup) -> CKRecord {
         let record = CKRecord(recordType: CloudRecords.StudySettings.typeName)
         record[CloudRecords.StudySettings.group] = NSString(string: participantGroup.rawValue)
+        record[CloudRecords.StudySettings.targetGroup] = NSString(string: targetGroup.rawValue)
         
         return record
     }
