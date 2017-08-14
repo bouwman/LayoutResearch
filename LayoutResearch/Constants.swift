@@ -26,6 +26,7 @@ struct Const {
         static let searchLayoutMargin: CGFloat = 50
         static let introLayoutMargin: CGFloat = 0
         static let shapeCount: Int = 27
+        static let graphOffset: Double = 0.2
     }
     struct StudyParameters {
         static let rowCount = 6

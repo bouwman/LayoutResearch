@@ -81,12 +81,13 @@ class DashboardService: NSObject {
     }
     
     private static var layoutDataPoints: [[ORKValueRange]]? {
-        var dataPoints: [[ORKValueRange]] = []
+        var graphValues: [[ORKValueRange]] = []
+        var dataPoints: [[Double]] = []
         
         // Create a plot row for each layout
         for _ in 0...2 {
-            let row: [ORKValueRange] = []
-            dataPoints.append(row)
+            let dataRow: [Double] = []
+            dataPoints.append(dataRow)
         }
         
         // Get latest values
@@ -96,22 +97,34 @@ class DashboardService: NSObject {
             let verAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeVerResult.rawValue + "\(i)")
             
             if gridAvgFromDefaults != 0 && gridAvgFromDefaults.isNaN == false {
-                dataPoints[0].append(ORKValueRange(minimumValue: 0, maximumValue: gridAvgFromDefaults))
+                dataPoints[0].append(gridAvgFromDefaults)
             }
             if horAvgFromDefaults != 0 && horAvgFromDefaults.isNaN == false {
-                dataPoints[1].append(ORKValueRange(minimumValue: 0, maximumValue: horAvgFromDefaults))
+                dataPoints[1].append(horAvgFromDefaults)
             }
             if verAvgFromDefaults != 0 && verAvgFromDefaults.isNaN == false  {
-                dataPoints[2].append(ORKValueRange(minimumValue: 0, maximumValue: verAvgFromDefaults))
+                dataPoints[2].append(verAvgFromDefaults)
             }
         }
         
-        // Return data points
-        if dataPoints.first!.count != 0 {
-            return dataPoints
-        } else {
-            // Nil if not enough found
+        guard dataPoints.first!.count != 0 else {
             return nil
         }
+        
+        // Find minimum
+        var min = dataPoints.first!.first!
+        for plot in dataPoints {
+            if let localMin = plot.min(), localMin < min {
+                min = localMin
+            }
+        }
+        
+        // Map to graph values
+        for plot in dataPoints {
+            let newGraphPlot = plot.map { ORKValueRange(minimumValue: min - Const.Interface.graphOffset, maximumValue: $0) }
+            graphValues.append(newGraphPlot)
+        }
+        
+        return graphValues
     }
 }

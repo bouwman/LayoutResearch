@@ -42,7 +42,7 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
             let data: [ORKValueRange] = []
             points.append(data)
             return points
-            // return dummyPoints
+//            return dummyPoints
         }
     }
     
@@ -66,12 +66,28 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         return plotPoints[plotIndex].count
     }
     
-    func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return 0
-    }
-    
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
         return "Day \(pointIndex + 1)"
+    }
+    
+    func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
+        return minimumValue - Const.Interface.graphOffset
+    }
+    
+    var minimumValue: Double {
+        guard plotPoints.first!.count > 0 else { return 0 }
+        
+        var min = plotPoints.first!.first!.maximumValue
+        for row in plotPoints {
+            let minInRowOptional = row.min(by: { (left, right) -> Bool in
+                left.maximumValue < right.maximumValue
+            })
+            if let minInRow = minInRowOptional?.maximumValue, minInRow.isNaN == false, minInRow < min {
+                min = minInRow
+            }
+        }
+        print(min)
+        return min
     }
     
     // MARK: - Helper

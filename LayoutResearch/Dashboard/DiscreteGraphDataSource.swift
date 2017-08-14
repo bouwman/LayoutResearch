@@ -37,12 +37,12 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         if let dataPoints = dataPoints {
             return dataPoints
         } else {
-            // Return empty array
-            var points: [[ORKValueRange]] = []
-            let data: [ORKValueRange] = []
-            points.append(data)
-            return points
-            // return dummyPoints
+//            // Return empty array
+//            var points: [[ORKValueRange]] = []
+//            let data: [ORKValueRange] = []
+//            points.append(data)
+//            return points
+            return dummyPoints
         }
     }
     
@@ -84,45 +84,26 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         }
     }
     
-    func maximumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return maximumValue + 0.2
-    }
-    
     func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return minimumValue - 0.2
+        return minimumValue - Const.Interface.graphOffset
     }
     
-    var maximumValue: Double {
-        guard plotPoints.first!.count > 0 else { return 5 }
-        
-        var max = 0.0
-        for row in plotPoints {
-            let maxInRowOptional = row.max(by: { (left, right) -> Bool in
-                left.maximumValue > right.maximumValue
-            })
-            if let maxInRow = maxInRowOptional?.maximumValue, maxInRow > max {
-                max = maxInRow
-            }
-        }
-        return max
-    }
+    // MARK: - Helper
     
     var minimumValue: Double {
         guard plotPoints.first!.count > 0 else { return 0 }
         
         var min = plotPoints.first!.first!.maximumValue
         for row in plotPoints {
-            let maxInRowOptional = row.min(by: { (left, right) -> Bool in
+            let minInRowOptional = row.min(by: { (left, right) -> Bool in
                 left.maximumValue < right.maximumValue
             })
-            if let maxInRow = maxInRowOptional?.maximumValue, maxInRow < min {
-                min = maxInRow
+            if let minInRow = minInRowOptional?.maximumValue, minInRow.isNaN == false, minInRow < min {
+                min = minInRow
             }
         }
         return min
     }
-    
-    // MARK: - Helper
     
     private var dummyPoints =
         [
