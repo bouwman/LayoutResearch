@@ -22,7 +22,7 @@ class ActivitiesService {
         let number = UserDefaults.standard.object(forKey: SettingsString.lastActivityNumber.rawValue) as? Int
 
         // Make sure later activities don't become available, if last activity is older than 24 h
-        let oneDayBack = Calendar.current.date(byAdding: .minute, value: -1, to: Date(), wrappingComponents: false)!
+        let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
         if date < oneDayBack {
             date = oneDayBack
         }
@@ -70,7 +70,7 @@ class ActivitiesService {
             if i <= number {
                 activity = StudyActivity(startDate: lastDate, number: i, type: .search)
             } else {
-                activity = StudyActivity(startDate: Calendar.current.date(byAdding: .minute, value: i - number + extraDay, to: lastDate, wrappingComponents: false)!, number: i, type: .search)
+                activity = StudyActivity(startDate: Calendar.current.date(byAdding: .hour, value: (i - number + extraDay) * 18, to: lastDate, wrappingComponents: false)!, number: i, type: .search)
             }
             activities.append(activity)
         }
