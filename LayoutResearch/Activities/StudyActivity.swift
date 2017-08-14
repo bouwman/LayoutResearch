@@ -61,7 +61,7 @@ class StudyActivity {
     
     var isAllSearchTasksComplete: Bool {
         let lastActivityNumber = UserDefaults.standard.integer(forKey: SettingsString.lastActivityNumber.rawValue)
-        return lastActivityNumber == Const.StudyParameters.searchActivityCount - 1
+        return lastActivityNumber == Const.StudyParameters.searchActivityCount
     }
     
     var isSurveyComplete: Bool {

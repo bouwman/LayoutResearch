@@ -77,7 +77,7 @@ class ActivitiesViewController: UITableViewController {
                 // Reset next row if countdown reaches 0 while other task is not completed
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
-                    let oneDayBack = Calendar.current.date(byAdding: .day, value: -1, to: Date(), wrappingComponents: false)!
+                    let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
                 } else if let number = service.lastActivityNumber, activity.number == number {
@@ -213,8 +213,8 @@ class ActivitiesViewController: UITableViewController {
         activity.stateMachine.enter(RetrievingDataState.self)
         service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
             DispatchQueue.main.async {
-                if let lastGroup = lastGroup {
-                    self.settings.group = lastGroup.next
+                if let lastGroup = lastGroup{
+                    self.settings.group = lastGroup.next()
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
                     self.service.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
                         // Optional, so ignore result
@@ -237,7 +237,7 @@ class ActivitiesViewController: UITableViewController {
         
         switch activity.type {
         case .search:
-            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
@@ -375,6 +375,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             }
             // Save results
             service.resultService.saveSearchResultToCSV(resultNumber: activity.number, results: searchResults)
+            service.resultService.saveAvgSearchTimesFor(resultNumber: activity.number, results: searchResults)
             service.isParticipantGroupAssigned = true
             
             // Reset after completion of every task
@@ -392,7 +393,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .discarded, .failed, .saved:
+        case .failed, .saved, .discarded:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }

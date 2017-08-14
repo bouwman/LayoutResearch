@@ -45,8 +45,7 @@ class DashboardTableViewController: UITableViewController {
         return [discreteGraph, lineGraph]
     }
     
-    let discreteGraphDataSource = DiscreteGraphDataSource()
-    let lineGraphDataSource = LineGraphDataSource()    
+    var service = DashboardService()
     
     // MARK: UIViewController
     
@@ -59,8 +58,10 @@ class DashboardTableViewController: UITableViewController {
         }
         
         // Set the data source for each graph
-        discreteGraph.dataSource = discreteGraphDataSource
-        lineGraph.dataSource = lineGraphDataSource
+        discreteGraph.dataSource = service.discreteGraphDataSource
+        lineGraph.dataSource = service.lineGraphDataSource
+        discreteGraph.noDataText = "No task results yet."
+        lineGraph.noDataText = "No task results yet."
         
         // Set the table view to automatically calculate the height of cells.
         tableView.estimatedRowHeight = tableView.rowHeight
@@ -97,6 +98,13 @@ class DashboardTableViewController: UITableViewController {
     }
     
     // MARK: Convenience
+    
+    func reloadGraphDataSources() {
+        service.reloadDataSources()
+        
+        discreteGraph.dataSource = service.discreteGraphDataSource
+        lineGraph.dataSource = service.lineGraphDataSource
+    }
     
     func animatableChartInCell(_ cell: UITableViewCell) -> AnimatableChart? {
         for chart in allCharts {

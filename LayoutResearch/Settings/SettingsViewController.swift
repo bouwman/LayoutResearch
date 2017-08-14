@@ -81,7 +81,7 @@ class SettingsViewController: UITableViewController {
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let selectionVC = segue.destination as? SelectionViewController {
-            selectionVC.items = allGroups
+            selectionVC.items = ParticipantGroup.allGroups
             selectionVC.delegate = self
         }
     }
@@ -117,10 +117,6 @@ class SettingsViewController: UITableViewController {
         settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
         
         delegate?.settingsViewController(viewController: self, didChangeSettings: settings)
-    }
-    
-    private var allGroups: [ParticipantGroup] {
-        return [.a, .b, .c, .d, .e, .f, .g, .h, .i, .j, .k, .l]
     }
     
     func updateUI() {

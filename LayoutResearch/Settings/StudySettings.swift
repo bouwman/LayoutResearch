@@ -9,30 +9,30 @@
 import UIKit
 
 enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
-    case a,b,c,d,e,f,g,h,i,j,k,l
+    case a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x
     
     var layouts: [LayoutType] {
         switch self {
-        case .a,.g:
+        case .a,.g,.m,.s:
             return [.grid, .horizontal, .vertical]
-        case .b,.h:
+        case .b,.h,.n,.t:
             return [.grid, .vertical, .horizontal]
-        case .c,.i:
+        case .c,.i,.o,.u:
             return [.horizontal, .grid, .vertical]
-        case .d,.j:
+        case .d,.j,.p,.v:
             return [.vertical, .grid, .horizontal]
-        case .e,.k:
+        case .e,.k,.q,.w:
             return [.vertical, .horizontal, .grid]
-        case .f,.l:
+        case .f,.l,.r,.x:
             return [.horizontal, .vertical, .grid]
         }
     }
     
     var organisation: OrganisationType {
         switch self {
-        case .a,.b,.c,.d,.e,.f:
+        case .a,.b,.c,.d,.e,.f,.m,.n,.o,.p,.q,.r:
             return .stable
-        case .g,.h,.i,.j,.k,.l:
+        case .g,.h,.i,.j,.k,.l,.s,.t,.u,.v,.w,.x:
             return .random
         }
     }
@@ -45,7 +45,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         return description
     }
     
-    var next: ParticipantGroup {
+    func next() -> ParticipantGroup {
         let currentIndex = ParticipantGroup.allGroups.index(of: self)!
         if currentIndex == ParticipantGroup.allGroups.count - 1 {
             return ParticipantGroup.allGroups.first!
@@ -54,12 +54,50 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         }
     }
     
-    private static var allGroups: [ParticipantGroup] {
-        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l]
+    static var allGroups: [ParticipantGroup] {
+        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l,.m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x]
     }
     
     static var random: ParticipantGroup {
         return ParticipantGroup.allGroups[randomInt(min: 0, max: allGroups.count - 1)]
+    }
+    
+    func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
+        let a,b,c,d,e,f,g,h,i,j : SearchItemProtocol
+        switch self {
+        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
+            // Color distractor count high
+            a = searchItems[2][1] // Blue
+            b = searchItems[1][3] // Blue
+            c = searchItems[1][1] // Orange
+            d = searchItems[4][3] // Orange
+            
+            // Color distractor count low
+            e = searchItems[2][2] // Dark green
+            f = searchItems[3][2] // Dark green
+            g = searchItems[1][2] // Dark blue
+            h = searchItems[4][1] // Dark blue
+            i = searchItems[0][2] // Green
+            j = searchItems[5][1] // Green
+        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+            // Color distractor count high
+            a = searchItems[4][2] // Pink
+            b = searchItems[5][2] // Pink
+            c = searchItems[3][1] // Orange
+            d = searchItems[2][0] // Orange
+            
+            // Color distractor count low
+            e = searchItems[3][2] // Dark green
+            f = searchItems[2][2] // Dark green
+            g = searchItems[4][1] // Dark blue
+            h = searchItems[1][2] // Dark blue
+            i = searchItems[5][1] // Green
+            j = searchItems[0][2] // Green
+        }
+        
+        let items: [SearchItemProtocol] = [a, j, g, h, c, f, e, i, a, g, c, e, b, i, d, a, j, g, h, c, f, e, i, a, g, c, e, b, i, d]
+        
+        return items
     }
 }
 

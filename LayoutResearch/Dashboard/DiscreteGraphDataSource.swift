@@ -33,25 +33,25 @@ import ResearchKit
 class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     // MARK: Properties
     
-    var plotPoints =
-    [
-        [
-            ORKValueRange(minimumValue: 0, maximumValue: 2),
-            ORKValueRange(minimumValue: 1, maximumValue: 4),
-            ORKValueRange(minimumValue: 2, maximumValue: 6),
-            ORKValueRange(minimumValue: 3, maximumValue: 8),
-            ORKValueRange(minimumValue: 5, maximumValue: 10),
-            ORKValueRange(minimumValue: 8, maximumValue: 13),
-        ],
-        [
-            ORKValueRange(value: 1),
-            ORKValueRange(minimumValue: 2, maximumValue: 6),
-            ORKValueRange(minimumValue: 3, maximumValue: 10),
-            ORKValueRange(minimumValue: 5, maximumValue: 11),
-            ORKValueRange(minimumValue: 7, maximumValue: 13),
-            ORKValueRange(minimumValue: 10, maximumValue: 13),
-        ]
-    ]
+    private var plotPoints: [[ORKValueRange]] {
+        if let dataPoints = dataPoints {
+            return dataPoints
+        } else {
+            // Return empty array
+            var points: [[ORKValueRange]] = []
+            let data: [ORKValueRange] = []
+            points.append(data)
+            return points
+//            return dummyPoints
+        }
+    }
+    
+    var dataPoints: [[ORKValueRange]]?
+    
+    init(dataPoints: [[ORKValueRange]]? = nil) {
+        self.dataPoints = dataPoints
+    }
+    
     
     // MARK: ORKGraphChartViewDataSource
     
@@ -68,6 +68,65 @@ class DiscreteGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     }
     
     func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+        return "Day \(pointIndex + 1)"
     }
+    
+    func graphChartView(_ graphChartView: ORKGraphChartView, colorForPlotIndex plotIndex: Int) -> UIColor {
+        switch plotIndex {
+        case 0:
+            return UIColor(red: 90, green: 200, blue: 250)
+        case 1:
+            return UIColor(red: 0, green: 122, blue: 255)
+        case 2:
+            return UIColor(red: 88, green: 86, blue: 214)
+        default:
+            return UIColor.lightGray
+        }
+    }
+    
+    func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
+        return minimumValue - Const.Interface.graphOffset
+    }
+    
+    // MARK: - Helper
+    
+    var minimumValue: Double {
+        guard plotPoints.first!.count > 0 else { return 0 }
+        
+        var min = plotPoints.first!.first!.maximumValue
+        for row in plotPoints {
+            let minInRowOptional = row.min(by: { (left, right) -> Bool in
+                left.maximumValue < right.maximumValue
+            })
+            if let minInRow = minInRowOptional?.maximumValue, minInRow.isNaN == false, minInRow < min {
+                min = minInRow
+            }
+        }
+        return min
+    }
+    
+    private var dummyPoints =
+        [
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 6),
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 6)
+                ],
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 3),
+                ORKValueRange(minimumValue: 0, maximumValue: 5)
+                ],
+            [
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 2),
+                ORKValueRange(minimumValue: 0, maximumValue: 5),
+                ORKValueRange(minimumValue: 0, maximumValue: 4),
+                ORKValueRange(minimumValue: 0, maximumValue: 6)
+                ]
+    ]
 }

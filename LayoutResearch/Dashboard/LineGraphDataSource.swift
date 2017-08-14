@@ -33,25 +33,24 @@ import ResearchKit
 class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     // MARK: Properties
     
-    var plotPoints =
-    [
-        [
-            ORKValueRange(value: 10),
-            ORKValueRange(value: 20),
-            ORKValueRange(value: 25),
-            ORKValueRange(),
-            ORKValueRange(value: 30),
-            ORKValueRange(value: 40),
-        ],
-        [
-            ORKValueRange(value: 2),
-            ORKValueRange(value: 4),
-            ORKValueRange(value: 8),
-            ORKValueRange(value: 16),
-            ORKValueRange(value: 32),
-            ORKValueRange(value: 64),
-        ]
-    ]
+    private var plotPoints: [[ORKValueRange]] {
+        if let dataPoints = dataPoints {
+            return dataPoints
+        } else {
+            // Return empty array
+            var points: [[ORKValueRange]] = []
+            let data: [ORKValueRange] = []
+            points.append(data)
+            return points
+//            return dummyPoints
+        }
+    }
+    
+    var dataPoints: [[ORKValueRange]]?
+    
+    init(dataPoints: [[ORKValueRange]]? = nil) {
+        self.dataPoints = dataPoints
+    }
     
     // MARK: ORKGraphChartViewDataSource
     
@@ -67,15 +66,53 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
         return plotPoints[plotIndex].count
     }
     
-    func maximumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return 70
+    func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
+        return "Day \(pointIndex + 1)"
     }
     
     func minimumValue(for graphChartView: ORKGraphChartView) -> Double {
-        return 0
+        return minimumValue - Const.Interface.graphOffset
     }
     
-    func graphChartView(_ graphChartView: ORKGraphChartView, titleForXAxisAtPointIndex pointIndex: Int) -> String? {
-        return "\(pointIndex + 1)"
+    var minimumValue: Double {
+        guard plotPoints.first!.count > 0 else { return 0 }
+        
+        var min = plotPoints.first!.first!.maximumValue
+        for row in plotPoints {
+            let minInRowOptional = row.min(by: { (left, right) -> Bool in
+                left.maximumValue < right.maximumValue
+            })
+            if let minInRow = minInRowOptional?.maximumValue, minInRow.isNaN == false, minInRow < min {
+                min = minInRow
+            }
+        }
+        return min
     }
+    
+    // MARK: - Helper
+    
+    private var dummyPoints =
+        [
+            [
+                ORKValueRange(value: 10),
+                ORKValueRange(value: 20),
+                ORKValueRange(value: 25),
+                ORKValueRange(),
+                ORKValueRange(value: 16)
+                ],
+            [
+                ORKValueRange(value: 2),
+                ORKValueRange(value: 4),
+                ORKValueRange(value: 8),
+                ORKValueRange(value: 16),
+                ORKValueRange(value: 32),
+                ],
+            [
+                ORKValueRange(value: 3),
+                ORKValueRange(value: 7),
+                ORKValueRange(value: 5),
+                ORKValueRange(value: 20),
+                ORKValueRange(value: 30),
+                ]
+    ]
 }
