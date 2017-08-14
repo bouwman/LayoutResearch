@@ -90,13 +90,13 @@ class StudyService {
             // Not add layout intro after intro
             if i != 0 {
                 // Take a break
-                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
-                waitStep.title = "Break"
-                waitStep.text = "Take a short break before you continue."
-                waitStep.stepDuration = 15
-                waitStep.shouldStartTimerAutomatically = true
-                waitStep.shouldShowDefaultTimer = true
-                steps.append(waitStep)
+//                let waitStep = ORKCountdownStep(identifier: "CountdownStep\(layouts.count + i)")
+//                waitStep.title = "Break"
+//                waitStep.text = "Take a short break before you continue."
+//                waitStep.stepDuration = 15
+//                waitStep.shouldStartTimerAutomatically = true
+//                waitStep.shouldShowDefaultTimer = true
+//                steps.append(waitStep)
                 
                 // Introduce new layout
                 let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))

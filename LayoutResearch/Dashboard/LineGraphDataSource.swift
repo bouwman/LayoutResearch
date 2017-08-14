@@ -86,7 +86,6 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
                 min = minInRow
             }
         }
-        print(min)
         return min
     }
     

@@ -91,7 +91,7 @@ class DashboardService: NSObject {
         }
         
         // Get latest values
-        for i in 3..<Const.StudyParameters.searchActivityCount {
+        for i in 0..<Const.StudyParameters.searchActivityCount {
             let gridAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeGridResult.rawValue + "\(i)")
             let horAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeHorResult.rawValue + "\(i)")
             let verAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeVerResult.rawValue + "\(i)")
