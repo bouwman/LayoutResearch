@@ -9,30 +9,30 @@
 import UIKit
 
 enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
-    case a,b,c,d,e,f,g,h,i,j,k,l
+    case a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x
     
     var layouts: [LayoutType] {
         switch self {
-        case .a,.g:
+        case .a,.g,.m,.s:
             return [.grid, .horizontal, .vertical]
-        case .b,.h:
+        case .b,.h,.n,.t:
             return [.grid, .vertical, .horizontal]
-        case .c,.i:
+        case .c,.i,.o,.u:
             return [.horizontal, .grid, .vertical]
-        case .d,.j:
+        case .d,.j,.p,.v:
             return [.vertical, .grid, .horizontal]
-        case .e,.k:
+        case .e,.k,.q,.w:
             return [.vertical, .horizontal, .grid]
-        case .f,.l:
+        case .f,.l,.r,.x:
             return [.horizontal, .vertical, .grid]
         }
     }
     
     var organisation: OrganisationType {
         switch self {
-        case .a,.b,.c,.d,.e,.f:
+        case .a,.b,.c,.d,.e,.f,.m,.n,.o,.p,.q,.r:
             return .stable
-        case .g,.h,.i,.j,.k,.l:
+        case .g,.h,.i,.j,.k,.l,.s,.t,.u,.v,.w,.x:
             return .random
         }
     }
@@ -55,25 +55,17 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     }
     
     private static var allGroups: [ParticipantGroup] {
-        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l]
+        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l,.m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x]
     }
     
     static var random: ParticipantGroup {
         return ParticipantGroup.allGroups[randomInt(min: 0, max: allGroups.count - 1)]
     }
-}
-
-enum TargetGroup: String {
-    case a, b
-    
-    func next() -> TargetGroup {
-        return self == .a ? .b : .a
-    }
     
     func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
         let a,b,c,d,e,f,g,h,i,j : SearchItemProtocol
         switch self {
-        case .a:
+        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
             // Color distractor count high
             a = searchItems[2][1] // Blue
             b = searchItems[1][3] // Blue
@@ -87,7 +79,7 @@ enum TargetGroup: String {
             h = searchItems[4][1] // Dark blue
             i = searchItems[0][2] // Green
             j = searchItems[5][1] // Green
-        case .b:
+        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
             // Color distractor count high
             a = searchItems[4][2] // Pink
             b = searchItems[5][2] // Pink
@@ -112,7 +104,6 @@ enum TargetGroup: String {
 struct StudySettings {
     var participant: String
     var group: ParticipantGroup
-    var targetGroup: TargetGroup
     var rowCount: Int
     var columnCount: Int
     var itemDiameter: CGFloat
@@ -136,7 +127,6 @@ struct StudySettings {
     func saveToUserDefaults(userDefaults: UserDefaults) {
         userDefaults.set(participant, forKey: SettingsString.participantIdentifier.rawValue)
         userDefaults.set(group.rawValue, forKey: SettingsString.participantGroup.rawValue)
-        userDefaults.set(targetGroup.rawValue, forKey: SettingsString.targetGroup.rawValue)
         userDefaults.set(itemDiameter, forKey: SettingsString.layoutItemDiameter.rawValue)
         userDefaults.set(itemDistance, forKey: SettingsString.layoutItemDistance.rawValue)
         userDefaults.set(rowCount, forKey: SettingsString.layoutRowCount.rawValue)
@@ -153,7 +143,6 @@ struct StudySettings {
     static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
         let userIdOptional = userDefaults.string(forKey: SettingsString.icloudUserId.rawValue)
         let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
-        let targetGroupStringOptional = userDefaults.string(forKey: SettingsString.targetGroup.rawValue)
         let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
         let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
         let itemDiameter = userDefaults.float(forKey: SettingsString.layoutItemDiameter.rawValue)
@@ -172,15 +161,13 @@ struct StudySettings {
         }
         
         guard let groupString = groupStringOptional else { return nil }
-        guard let targetGroupString = targetGroupStringOptional else { return nil }
-        guard let targetGroup = TargetGroup(rawValue: targetGroupString) else { return nil }
         guard let group = ParticipantGroup(rawValue: groupString) else { return nil }
         guard let participant = participantIdentifierOptional else { return nil }
         
-        return StudySettings(participant: participant, group: group, targetGroup: targetGroup, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), practiceTrialCount: practiceTrialCount, targetFreqLowCount: targetFreqLowCount, targetFreqHighCount: targetFreqHighCount, distractorColorLowCount: distractorColorLowCount, distractorColorHighCount: distractorColorHighCount)
+        return StudySettings(participant: participant, group: group, rowCount: rowCount, columnCount: columnCount, itemDiameter: CGFloat(itemDiameter), itemDistance: CGFloat(itemDistance), practiceTrialCount: practiceTrialCount, targetFreqLowCount: targetFreqLowCount, targetFreqHighCount: targetFreqHighCount, distractorColorLowCount: distractorColorLowCount, distractorColorHighCount: distractorColorHighCount)
     }
     
     static func defaultSettingsForParticipant(_ participant: String) -> StudySettings {
-        return StudySettings(participant: participant, group: ParticipantGroup.random, targetGroup: .a, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetFreqLowCount: Const.StudyParameters.targetFreqLowCount, targetFreqHighCount: Const.StudyParameters.targetFreqHighCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
+        return StudySettings(participant: participant, group: ParticipantGroup.random, rowCount: Const.StudyParameters.rowCount, columnCount: Const.StudyParameters.columnCount, itemDiameter: Const.StudyParameters.itemDiameter, itemDistance: Const.StudyParameters.itemDistance, practiceTrialCount: Const.StudyParameters.practiceTrialCount, targetFreqLowCount: Const.StudyParameters.targetFreqLowCount, targetFreqHighCount: Const.StudyParameters.targetFreqHighCount, distractorColorLowCount: Const.StudyParameters.distractorColorLowCount, distractorColorHighCount: Const.StudyParameters.distractorColorHighCount)
     }
 }
