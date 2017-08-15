@@ -267,12 +267,35 @@ class ActivitiesViewController: UITableViewController {
     }
     
     private func loadLocalSettings() -> StudySettings {
+        var settings: StudySettings
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
-            return savedSettings
+            settings = savedSettings
         } else {
-            let settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
+            settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
-            return settings
+        }
+        let diameterAndDistance = iconDiameterAndDistanceForDeviceScreenSize()
+        
+        settings.itemDistance = diameterAndDistance.distance
+        settings.itemDiameter = diameterAndDistance.diameter
+        
+        return settings
+    }
+    
+    private func iconDiameterAndDistanceForDeviceScreenSize() -> (diameter: CGFloat, distance: CGFloat) {
+        let screenWidth = UIScreen.main.bounds.width
+        
+        switch screenWidth {
+        case 0...320: // iPhone SE
+            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
+        case 321...500: // iPhone 7 + Plus
+            return (Const.StudyParameters.itemDiameter + 10, Const.StudyParameters.itemDistance)
+        case 501...900: // iPad
+            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+        case 900...1024: // iPad Pro 12.9
+            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+        default:
+            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
         }
     }
     

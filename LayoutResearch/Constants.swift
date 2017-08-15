@@ -21,7 +21,7 @@ struct Const {
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
-        static let iconInsetDiameterRatio: CGFloat = 4.1
+        static let iconInsetDiameterRatio: CGFloat = 3.8
         static let descriptionItemMargin: CGFloat = 50
         static let searchLayoutMargin: CGFloat = 50
         static let introLayoutMargin: CGFloat = 0
