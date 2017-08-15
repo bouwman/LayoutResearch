@@ -69,22 +69,8 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
             // Color distractor count high
             a = searchItems[2][1] // Blue
             b = searchItems[1][3] // Blue
-            c = searchItems[1][1] // Orange
-            d = searchItems[4][3] // Orange
-            
-            // Color distractor count low
-            e = searchItems[2][2] // Dark green
-            f = searchItems[3][2] // Dark green
-            g = searchItems[1][2] // Dark blue
-            h = searchItems[4][1] // Dark blue
-            i = searchItems[0][2] // Green
-            j = searchItems[5][1] // Green
-        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
-            // Color distractor count high
-            a = searchItems[4][2] // Pink
-            b = searchItems[5][2] // Pink
-            c = searchItems[3][1] // Orange
-            d = searchItems[2][0] // Orange
+            c = searchItems[4][3] // Orange
+            d = searchItems[1][1] // Orange
             
             // Color distractor count low
             e = searchItems[3][2] // Dark green
@@ -93,11 +79,40 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
             h = searchItems[1][2] // Dark blue
             i = searchItems[5][1] // Green
             j = searchItems[0][2] // Green
+        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+            // Color distractor count high
+            a = searchItems[4][2] // Pink
+            b = searchItems[5][2] // Pink
+            c = searchItems[2][0] // Orange
+            d = searchItems[3][1] // Orange
+            
+            // Color distractor count low
+            e = searchItems[2][2] // Dark green
+            f = searchItems[3][2] // Dark green
+            g = searchItems[1][2] // Dark blue
+            h = searchItems[4][1] // Dark blue
+            i = searchItems[0][2] // Green
+            j = searchItems[5][1] // Green
         }
         
-        let items: [SearchItemProtocol] = [a, j, g, h, c, f, e, i, a, g, c, e, b, i, d, a, j, g, h, c, f, e, i, a, g, c, e, b, i, d]
+        return [a, j, g, f, c, h, e, i, a, g, c, e, b, i, d, a, j, g, f, c, h, e, i, a, g, c, e, b, i, d]
+    }
+    
+    func practiceTargetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
+        let a,b,c: SearchItemProtocol
         
-        return items
+        switch self {
+        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
+            a = searchItems[5][0] // Orange
+            b = searchItems[0][0] // Blue
+            c = searchItems[4][0] // Pink
+        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+            a = searchItems[0][3] // Orange
+            b = searchItems[3][0] // Pink
+            c = searchItems[1][3] // Blue
+        }
+        
+        return [a, b, c]
     }
 }
 

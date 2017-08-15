@@ -23,7 +23,7 @@ enum ActivityType {
         case .survey:
             return "Survey"
         case .reward:
-            return "Reward"
+            return "Win a £20 Amazon voucher"
         }
     }
 }
