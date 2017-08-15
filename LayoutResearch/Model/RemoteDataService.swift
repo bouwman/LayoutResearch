@@ -98,12 +98,12 @@ class RemoteDataService {
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
-                        recordFetched = true
-                        completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
+                    recordFetched = true
+                    completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
                 }
-
+                
             }
-                        
+            
             operation.queryCompletionBlock = { cursor, error in
                 if let error = error {
                     completion(nil, nil, userId, error)

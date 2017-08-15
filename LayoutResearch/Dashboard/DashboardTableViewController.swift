@@ -66,6 +66,9 @@ class DashboardTableViewController: UITableViewController {
         // Set the table view to automatically calculate the height of cells.
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        // Pull to refresh
+        refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -95,6 +98,16 @@ class DashboardTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return nil
+    }
+    
+    // MARK: - IB actions
+    
+    @objc func handleRefresh(refreshControl: UIRefreshControl) {
+        reloadGraphDataSources()
+        // Stop after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
+            refreshControl.endRefreshing()
+        })
     }
     
     // MARK: Convenience
