@@ -60,8 +60,8 @@ class ActivitiesViewController: UITableViewController {
     
     @objc func handleRefresh(refreshControl: UIRefreshControl) {
         updateAllActivities()
-        // Stop after 4 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+        // Stop after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
             refreshControl.endRefreshing()
         })
     }

@@ -374,6 +374,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Dashboard" id="8Az-7V-SCX"/>
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="q0o-lY-VRJ">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </refreshControl>
                     <connections>
                         <outlet property="discreteGraph" destination="xhy-wg-qlL" id="Hvx-Y0-lwI"/>
                         <outlet property="lineGraph" destination="QVd-9o-fRs" id="C6Q-s3-Ka5"/>
