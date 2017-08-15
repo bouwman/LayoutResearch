@@ -32,7 +32,7 @@ class RewardService: NSObject {
         
         let completeStep = ORKCompletionStep(identifier: "CompletionStep")
         completeStep.title = "Thank you!"
-        completeStep.detailText = "The two winners will be drawn at random on 15 September 2017 and notified within two weeks of the draw."
+        completeStep.detailText = "The two winners will be drawn at random on 20 October 2017 and notified within two weeks of the draw."
         
         // Task
         let task = ORKOrderedTask(identifier: "SurveyTask", steps: [introStep, questionStep, completeStep])
