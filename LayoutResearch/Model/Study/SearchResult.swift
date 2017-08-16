@@ -41,6 +41,7 @@ class SearchResult: ORKResult {
     var targetFrequency: Int
     var activityNumber: Int
     var participantAge: Int
+    var participantGender: String
     var screenSize: String
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
@@ -50,7 +51,7 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool, activityNumber: Int, participantAge: Int, screenSize: String) {
+    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool, activityNumber: Int, participantAge: Int, participantGender: String, screenSize: String) {
         self.participantIdentifier = participantIdentifier
         self.targetItem = targetItem
         self.layout = layout
@@ -63,6 +64,7 @@ class SearchResult: ORKResult {
         self.activityNumber = activityNumber
         self.participantAge = participantAge
         self.screenSize = screenSize
+        self.participantGender = participantGender
         
         super.init(identifier: identifier)
     }
@@ -76,10 +78,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["ParticipantId","Attempt","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error","ScreenSize","Age"]
+        return ["ParticipantId","Attempt","Trial","Layout","Organisation","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error","ScreenSize","Age", "Gender"]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",distanceCondition == nil ? "–" : String(describing: distanceCondition!),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)",screenSize,"\(participantAge)"]
+        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),"\(itemCount)","\(sameColorCount)",distanceCondition == nil ? "–" : String(describing: distanceCondition!),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)",screenSize,"\(participantAge)","\(participantGender)"]
     }
 }

@@ -58,6 +58,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         // Load age
         let age = UserDefaults.standard.integer(forKey: SettingsString.participantAge.rawValue)
+        let gender = UserDefaults.standard.string(forKey: SettingsString.participantGender.rawValue) ?? "–"
         
         // Determine screen size
         let screenSize = UIScreen.main.bounds
@@ -65,7 +66,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         // Setup result
         let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber, participantAge: age, screenSize: screenSizeString)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber, participantAge: age, participantGender: gender, screenSize: screenSizeString)
     }
     
     override func viewDidAppear(_ animated: Bool) {

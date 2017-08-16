@@ -40,12 +40,15 @@ class OnboardingViewController: UIViewController {
     
     @IBAction func joinButtonTapped(_ sender: UIButton) {
         let numberAnswer = ORKNumericAnswerFormat(style: .integer, unit: nil, minimum: 1, maximum: 99)
+        let boolAnswer = ORKBooleanAnswerFormat(yesString: "Male", noString: "Female")
         let ageItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemAge, text: "How old are you?", answerFormat: numberAnswer)
+        let genderItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemGender, text: "What is your gender?", answerFormat: boolAnswer)
         
         ageItem.isOptional = false
+        genderItem.isOptional = false
         
         let eligibilityStep = ORKFormStep(identifier: Const.Identifiers.eligibilityStep)
-        eligibilityStep.formItems = [ageItem]
+        eligibilityStep.formItems = [ageItem, genderItem]
         eligibilityStep.isOptional = false
         
         // Consent
@@ -109,6 +112,9 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                         for eligibilityResult in eligibilityResults {
                             if eligibilityResult.identifier == Const.Identifiers.eligibilityItemAge, let ageResult = eligibilityResult as? ORKNumericQuestionResult {
                                 UserDefaults.standard.set(ageResult.numericAnswer!, forKey: SettingsString.participantAge.rawValue)
+                            }
+                            if eligibilityResult.identifier == Const.Identifiers.eligibilityItemGender, let genderResult = eligibilityResult as? ORKBooleanQuestionResult {
+                                UserDefaults.standard.set(genderResult.booleanAnswer! == 1 ? "Male" : "Female", forKey: SettingsString.participantGender.rawValue)
                             }
                         }
                     }

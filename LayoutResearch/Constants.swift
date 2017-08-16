@@ -13,6 +13,7 @@ struct Const {
         static let consetReviewStep = "ConsentReviewStep"
         static let eligibilityStep = "EligibilityStep"
         static let eligibilityItemAge = "EligibilityItemAge"
+        static let eligibilityItemGender = "EligibilityItemGender"
         static let visualConsentStep = "VisualConsentStep"
         static let layoutSurveyStep = "LayoutSurveyStep"
         static let selectionCell = "SelectionCell"
@@ -62,6 +63,7 @@ enum SettingsString: String {
     case participantFamilyName
     case participantEmail
     case participantAge
+    case participantGender
     case icloudUserId
     case participantIdentifier
     case participantGroup
