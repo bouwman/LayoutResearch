@@ -77,6 +77,71 @@ class RemoteDataService {
         UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
     }
     
+    func fetchLeastUsedSetting(completion: @escaping (ParticipantGroup?, CKRecordID?, Error?) -> ()) {
+        container.fetchUserRecordID { (userId, errorUser) in
+            guard let userId = userId else {
+                completion(nil, nil, errorUser)
+                return
+            }
+            
+            // Create a dictionary with all groups
+            var groupCounts = [ParticipantGroup : Int]()
+            for group in ParticipantGroup.allGroups {
+                groupCounts[group] = 0
+            }
+            
+            // Create operation
+            let predicate = NSPredicate(value: true)
+            let sortByCreationDate = NSSortDescriptor(key: CloudRecords.Universal.createdAt, ascending: false)
+            let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
+            let operation = CKQueryOperation(query: query)
+            var isRecordsFound = false
+            
+            query.sortDescriptors = [sortByCreationDate]
+            operation.qualityOfService = .userInitiated
+            operation.resultsLimit = 200
+            operation.desiredKeys = [CloudRecords.StudySettings.group]
+            
+            operation.recordFetchedBlock = { record in
+                if let groupString = record[CloudRecords.StudySettings.group] as? String, let group = ParticipantGroup(rawValue: groupString), let currentCount = groupCounts[group] {
+                    isRecordsFound = true
+                    groupCounts[group] = currentCount + 1
+                }
+            }
+            
+            operation.queryCompletionBlock = { cursor, error in
+                if let error = error {
+                    completion(nil, userId, error)
+                } else {
+                    if isRecordsFound {
+                        // Find minimum value
+                        if let min = groupCounts.min(by: { $0.value < $1.value }) {
+                            let minGroup: ParticipantGroup
+                            let multipleMins = groupCounts.filter { $0.value == min.value }
+                            
+                            // Pick random if multiple mins are found
+                            if multipleMins.count > 1 {
+                                let minGroups = multipleMins.map { $0.key }
+                                minGroup = minGroups.shuffled().first!
+                            } else {
+                                minGroup = min.key
+                            }
+                            completion(minGroup, userId, nil)
+                        } else {
+                            completion(nil, userId, nil)
+                        }
+                    } else {
+                        // No records found so pick random
+                        let randomGroup = ParticipantGroup.random
+                        completion(randomGroup, userId, nil)
+                    }
+                }
+            }
+            
+            self.publicDB.add(operation)
+        }
+    }
+    
     func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
@@ -98,12 +163,12 @@ class RemoteDataService {
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String {
-                        recordFetched = true
-                        completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
+                    recordFetched = true
+                    completion(ParticipantGroup(rawValue: groupString), record, userId, nil)
                 }
-
+                
             }
-                        
+            
             operation.queryCompletionBlock = { cursor, error in
                 if let error = error {
                     completion(nil, nil, userId, error)
@@ -138,7 +203,7 @@ class RemoteDataService {
         publicDB.add(operation)
     }
     
-    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
@@ -153,10 +218,16 @@ class RemoteDataService {
             resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
             records.append(resultRecord)
             
-            // Upload last settings if first activity
+            // Upload last settings and consent if first activity
             if resultNumber == 0 {
                 let settingsRecord = self.settingsRecordFor(participantGroup: group)
+                let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
+                
+                consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
+                consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
+                
                 records.append(settingsRecord)
+                records.append(consentRecord)
             }
             
             // Create operation

@@ -23,7 +23,7 @@ enum ActivityType {
         case .survey:
             return "Survey"
         case .reward:
-            return "Reward"
+            return "Win a £20 Amazon voucher"
         }
     }
 }
@@ -61,7 +61,7 @@ class StudyActivity {
     
     var isAllSearchTasksComplete: Bool {
         let lastActivityNumber = UserDefaults.standard.integer(forKey: SettingsString.lastActivityNumber.rawValue)
-        return lastActivityNumber == Const.StudyParameters.searchActivityCount
+        return lastActivityNumber == Const.StudyParameters.searchActivityCount - 1
     }
     
     var isSurveyComplete: Bool {

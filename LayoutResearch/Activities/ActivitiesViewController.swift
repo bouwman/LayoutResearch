@@ -39,13 +39,13 @@ class ActivitiesViewController: UITableViewController {
         
         // Register for notifications
         registerNotifications()
+        
+        // Update activities
+        updateAllActivities()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Update activities
-        updateAllActivities()
-        
         // Start timer
         startUIUpdateTimer()
     }
@@ -60,8 +60,8 @@ class ActivitiesViewController: UITableViewController {
     
     @objc func handleRefresh(refreshControl: UIRefreshControl) {
         updateAllActivities()
-        // Stop after 4 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0, execute: {
+        // Stop after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: {
             refreshControl.endRefreshing()
         })
     }
@@ -75,13 +75,14 @@ class ActivitiesViewController: UITableViewController {
                 indexPathToReload.append(IndexPath(row: i, section: 0))
             } else if activity.timeRemaining < 0 {
                 // Reset next row if countdown reaches 0 while other task is not completed
+                let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
                     let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
-                } else if let number = service.lastActivityNumber, activity.number == number {
-                    // Always update row of current activity
+                } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
+                    // Always update row of current activity if
                     indexPathToReload.append(IndexPath(row: i, section: 0))
                 }
             }
@@ -211,10 +212,10 @@ class ActivitiesViewController: UITableViewController {
         }
         
         activity.stateMachine.enter(RetrievingDataState.self)
-        service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
+        service.remoteDataService.fetchLeastUsedSetting { (leastUsedGroup, userId, error) in
             DispatchQueue.main.async {
-                if let lastGroup = lastGroup{
-                    self.settings.group = lastGroup.next()
+                if let leastUsedGroup = leastUsedGroup{
+                    self.settings.group = leastUsedGroup
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
                     self.service.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
                         // Optional, so ignore result
@@ -237,7 +238,7 @@ class ActivitiesViewController: UITableViewController {
         
         switch activity.type {
         case .search:
-            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], completion: { (error) in
+            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], consentURL: service.resultService.fileService.consentPath, completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
@@ -267,12 +268,35 @@ class ActivitiesViewController: UITableViewController {
     }
     
     private func loadLocalSettings() -> StudySettings {
+        var settings: StudySettings
         if let savedSettings = StudySettings.fromUserDefaults(userDefaults: UserDefaults.standard) {
-            return savedSettings
+            settings = savedSettings
         } else {
-            let settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
+            settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
-            return settings
+        }
+        let diameterAndDistance = iconDiameterAndDistanceForDeviceScreenSize()
+        
+        settings.itemDistance = diameterAndDistance.distance
+        settings.itemDiameter = diameterAndDistance.diameter
+        
+        return settings
+    }
+    
+    private func iconDiameterAndDistanceForDeviceScreenSize() -> (diameter: CGFloat, distance: CGFloat) {
+        let screenWidth = UIScreen.main.bounds.width
+        
+        switch screenWidth {
+        case 0...320: // iPhone SE
+            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
+        case 321...500: // iPhone 7 + Plus
+            return (Const.StudyParameters.itemDiameter + 10, Const.StudyParameters.itemDistance)
+        case 501...900: // iPad
+            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+        case 900...1024: // iPad Pro 12.9
+            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+        default:
+            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
         }
     }
     
@@ -356,7 +380,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed:
+        case .completed, .discarded:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -393,7 +417,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved, .discarded:
+        case .failed, .saved:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }

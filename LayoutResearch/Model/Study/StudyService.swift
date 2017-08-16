@@ -70,8 +70,9 @@ class StudyService {
         // Create practice steps
         var trialCounter = 0
         let layouts = settings.group.layouts
+        let practiceTargets = settings.group.practiceTargetItemsFrom(searchItems: searchItems)
         for i in 0..<settings.practiceTrialCount {
-            addTrialStepsFor(index: trialCounter, layout: layouts.first!, target: targetItems[targetItems.count - i - 1], isPractice: true)
+            addTrialStepsFor(index: trialCounter, layout: layouts.first!, target: practiceTargets[i], isPractice: true)
             trialCounter += 1
         }
         

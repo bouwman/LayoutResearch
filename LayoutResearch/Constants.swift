@@ -13,6 +13,7 @@ struct Const {
         static let consetReviewStep = "ConsentReviewStep"
         static let eligibilityStep = "EligibilityStep"
         static let eligibilityItemAge = "EligibilityItemAge"
+        static let eligibilityItemGender = "EligibilityItemGender"
         static let visualConsentStep = "VisualConsentStep"
         static let layoutSurveyStep = "LayoutSurveyStep"
         static let selectionCell = "SelectionCell"
@@ -21,7 +22,7 @@ struct Const {
         static let toSelectionSegue = "toSelection"
     }
     struct Interface {
-        static let iconInsetDiameterRatio: CGFloat = 4.1
+        static let iconInsetDiameterRatio: CGFloat = 3.8
         static let descriptionItemMargin: CGFloat = 50
         static let searchLayoutMargin: CGFloat = 50
         static let introLayoutMargin: CGFloat = 0
@@ -62,6 +63,7 @@ enum SettingsString: String {
     case participantFamilyName
     case participantEmail
     case participantAge
+    case participantGender
     case icloudUserId
     case participantIdentifier
     case participantGroup
