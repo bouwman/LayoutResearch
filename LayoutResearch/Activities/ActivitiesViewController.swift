@@ -211,10 +211,10 @@ class ActivitiesViewController: UITableViewController {
         }
         
         activity.stateMachine.enter(RetrievingDataState.self)
-        service.remoteDataService.fetchLastSettings { (lastGroup, record, userId, error) in
+        service.remoteDataService.fetchLeastUsedSetting { (leastUsedGroup, userId, error) in
             DispatchQueue.main.async {
-                if let lastGroup = lastGroup{
-                    self.settings.group = lastGroup.next()
+                if let leastUsedGroup = leastUsedGroup{
+                    self.settings.group = leastUsedGroup
                     self.settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
                     self.service.remoteDataService.subscribeToSettingsChangesIfNotDoneYet(completion: { (error) in
                         // Optional, so ignore result
