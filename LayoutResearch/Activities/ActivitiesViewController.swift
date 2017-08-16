@@ -39,13 +39,13 @@ class ActivitiesViewController: UITableViewController {
         
         // Register for notifications
         registerNotifications()
+        
+        // Update activities
+        updateAllActivities()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Update activities
-        updateAllActivities()
-        
         // Start timer
         startUIUpdateTimer()
     }
