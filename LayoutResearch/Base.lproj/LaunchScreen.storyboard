@@ -20,12 +20,30 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search corner" translatesAutoresizingMaskIntoConstraints="NO" id="b8h-fF-OPJ">
+                                <rect key="frame" x="195" y="487" width="180" height="180"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo text" translatesAutoresizingMaskIntoConstraints="NO" id="dp8-aC-eZR">
+                                <rect key="frame" x="40" y="253.5" width="231" height="80"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ja2-Ed-jHb" firstAttribute="top" secondItem="b8h-fF-OPJ" secondAttribute="bottom" id="KvI-wJ-yoy"/>
+                            <constraint firstAttribute="trailing" secondItem="b8h-fF-OPJ" secondAttribute="trailing" id="WzK-VM-lY3"/>
+                            <constraint firstItem="dp8-aC-eZR" firstAttribute="baseline" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="XTH-UG-W3K"/>
+                            <constraint firstItem="dp8-aC-eZR" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="40" id="hoi-YA-gM4"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="52" y="374.66266866566718"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Logo text" width="231" height="80"/>
+        <image name="Search corner" width="180" height="180"/>
+    </resources>
 </document>
