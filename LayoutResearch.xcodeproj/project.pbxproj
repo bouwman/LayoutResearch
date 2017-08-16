@@ -26,7 +26,6 @@
 		47654C531F31D0B80099C285 /* ActivityStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47654C521F31D0B80099C285 /* ActivityStateMachine.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
-		4776DE491F3383C1007BE6AF /* IntroductionLayoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */; };
 		477F55641F27EAC80058B8A1 /* SearchDescriptionStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */; };
 		477F71321F3B0FF800E350DC /* DashboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 477F71311F3B0FF800E350DC /* DashboardService.swift */; };
 		4785FB5D1F3904E3002751CA /* RewardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4785FB5C1F3904E3002751CA /* RewardService.swift */; };
@@ -78,7 +77,6 @@
 		47654C521F31D0B80099C285 /* ActivityStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateMachine.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
-		4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionLayoutViewController.swift; sourceTree = "<group>"; };
 		477F55631F27EAC80058B8A1 /* SearchDescriptionStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStep.swift; sourceTree = "<group>"; };
 		477F71311F3B0FF800E350DC /* DashboardService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardService.swift; sourceTree = "<group>"; };
 		4785FB5C1F3904E3002751CA /* RewardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardService.swift; sourceTree = "<group>"; };
@@ -184,7 +182,6 @@
 			children = (
 				4751B4F71F2517AE00549329 /* ContainerViewController.swift */,
 				4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */,
-				4776DE481F3383C1007BE6AF /* IntroductionLayoutViewController.swift */,
 				4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */,
 				4764C4B31F275E05009AC457 /* WithdrawViewController.swift */,
 				47CBA9571F31199F000F0312 /* RemoteErrorViewController.swift */,
@@ -431,7 +428,6 @@
 				47C86DAD1F269FB8005430B2 /* Constants.swift in Sources */,
 				47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */,
 				47BAC7601F34DFBB00ED54DD /* ActivityService.swift in Sources */,
-				4776DE491F3383C1007BE6AF /* IntroductionLayoutViewController.swift in Sources */,
 				477F71321F3B0FF800E350DC /* DashboardService.swift in Sources */,
 				47C15EE21F35B50B0097D1CC /* StudyActivity.swift in Sources */,
 				4764C4AC1F275A44009AC457 /* ConsentDocument.swift in Sources */,
