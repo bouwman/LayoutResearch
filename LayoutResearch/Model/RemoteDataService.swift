@@ -138,7 +138,7 @@ class RemoteDataService {
         publicDB.add(operation)
     }
     
-    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
@@ -153,10 +153,16 @@ class RemoteDataService {
             resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
             records.append(resultRecord)
             
-            // Upload last settings if first activity
+            // Upload last settings and consent if first activity
             if resultNumber == 0 {
                 let settingsRecord = self.settingsRecordFor(participantGroup: group)
+                let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
+                
+                consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
+                consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
+                
                 records.append(settingsRecord)
+                records.append(consentRecord)
             }
             
             // Create operation
