@@ -80,10 +80,10 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["ParticipantId","Attempt","Trial","Layout","Organisation","Group","ItemCount","SameColorCount","DistanceCondition","DistanceToNearestSharedColor","CloseNeighboursCount","TargetFrequency","SearchTime","ItemLocationRow","ItemLocationColumn","PressLocationRow","PressLocationColumn","Practice","Error","ScreenSize","Age", "Gender"]
+        return ["Participant Id", "Attempt", "Trial", "Layout", "Organisation", "Group", "Total Item Count", "Same Color Count", "Distance Condition", "Distance To Nearest Shared Color", "Close Neighbours Count", "Target Id", "Target Color", "Target Frequency", "Search Time", "Item Location Row", "Item Location Column", "Press Location Row", "Press Location Column", "Practice", "Error", "Screen Size", "Age",  "Gender"]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier,"\(activityNumber)",identifier,String(describing: layout),String(describing: organisation),String(describing: participantGroup),"\(itemCount)","\(sameColorCount)",distanceCondition == nil ? "–" : String(describing: distanceCondition!),"\(distanceToNearestSharedColor ?? -1)","\(closeNeighboursCount ?? -1)","\(targetFrequency)","\(searchTime ?? -1)","\(itemLocation.row)","\(itemLocation.section)","\(pressLocation?.row ?? -1)","\(pressLocation?.section ?? -1)","\(isPractice)","\(isError ?? true)",screenSize,"\(participantAge)","\(participantGender)"]
+        return [participantIdentifier, "\(activityNumber)", identifier, String(describing: layout), String(describing: organisation), String(describing: participantGroup), "\(itemCount)", "\(sameColorCount)", distanceCondition == nil ? "–" : String(describing: distanceCondition!), "\(distanceToNearestSharedColor ?? -1)", "\(closeNeighboursCount ?? -1)", "\(targetItem.identifier)", "\(targetItem.colorId)", "\(targetFrequency)", "\(searchTime ?? -1)", "\(itemLocation.row)", "\(itemLocation.section)", "\(pressLocation?.row ?? -1)", "\(pressLocation?.section ?? -1)", "\(isPractice)", "\(isError ?? true)", screenSize, "\(participantAge)", "\(participantGender)"]
     }
 }

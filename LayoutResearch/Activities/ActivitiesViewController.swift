@@ -78,7 +78,7 @@ class ActivitiesViewController: UITableViewController {
                 let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
-                    let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
+                    let oneDayBack = Calendar.current.date(byAdding: .second, value: -18, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
                 } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
@@ -380,7 +380,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed:
+        case .completed, .discarded:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -417,7 +417,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved, .discarded:
+        case .failed, .saved:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }
