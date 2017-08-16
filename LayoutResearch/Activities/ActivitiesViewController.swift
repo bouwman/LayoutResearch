@@ -75,13 +75,14 @@ class ActivitiesViewController: UITableViewController {
                 indexPathToReload.append(IndexPath(row: i, section: 0))
             } else if activity.timeRemaining < 0 {
                 // Reset next row if countdown reaches 0 while other task is not completed
+                let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
                     let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
                     service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
-                } else if let number = service.lastActivityNumber, activity.number == number {
-                    // Always update row of current activity
+                } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
+                    // Always update row of current activity if
                     indexPathToReload.append(IndexPath(row: i, section: 0))
                 }
             }
