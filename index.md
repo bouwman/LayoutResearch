@@ -2,10 +2,7 @@
 
 Welcome to the visual search study on 'The Effect of Icon Arrangements in Circular Layouts' at the University College London.
 
-To enroll in our study download the Layout Research app on the App Store®.
-
-![Alt text](https://github.com/bouwman/LayoutResearch/blob/gh-pages/Download_on_the_App_Store_Badge_US-UK_135x40.svg)
-<img src="https://github.com/bouwman/LayoutResearch/blob/gh-pages/Download_on_the_App_Store_Badge_US-UK_135x40.svg">
+To enroll in our study [download the Layout Research app on the App Store®.](https://itunes.apple.com/us/app/layout-research/id1264525610)
 
 ## About our Study
 
