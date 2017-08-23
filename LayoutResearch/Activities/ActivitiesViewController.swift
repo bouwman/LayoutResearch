@@ -30,6 +30,7 @@ class ActivitiesViewController: UITableViewController {
         // Self sizing cells
         tableView.estimatedRowHeight = 70
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView(frame: .zero)
         
         // Pull to refresh
         refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)

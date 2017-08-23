@@ -51,6 +51,9 @@ class ProfileViewController: UITableViewController {
         // Ensure the table view automatically sizes its rows.
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundView = nil
+        tableView.backgroundColor = UIColor(rgbHex: 0xF9F8FC)
         
         let firstName = UserDefaults.standard.string(forKey: SettingsString.participantGivenName.rawValue) ?? "Unknown"
         let lastName = UserDefaults.standard.string(forKey: SettingsString.participantFamilyName.rawValue) ?? "Name"
@@ -92,6 +95,18 @@ class ProfileViewController: UITableViewController {
         } else {
             exportResult(resultNumber: indexPath.row)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+        let header = view as! UITableViewHeaderFooterView
+        header.textLabel?.font = UIFont.systemFont(ofSize: 23, weight: UIFontWeightBold)
+        header.textLabel?.textColor = UIColor.black
+        header.frame = header.frame.offsetBy(dx: 0, dy: -10) // Does not seem to work
+        header.textLabel?.text = section == 0 ? "Consent file" : "Result files"
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 70
     }
     
     func exportResult(resultNumber: Int) {

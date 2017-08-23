@@ -66,7 +66,8 @@ class DashboardTableViewController: UITableViewController {
         // Set the table view to automatically calculate the height of cells.
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        
+        tableView.tableFooterView = UIView(frame: .zero)
+
         // Pull to refresh
         refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
     }

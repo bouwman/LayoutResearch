@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
+        setupAppearance()
         checkAppUpgrade()
         
         // Load remote settings if settings changed while app was terminated
@@ -67,6 +67,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         return nil
+    }
+    
+    func setupAppearance() {
+        // White title
+        UINavigationBar.appearance().barTintColor = UIColor.white
+        UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance().shadowImage = UIImage()
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
     }
     
     func reloadRemoteSettings() {
