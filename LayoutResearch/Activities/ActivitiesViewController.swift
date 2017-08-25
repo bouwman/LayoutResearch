@@ -28,7 +28,7 @@ class ActivitiesViewController: UITableViewController {
         }
         
         // Self sizing cells
-        tableView.estimatedRowHeight = 70
+        tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView(frame: .zero)
         
