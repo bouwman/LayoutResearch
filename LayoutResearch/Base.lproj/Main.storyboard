@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13189.4" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4144" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13165.3"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -148,7 +148,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select the link learn more about the study or press the button below to fill in the consent form and join the study." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="faO-I8-psF">
-                                <rect key="frame" x="18" y="182" width="340" height="64.5"/>
+                                <rect key="frame" x="26.5" y="182" width="323" height="64.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="I4Z-Lh-c0U"/>
                                 </constraints>
@@ -546,26 +546,37 @@
                                         <constraint firstAttribute="height" constant="70" id="pxZ-79-hSC"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Johnny Appleseed" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wOh-uW-dOd">
-                                    <rect key="frame" x="104" y="41.5" width="251" height="24"/>
-                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="QOF-oC-sKH">
+                                    <rect key="frame" x="104" y="27" width="136.5" height="48"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Berryseed" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="9lt-D5-8d9">
+                                            <rect key="frame" x="0.0" y="0.0" width="136.5" height="24"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTJ-14-5qE">
+                                            <rect key="frame" x="0.0" y="24" width="65.5" height="24"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
                             </subviews>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
-                                <constraint firstItem="wOh-uW-dOd" firstAttribute="centerY" secondItem="Lea-yC-L0I" secondAttribute="centerY" constant="2" id="0ZW-Kj-HID"/>
                                 <constraint firstAttribute="bottom" secondItem="beq-xc-hKu" secondAttribute="bottom" constant="16" id="1JJ-xa-PiD"/>
                                 <constraint firstItem="beq-xc-hKu" firstAttribute="top" secondItem="Lea-yC-L0I" secondAttribute="bottom" constant="18" id="8QE-JB-ldw"/>
-                                <constraint firstAttribute="trailing" secondItem="wOh-uW-dOd" secondAttribute="trailing" constant="20" symbolic="YES" id="MHH-Cv-4T2"/>
                                 <constraint firstItem="beq-xc-hKu" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="16" id="QS3-gZ-M6h"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="QOF-oC-sKH" secondAttribute="trailing" constant="20" id="UdJ-Xh-SRr"/>
+                                <constraint firstItem="QOF-oC-sKH" firstAttribute="centerY" secondItem="Lea-yC-L0I" secondAttribute="centerY" id="ZfH-Ak-jEw"/>
                                 <constraint firstItem="Lea-yC-L0I" firstAttribute="leading" secondItem="B9c-Y2-ehc" secondAttribute="leading" constant="16" id="a1d-ex-2BG"/>
                                 <constraint firstItem="X8j-nw-804" firstAttribute="baseline" secondItem="beq-xc-hKu" secondAttribute="baseline" id="eUE-IX-bGm"/>
                                 <constraint firstItem="X8j-nw-804" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="beq-xc-hKu" secondAttribute="trailing" constant="20" id="k81-Zw-QzY"/>
+                                <constraint firstItem="QOF-oC-sKH" firstAttribute="leading" secondItem="Lea-yC-L0I" secondAttribute="trailing" constant="18" id="lkS-mt-Foe"/>
                                 <constraint firstItem="Lea-yC-L0I" firstAttribute="top" secondItem="B9c-Y2-ehc" secondAttribute="top" constant="16" id="pSG-DH-9IY"/>
                                 <constraint firstAttribute="trailing" secondItem="X8j-nw-804" secondAttribute="trailing" constant="8" id="tQg-Rd-TCs"/>
-                                <constraint firstItem="wOh-uW-dOd" firstAttribute="leading" secondItem="Lea-yC-L0I" secondAttribute="trailing" constant="18" id="xEH-5M-wEw"/>
                             </constraints>
                         </view>
                         <prototypes>
@@ -594,7 +605,8 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Profile" id="lEP-fg-VJH"/>
                     <connections>
-                        <outlet property="nameLabel" destination="wOh-uW-dOd" id="swb-Xf-no1"/>
+                        <outlet property="groupLabel" destination="jTJ-14-5qE" id="4yP-NP-wYm"/>
+                        <outlet property="nameLabel" destination="9lt-D5-8d9" id="KLh-6Y-sYH"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Snw-eQ-O2j" userLabel="First Responder" sceneMemberID="firstResponder"/>

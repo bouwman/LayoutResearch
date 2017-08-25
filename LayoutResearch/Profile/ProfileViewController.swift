@@ -36,6 +36,7 @@ class ProfileViewController: UITableViewController {
     let fileService = LocalDataService()
     
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var groupLabel: UILabel!
     
     // MARK: UIViewController
     
@@ -59,6 +60,18 @@ class ProfileViewController: UITableViewController {
         let lastName = UserDefaults.standard.string(forKey: SettingsString.participantFamilyName.rawValue) ?? "Name"
         
         nameLabel.text = firstName + " " + lastName
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let groupStringOptional = UserDefaults.standard.string(forKey: SettingsString.participantGroup.rawValue)
+        
+        if let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) {
+            groupLabel.text = group.title
+        } else {
+            groupLabel.text = "Group --"
+        }
     }
     
     // MARK: UITableViewDataSource
