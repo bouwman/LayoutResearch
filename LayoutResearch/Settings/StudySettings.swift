@@ -37,6 +37,15 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         }
     }
     
+    var targetGroup: String {
+        switch self {
+        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
+            return "Target Group A"
+        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+            return "Target Group B"
+        }
+    }
+    
     var description: String {
         return "Group \(self.rawValue.uppercased())"
     }
