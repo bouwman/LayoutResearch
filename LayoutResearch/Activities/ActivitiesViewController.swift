@@ -136,7 +136,7 @@ class ActivitiesViewController: UITableViewController {
         switch activity.type {
         case .search:
             let studyService = StudyService(settings: settings, activityNumber: activity.number)
-            let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
+            let task = OrderedSearchTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
             let taskVC = ORKTaskViewController(task: task, taskRun: nil)
             
             taskVC.delegate = self
@@ -458,5 +458,25 @@ extension ActivitiesViewController {
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         startUIUpdateTimer()
+    }
+}
+
+/// Updates the progress only when the current step is a SearchDescriptionStep
+class OrderedSearchTask: ORKOrderedTask {
+    private var searchSteps: [ORKStep] {
+        return steps.filter { $0 is SearchDescriptionStep }
+    }
+    private var lastSearchStepIndex: UInt = 0
+    
+    override func progress(ofCurrentStep step: ORKStep, with result: ORKTaskResult) -> ORKTaskProgress {
+        var progress = ORKTaskProgress()
+        
+        if step is SearchDescriptionStep {
+            lastSearchStepIndex = UInt(searchSteps.index(of: step) ?? 1)
+        }
+        progress.current = lastSearchStepIndex
+        progress.total = UInt(searchSteps.count)
+        
+        return progress
     }
 }
