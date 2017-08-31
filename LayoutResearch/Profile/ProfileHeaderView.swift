@@ -40,13 +40,13 @@ class ProfileHeaderView: UIView {
 
     // MARK: UIView
     
-    override func draw(_ rect: CGRect) {
-        // Draw a seperator line at the bottom of the view.
-        var fillRect = bounds
-        fillRect.origin.y = bounds.size.height - seperatorHeight
-        fillRect.size.height = seperatorHeight
-        
-        seperatorColor.setFill()
-        UIRectFill(fillRect)
-    }
+//    override func draw(_ rect: CGRect) {
+//        // Draw a seperator line at the bottom of the view.
+//        var fillRect = bounds
+//        fillRect.origin.y = bounds.size.height - seperatorHeight
+//        fillRect.size.height = seperatorHeight
+//        
+//        seperatorColor.setFill()
+//        UIRectFill(fillRect)
+//    }
 }
