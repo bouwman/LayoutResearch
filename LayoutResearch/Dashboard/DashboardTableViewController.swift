@@ -58,6 +58,8 @@ class DashboardTableViewController: UITableViewController {
         }
         
         // Set the data source for each graph
+        discreteGraph.decimalPlaces = 1
+        lineGraph.decimalPlaces = 1
         discreteGraph.dataSource = service.discreteGraphDataSource
         lineGraph.dataSource = service.lineGraphDataSource
         discreteGraph.noDataText = "No task results yet."
