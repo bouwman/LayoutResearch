@@ -9,40 +9,32 @@
 import UIKit
 
 enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
-    case a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x
+    case a,b,c,d,e,f,g,h
     
     var layouts: [LayoutType] {
         switch self {
-        case .a,.g,.m,.s:
-            return [.grid, .horizontal, .vertical]
-        case .b,.h,.n,.t:
-            return [.grid, .vertical, .horizontal]
-        case .c,.i,.o,.u:
-            return [.horizontal, .grid, .vertical]
-        case .d,.j,.p,.v:
-            return [.vertical, .grid, .horizontal]
-        case .e,.k,.q,.w:
-            return [.vertical, .horizontal, .grid]
-        case .f,.l,.r,.x:
-            return [.horizontal, .vertical, .grid]
+        case .a,.c,.e,.g:
+            return [.grid, .horizontal]
+        case .b,.d,.f,.h:
+            return [.horizontal, .grid]
         }
     }
     
     var organisation: OrganisationType {
         switch self {
-        case .a,.b,.c,.d,.e,.f,.m,.n,.o,.p,.q,.r:
+        case .a,.b,.e,.f:
             return .stable
-        case .g,.h,.i,.j,.k,.l,.s,.t,.u,.v,.w,.x:
+        case .c,.d,.g,.h:
             return .random
         }
     }
     
-    var targetGroup: String {
+    var designedLayout: String {
         switch self {
-        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
-            return "Target Group A"
-        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
-            return "Target Group B"
+        case .a,.b,.c,.d:
+            return "Designed layout"
+        case .e,.f,.g,.h:
+            return "Random layout"
         }
     }
     
@@ -64,7 +56,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     }
     
     static var allGroups: [ParticipantGroup] {
-        return [.a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l,.m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x]
+        return [.a,.b,.c,.d,.e,.f,.g,.h]
     }
     
     static var random: ParticipantGroup {
@@ -74,7 +66,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
         let a,b,c,d,e,f,g,h,i,j : SearchItemProtocol
         switch self {
-        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
+        case .a,.b,.c,.d:
             // Color distractor count high
             a = searchItems[2][1] // Blue
             b = searchItems[1][3] // Blue
@@ -88,7 +80,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
             h = searchItems[1][2] // Dark blue
             i = searchItems[5][1] // Green
             j = searchItems[0][2] // Green
-        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+        case .e,.f,.g,.h:
             // Color distractor count high
             a = searchItems[4][2] // Pink
             b = searchItems[5][2] // Pink
@@ -111,11 +103,11 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         let a,b,c: SearchItemProtocol
         
         switch self {
-        case .a,.b,.c,.d,.e,.f,.g,.h,.i,.j,.k,.l:
+        case .a,.b,.c,.d:
             a = searchItems[5][0] // Orange
             b = searchItems[0][0] // Blue
             c = searchItems[4][0] // Pink
-        case .m,.n,.o,.p,.q,.r,.s,.t,.u,.v,.w,.x:
+        case .e,.f,.g,.h:
             a = searchItems[0][3] // Orange
             b = searchItems[3][0] // Pink
             c = searchItems[1][3] // Blue
