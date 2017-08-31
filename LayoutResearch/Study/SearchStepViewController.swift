@@ -230,6 +230,13 @@ extension SearchStepViewController: SearchViewDelegate {
         guard let searchResult = searchResult else { return }
         guard let searchStep = searchStep else { return }
         
+        // Go back when error
+        guard searchResult.isError! == false else {
+            SearchStepViewController.isSearchedBefore = true
+            delegate?.stepViewController(self, didFinishWith: .reverse)
+            return
+        }
+        
         let sameColors = SearchStepViewController.calcDistanceToNearestSharedColorIn(searchItems: searchStep.items, targetItem: searchStep.targetItem, layout: searchStep.layout)
         
         searchResult.pressLocation = index
@@ -245,16 +252,18 @@ extension SearchStepViewController: SearchViewDelegate {
             searchResult.searchTime = Date().timeIntervalSince(startTime)
         }
         
-        // Go back when error
-        if searchResult.isError! {
-            SearchStepViewController.isSearchedBefore = true
-            delegate?.stepViewController(self, didFinishWith: .reverse)
-        } else {
-            // When searched before store step as an error
-            searchResult.isError = SearchStepViewController.isSearchedBefore
-            SearchStepViewController.isSearchedBefore = false
-            
-            delegate?.stepViewController(self, didFinishWith: .forward)
+        // Last activity date
+        let timeInterval = UserDefaults.standard.double(forKey: SettingsString.lastActivityCompletionDate.rawValue)
+        if timeInterval != 0 {
+            let lastActivityDate = Date(timeIntervalSinceReferenceDate: timeInterval)
+            let secondsSinceLastActivity = Date().timeIntervalSince(lastActivityDate)
+            searchResult.hoursSinceLastActivity = Int(round(secondsSinceLastActivity / 3600))
         }
+        
+        // When searched before store step as an error
+        searchResult.isError = SearchStepViewController.isSearchedBefore
+        SearchStepViewController.isSearchedBefore = false
+        
+        delegate?.stepViewController(self, didFinishWith: .forward)
     }
 }

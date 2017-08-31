@@ -80,7 +80,7 @@ class ActivitiesViewController: UITableViewController {
                 let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                 if activity.number == nextOrSecondActivityNumber {
                     let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
-                    service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
+                    service.updateActivitiesWithLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                     updateAllActivities()
                 } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
                     // Always update row of current activity if
@@ -409,7 +409,6 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             // Recreate activities to suite current data
             service.lastActivityNumber = activity.number
             service.setLastActivityDate(Date(), forActivityNumber: activity.number)
-            service.activeActivity = nil
             
             // Create reminder
             createNewNotificationFor(activity: activity)

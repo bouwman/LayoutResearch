@@ -45,6 +45,7 @@ class SearchResult: ORKResult {
     var participantGender: String
     var screenSize: String
     var language: String
+    var hoursSinceLastActivity: Int?
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
     var searchTime: TimeInterval?
@@ -82,10 +83,66 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["Participant Id", "Attempt", "Trial", "Layout", "Organisation", "Randomness", "Group", "Total Item Count", "Same Color Count", "Distance Condition", "Distance To Nearest Shared Color", "Close Neighbours Count", "Target Id", "Target Color", "Target Frequency", "Search Time", "Item Location Row", "Item Location Column", "Press Location Row", "Press Location Column", "Practice", "Error", "Screen Size", "Language", "Age",  "Gender"]
+        return [
+            "Attempt",
+            "Trial",
+            "Search Time",
+            "Layout",
+            "Organisation",
+            "Target Frequency",
+            "Same Color Count",
+            "Distance Condition",
+            "Distance To Nearest Shared Color",
+            "Close Neighbours Count",
+            "Hours since last attempt",
+            "Randomness",
+            "Target Id",
+            "Target Color",
+            "Item Location Row",
+            "Item Location Column",
+            "Press Location Row",
+            "Press Location Column",
+            "Group",
+            "Practice",
+            "Error",
+            "Screen Size",
+            "Language",
+            "Age",
+            "Gender",
+            "Total Item Count",
+            "Participant Id"
+        ]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier, "\(activityNumber)", identifier, String(describing: layout), String(describing: organisation), participantGroup.designedLayout, String(describing: participantGroup), "\(itemCount)", "\(sameColorCount)", distanceCondition == nil ? "–" : String(describing: distanceCondition!), "\(distanceToNearestSharedColor ?? -1)", "\(closeNeighboursCount ?? -1)", "\(targetItem.identifier)", "\(targetItem.colorId)", "\(targetFrequency)", "\(searchTime ?? -1)", "\(itemLocation.row)", "\(itemLocation.section)", "\(pressLocation?.row ?? -1)", "\(pressLocation?.section ?? -1)", "\(isPractice)", "\(isError ?? true)", screenSize, language, "\(participantAge)", "\(participantGender)"]
+        return [
+            "\(activityNumber)",
+            identifier,
+            "\(searchTime ?? -1)",
+            String(describing: layout),
+            String(describing: organisation),
+            "\(targetFrequency)",
+            "\(sameColorCount)",
+            distanceCondition == nil ? "–" : String(describing: distanceCondition!),
+            "\(distanceToNearestSharedColor ?? -1)",
+            "\(closeNeighboursCount ?? -1)",
+            "\(hoursSinceLastActivity ?? -1)",
+            participantGroup.designedLayout,
+            "\(targetItem.identifier)",
+            "\(targetItem.colorId)",
+            "\(itemLocation.row)",
+            "\(itemLocation.section)",
+            "\(pressLocation?.row ?? -1)",
+            "\(pressLocation?.section ?? -1)",
+            String(describing: participantGroup),
+            "\(isPractice)",
+            "\(isError ?? true)",
+            screenSize,
+            language,
+            "\(participantAge)",
+            "\(participantGender)",
+            "\(itemCount)",
+            participantIdentifier
+        ]
     }
 }
