@@ -22,7 +22,6 @@
 		4764C4B01F275C22009AC457 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */; };
 		4764C4B21F275CE1009AC457 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */; };
 		4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B31F275E05009AC457 /* WithdrawViewController.swift */; };
-		4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B51F276287009AC457 /* StudyViewController.swift */; };
 		47654C531F31D0B80099C285 /* ActivityStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47654C521F31D0B80099C285 /* ActivityStateMachine.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
@@ -74,7 +73,6 @@
 		4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4764C4B31F275E05009AC457 /* WithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
-		4764C4B51F276287009AC457 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
 		47654C521F31D0B80099C285 /* ActivityStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateMachine.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
@@ -228,7 +226,6 @@
 		47DF75691F27F43B00A6FC52 /* Study */ = {
 			isa = PBXGroup;
 			children = (
-				4764C4B51F276287009AC457 /* StudyViewController.swift */,
 				47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */,
 				476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */,
 				47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */,
@@ -448,7 +445,6 @@
 				47FE19BB1F34BDF900344887 /* ActivitiesViewController.swift in Sources */,
 				47D15F321F348A1400335BBA /* ProfileHeaderView.swift in Sources */,
 				4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */,
-				4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */,
 				47D15F3A1F348C8000335BBA /* DashboardTableViewController.swift in Sources */,
 				4751B4F61F2517AE00549329 /* AppDelegate.swift in Sources */,
 				47DF75681F27F40200A6FC52 /* StudyService.swift in Sources */,

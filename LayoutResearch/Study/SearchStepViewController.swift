@@ -231,7 +231,7 @@ extension SearchStepViewController: SearchViewDelegate {
         guard let searchStep = searchStep else { return }
         
         // Go back when error
-        guard searchResult.isError! == false else {
+        guard searchResult.isError ?? false == false else {
             SearchStepViewController.isSearchedBefore = true
             delegate?.stepViewController(self, didFinishWith: .reverse)
             return
