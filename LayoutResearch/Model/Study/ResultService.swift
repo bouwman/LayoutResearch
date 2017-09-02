@@ -49,8 +49,8 @@ class ResultService {
         var vertCount = 0
         
         for result in results {
-            if let searchTime = result.searchTime, result.isError == false, result.isPractice == false, searchTime != 0 {
-                switch result.layout {
+            if let searchTime = result.searchTime, result.isError == false, result.settings.isPractice == false, searchTime != 0 {
+                switch result.settings.layout {
                 case .grid:
                     gridSum += searchTime
                     gridCount += 1

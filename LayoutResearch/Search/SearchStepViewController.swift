@@ -28,15 +28,10 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         guard let searchStep = searchStep else { return }
         
-        var topMargin = Const.Interface.searchLayoutMargin
-        if searchStep.layout == .vertical && topMargin >= searchStep.itemDistance {
-            topMargin -= searchStep.itemDistance
-        } else if searchStep.layout == .horizontal {
-            topMargin += searchStep.itemDistance
-        }
+        let topMargin = topMarginFor(layout: searchStep.settings.layout, itemDistance: searchStep.settings.itemDistance)
         
         // Create view
-        let searchView = SearchView(itemDiameter: searchStep.itemDiameter, distance: searchStep.itemDistance, layout: searchStep.layout, topMargin: topMargin, items: searchStep.items)
+        let searchView = SearchView(itemDiameter: searchStep.settings.itemDiameter, distance: searchStep.settings.itemDistance, layout: searchStep.settings.layout, topMargin: topMargin, items: searchStep.items)
         
         searchView.delegate = self
         searchView.alpha = 0.0
@@ -70,8 +65,8 @@ class SearchStepViewController: ORKActiveStepViewController {
         let language = Locale.preferredLanguages.first!
         
         // Setup result
-        let index = indexOf(searchedItem: searchStep.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, targetItem: searchStep.targetItem, itemLocation: index!, layout: searchStep.layout, organisation: searchStep.organisation, participantGroup: group, itemCount: searchStep.itemCount, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, isPractice: searchStep.isPractice, activityNumber: searchStep.activityNumber, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language)
+        let index = indexOf(searchedItem: searchStep.settings.targetItem, inItems: searchStep.items)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, settings: searchStep.settings, itemLocation: index!, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -230,18 +225,19 @@ extension SearchStepViewController: SearchViewDelegate {
         guard let searchResult = searchResult else { return }
         guard let searchStep = searchStep else { return }
         
+        searchResult.pressLocation = index
+        searchResult.pressedItem = item
+        searchResult.isError = searchResult.itemLocation != searchResult.pressLocation
+        
         // Go back when error
-        guard searchResult.isError ?? false == false else {
+        guard searchResult.isError! == false else {
             SearchStepViewController.isSearchedBefore = true
             delegate?.stepViewController(self, didFinishWith: .reverse)
             return
         }
         
-        let sameColors = SearchStepViewController.calcDistanceToNearestSharedColorIn(searchItems: searchStep.items, targetItem: searchStep.targetItem, layout: searchStep.layout)
+        let sameColors = SearchStepViewController.calcDistanceToNearestSharedColorIn(searchItems: searchStep.items, targetItem: searchStep.settings.targetItem, layout: searchStep.settings.layout)
         
-        searchResult.pressLocation = index
-        searchResult.pressedItem = item
-        searchResult.isError = searchResult.itemLocation != searchResult.pressLocation
         searchResult.distanceToNearestSharedColor = sameColors.distance
         searchResult.closeNeighboursCount = sameColors.closestNeighboursCount
         
@@ -266,4 +262,14 @@ extension SearchStepViewController: SearchViewDelegate {
         
         delegate?.stepViewController(self, didFinishWith: .forward)
     }
+}
+
+func topMarginFor(layout: LayoutType, itemDistance: CGFloat) -> CGFloat {
+    var topMargin = Const.Interface.searchLayoutMargin
+    if layout == .vertical && topMargin >= itemDistance {
+        topMargin -= itemDistance
+    } else if layout == .horizontal {
+        topMargin += itemDistance
+    }
+    return topMargin
 }

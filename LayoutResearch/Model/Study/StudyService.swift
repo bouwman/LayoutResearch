@@ -7,6 +7,7 @@
 //
 
 import ResearchKit
+import GameplayKit
 
 enum OrganisationType {
     case random, stable
@@ -34,7 +35,6 @@ class StudyService {
     init(settings: StudySettings, activityNumber: Int) {
         self.settings = settings
         self.activityNumber = activityNumber
-        let isFirstAttempt = activityNumber == 0
         
         // Create base item array
         var counter = 1
@@ -58,32 +58,31 @@ class StudyService {
         
         // Create intro step
         var trialCounter = 0
-        let layouts = settings.group.layouts 
+        let layouts = settings.group.layouts
+        let randomGen = GKRandomDistribution(lowestValue: 0, highestValue: 2)
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
         introStep.text = "Please read this carefully.\n\nTry to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. The 'Next' button will appear after 1 second. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select the correct item you are taken to the next trial. If you selected the wrong trial, the description of the item will be shown again."
         steps.append(introStep)
         
         // Practice steps
-        if isFirstAttempt {
-            // Create practice intro step
-            let practiceIntroStep = ORKActiveStep(identifier: "PracticeIntroStep")
-            practiceIntroStep.title = "Practice"
-            practiceIntroStep.text = "Use the next few trials to become familiar with the search task. Press next to begin."
-            steps.append(practiceIntroStep)
-            
-            // Create practice steps
-            let practiceTargets = settings.group.practiceTargetItemsFrom(searchItems: searchItems)
-            for i in 0..<settings.practiceTrialCount {
-                addTrialStepsFor(index: trialCounter, layout: layouts.first!, target: practiceTargets[i], isPractice: true)
-                trialCounter += 1
-            }
+        // Create practice intro step
+        let practiceIntroStep = ORKActiveStep(identifier: "PracticeIntroStep")
+        practiceIntroStep.title = "Practice"
+        practiceIntroStep.text = "Use the next few trials to become familiar with the search task. Press next to begin."
+        steps.append(practiceIntroStep)
+        
+        // Create practice steps
+        let practiceTargets = settings.group.practiceTargetItemsFrom(searchItems: searchItems)
+        for i in 0..<settings.practiceTrialCount {
+            addTrialStepsFor(index: trialCounter, layout: layouts.first!, target: practiceTargets[i], targetDescriptionPosition: randomGen.nextInt(), isPractice: true)
+            trialCounter += 1
         }
         
         // Create experiment start step
         let normalIntroStep = ORKActiveStep(identifier: "NormalIntroStep")
         normalIntroStep.title = "Start of Experiment"
-        normalIntroStep.text = isFirstAttempt ? "You have completed the practice trials. Press next to begin the experiment." : "Press next to begin the experiment."
+        normalIntroStep.text = "You have completed the practice trials. Press next to begin the experiment."
         steps.append(normalIntroStep)
         
         // Create normal steps
@@ -108,7 +107,7 @@ class StudyService {
             
             // Create steps for every target
             for i in 0..<targetItems.count {
-                addTrialStepsFor(index: trialCounter, layout: layout, target: targetItems[i], isPractice: false)
+                addTrialStepsFor(index: trialCounter, layout: layout, target: targetItems[i], targetDescriptionPosition: randomGen.nextInt(), isPractice: false)
                 trialCounter += 1
             }
         }
@@ -195,7 +194,7 @@ class StudyService {
         }
     }
 
-    private func addTrialStepsFor(index: Int, layout: LayoutType, target: SearchItemProtocol, isPractice: Bool) {
+    private func addTrialStepsFor(index: Int, layout: LayoutType, target: SearchItemProtocol, targetDescriptionPosition: Int, isPractice: Bool) {
         // Shuffle layout for every trial if random
         if settings.group.organisation == .random {
             shuffle2dArrayMaintainingColorDistance(&searchItems)
@@ -205,11 +204,9 @@ class StudyService {
         }
                 
         let searchStepIdentifier = "\(index)"
-        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", targetItem: target, targetDiameter: settings.itemDiameter)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetItem: target, targetFrequency: countFrequencyOf(target: target), layout: layout, organisation: settings.group.organisation, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout), isPractice: isPractice, activityNumber: activityNumber)
-        
-        descriptionStep.title = "Search"
-        descriptionStep.text = "Find this item as quickly as possible."
+        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
         
         steps.append(descriptionStep)
         steps.append(searchStep)

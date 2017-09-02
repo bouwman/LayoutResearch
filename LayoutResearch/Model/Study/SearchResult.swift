@@ -29,18 +29,26 @@ enum SearchItemDistance {
     }
 }
 
-class SearchResult: ORKResult {
-    var participantIdentifier: String
+struct StepSettings {
+    var activityNumber: Int
+    var trialNumber: Int
     var targetItem: SearchItemProtocol
+    var targetDescriptionPosition: Int
     var layout: LayoutType
     var organisation: OrganisationType
     var participantGroup: ParticipantGroup
     var itemCount: Int
+    var itemDiameter: CGFloat
+    var itemDistance: CGFloat
     var isPractice: Bool
+}
+
+class SearchResult: ORKResult {
+    var participantIdentifier: String
+    var settings: StepSettings
     var itemLocation: IndexPath
     var sameColorCount: Int
     var targetFrequency: Int
-    var activityNumber: Int
     var participantAge: Int
     var participantGender: String
     var screenSize: String
@@ -54,19 +62,13 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, participantGroup: ParticipantGroup, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool, activityNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+        self.settings = settings
         self.participantIdentifier = participantIdentifier
-        self.targetItem = targetItem
-        self.layout = layout
-        self.organisation = organisation
-        self.itemCount = itemCount
         self.itemLocation = itemLocation
         self.sameColorCount = sameColorCount
         self.targetFrequency = targetFrequency
-        self.isPractice = isPractice
-        self.activityNumber = activityNumber
         self.participantAge = participantAge
-        self.participantGroup = participantGroup
         self.screenSize = screenSize
         self.participantGender = participantGender
         self.language = language
@@ -90,6 +92,7 @@ class SearchResult: ORKResult {
             "Layout",
             "Organisation",
             "Target Frequency",
+            "Target Description Position",
             "Same Color Count",
             "Distance Condition",
             "Distance To Nearest Shared Color",
@@ -116,32 +119,33 @@ class SearchResult: ORKResult {
     
     var csvRow: [String] {
         return [
-            "\(activityNumber)",
+            "\(settings.activityNumber)",
             identifier,
             "\(searchTime ?? -1)",
-            String(describing: layout),
-            String(describing: organisation),
+            String(describing: settings.layout),
+            String(describing: settings.organisation),
             "\(targetFrequency)",
+            "\(settings.targetDescriptionPosition)",
             "\(sameColorCount)",
             distanceCondition == nil ? "–" : String(describing: distanceCondition!),
             "\(distanceToNearestSharedColor ?? -1)",
             "\(closeNeighboursCount ?? -1)",
             "\(hoursSinceLastActivity ?? -1)",
-            participantGroup.designedLayout,
-            "\(targetItem.identifier)",
-            "\(targetItem.colorId)",
+            settings.participantGroup.designedLayout,
+            "\(settings.targetItem.identifier)",
+            "\(settings.targetItem.colorId)",
             "\(itemLocation.row)",
             "\(itemLocation.section)",
             "\(pressLocation?.row ?? -1)",
             "\(pressLocation?.section ?? -1)",
-            String(describing: participantGroup),
-            "\(isPractice)",
+            String(describing: settings.participantGroup),
+            "\(settings.isPractice)",
             "\(isError ?? true)",
             screenSize,
             language,
             "\(participantAge)",
             "\(participantGender)",
-            "\(itemCount)",
+            "\(settings.itemCount)",
             participantIdentifier
         ]
     }
