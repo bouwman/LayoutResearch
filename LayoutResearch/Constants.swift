@@ -44,7 +44,7 @@ struct Const {
         static let colorIdApartCondition = 2
         static let itemDistanceApartCondition = 1
         static let itemDistanceFurtherApartCondition = 2...3
-        static let searchActivityCount = 5
+        static let searchActivityCount = 3
     }
 }
 
