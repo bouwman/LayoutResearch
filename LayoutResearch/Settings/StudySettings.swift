@@ -157,7 +157,7 @@ struct StudySettings {
     }
     
     static func fromUserDefaults(userDefaults: UserDefaults) -> StudySettings? {
-        let userIdOptional = userDefaults.string(forKey: SettingsString.icloudUserId.rawValue)
+        let participantIdentifierOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
         let groupStringOptional = userDefaults.string(forKey: SettingsString.participantGroup.rawValue)
         let rowCount = userDefaults.integer(forKey: SettingsString.layoutRowCount.rawValue)
         let columnCount = userDefaults.integer(forKey: SettingsString.layoutColumnCount.rawValue)
@@ -168,13 +168,6 @@ struct StudySettings {
         let targetFreqHighCount = userDefaults.integer(forKey: SettingsString.targetFreqHighCount.rawValue)
         let distractorColorLowCount = userDefaults.integer(forKey: SettingsString.distractorColorLowCount.rawValue)
         let distractorColorHighCount = userDefaults.integer(forKey: SettingsString.distractorColorHighCount.rawValue)
-        
-        let participantIdentifierOptional: String?
-        if let userId = userIdOptional {
-            participantIdentifierOptional = userId
-        } else {
-            participantIdentifierOptional = userDefaults.string(forKey: SettingsString.participantIdentifier.rawValue)
-        }
         
         guard let groupString = groupStringOptional else { return nil }
         guard let group = ParticipantGroup(rawValue: groupString) else { return nil }

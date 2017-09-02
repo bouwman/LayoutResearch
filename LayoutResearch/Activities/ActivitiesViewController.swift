@@ -239,7 +239,7 @@ class ActivitiesViewController: UITableViewController {
         
         switch activity.type {
         case .search:
-            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], consentURL: service.resultService.fileService.consentPath, completion: { (error) in
+            service.remoteDataService.uploadStudyResult(participantId: settings.participant, resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], consentURL: service.resultService.fileService.consentPath, completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
@@ -381,7 +381,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed:
+        case .completed, .discarded:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -417,7 +417,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved, .discarded:
+        case .failed, .saved:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }
