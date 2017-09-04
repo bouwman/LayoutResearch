@@ -66,7 +66,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         
         // Setup result
         let index = indexOf(searchedItem: searchStep.settings.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, settings: searchStep.settings, itemLocation: index!, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, settings: searchStep.settings, itemLocation: index!, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, targetTrialNumber: searchStep.settings.targetTrialNumber, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language)
     }
     
     override func viewDidAppear(_ animated: Bool) {

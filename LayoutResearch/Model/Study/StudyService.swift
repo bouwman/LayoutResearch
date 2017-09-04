@@ -202,9 +202,14 @@ class StudyService {
             // Shuffle again if target has not the distance it should have
             shuffleSearchItemsIfNeededFor(target: target)
         }
-                
+        
+        let targetsBeforeIndex = targetItems[0...(index % targetItems.count)]
+        let targetsOfTargetType = targetsBeforeIndex.filter { $0.colorId == target.colorId && $0.shapeId == target.shapeId }
+        let targetTrialNumber = targetsOfTargetType.count
+        
+        
         let searchStepIdentifier = "\(index)"
-        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
         

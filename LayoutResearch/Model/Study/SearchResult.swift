@@ -34,6 +34,7 @@ struct StepSettings {
     var trialNumber: Int
     var targetItem: SearchItemProtocol
     var targetDescriptionPosition: Int
+    var targetTrialNumber: Int
     var layout: LayoutType
     var organisation: OrganisationType
     var participantGroup: ParticipantGroup
@@ -49,6 +50,7 @@ class SearchResult: ORKResult {
     var itemLocation: IndexPath
     var sameColorCount: Int
     var targetFrequency: Int
+    var targetTrialNumber: Int
     var participantAge: Int
     var participantGender: String
     var screenSize: String
@@ -62,12 +64,13 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, targetTrialNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
         self.settings = settings
         self.participantIdentifier = participantIdentifier
         self.itemLocation = itemLocation
         self.sameColorCount = sameColorCount
         self.targetFrequency = targetFrequency
+        self.targetTrialNumber = targetTrialNumber
         self.participantAge = participantAge
         self.screenSize = screenSize
         self.participantGender = participantGender
@@ -101,6 +104,7 @@ class SearchResult: ORKResult {
             "Randomness",
             "Target Id",
             "Target Color",
+            "Target Trial Number",
             "Item Location Row",
             "Item Location Column",
             "Press Location Row",
@@ -134,6 +138,7 @@ class SearchResult: ORKResult {
             settings.participantGroup.designedLayout,
             "\(settings.targetItem.identifier)",
             "\(settings.targetItem.colorId)",
+            "\(targetTrialNumber)",
             "\(itemLocation.row)",
             "\(itemLocation.section)",
             "\(pressLocation?.row ?? -1)",
