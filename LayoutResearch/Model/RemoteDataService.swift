@@ -95,16 +95,18 @@ class RemoteDataService {
             let sortByCreationDate = NSSortDescriptor(key: CloudRecords.Universal.createdAt, ascending: false)
             let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
             let operation = CKQueryOperation(query: query)
-            var isRecordsFound = false
             
             query.sortDescriptors = [sortByCreationDate]
             operation.qualityOfService = .userInitiated
-            operation.resultsLimit = 200
+            operation.resultsLimit = 500
             operation.desiredKeys = [CloudRecords.StudySettings.group]
+            
+            // Count number of participants (settings)
+            var participantCount = 0
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String, let group = ParticipantGroup(rawValue: groupString), let currentCount = groupCounts[group] {
-                    isRecordsFound = true
+                    participantCount += 1
                     groupCounts[group] = currentCount + 1
                 }
             }
@@ -113,7 +115,13 @@ class RemoteDataService {
                 if let error = error {
                     completion(nil, userId, error)
                 } else {
-                    if isRecordsFound {
+                    if participantCount > 0 {
+                        // Only pick among mandatory groups
+                        if participantCount <= 24 {
+                            for optionalGroup in ParticipantGroup.optionalGroups {
+                                groupCounts.removeValue(forKey: optionalGroup)
+                            }
+                        }
                         // Find minimum value
                         if let min = groupCounts.min(by: { $0.value < $1.value }) {
                             let minGroup: ParticipantGroup
@@ -132,7 +140,7 @@ class RemoteDataService {
                         }
                     } else {
                         // No records found so pick random
-                        let randomGroup = ParticipantGroup.random
+                        let randomGroup = ParticipantGroup.randomMandatory
                         completion(randomGroup, userId, nil)
                     }
                 }

@@ -59,8 +59,20 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         return [.a,.b,.c,.d,.e,.f,.g,.h]
     }
     
+    static var mandatoryGroups: [ParticipantGroup] {
+        return [.a,.b,.c,.d]
+    }
+    
+    static var optionalGroups: [ParticipantGroup] {
+        return [.e,.f,.g,.h]
+    }
+    
     static var random: ParticipantGroup {
         return ParticipantGroup.allGroups[randomInt(min: 0, max: allGroups.count - 1)]
+    }
+    
+    static var randomMandatory: ParticipantGroup {
+        return ParticipantGroup.mandatoryGroups[randomInt(min: 0, max: mandatoryGroups.count - 1)]
     }
     
     func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
