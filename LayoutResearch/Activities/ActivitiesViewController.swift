@@ -28,8 +28,9 @@ class ActivitiesViewController: UITableViewController {
         }
         
         // Self sizing cells
-        tableView.estimatedRowHeight = 70
+        tableView.estimatedRowHeight = 80
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableFooterView = UIView(frame: .zero)
         
         // Pull to refresh
         refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
@@ -71,19 +72,21 @@ class ActivitiesViewController: UITableViewController {
         var indexPathToReload: [IndexPath] = []
         
         for (i, activity) in service.activities.enumerated() {
-            if activity.timeRemaining > 0 && activity.daysRemaining <= 0 {
-                indexPathToReload.append(IndexPath(row: i, section: 0))
-            } else if activity.timeRemaining < 0 {
-                // Reset next row if countdown reaches 0 while other task is not completed
-                let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
-                let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
-                if activity.number == nextOrSecondActivityNumber {
-                    let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
-                    service.setLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
-                    updateAllActivities()
-                } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
-                    // Always update row of current activity if
+            if activity.type == .search {
+                if activity.timeRemaining > 0 && activity.daysRemaining <= 0 {
                     indexPathToReload.append(IndexPath(row: i, section: 0))
+                } else if activity.timeRemaining < 0 {
+                    // Reset next row if countdown reaches 0 while other task is not completed
+                    let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
+                    let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
+                    if activity.number == nextOrSecondActivityNumber {
+                        let oneDayBack = Calendar.current.date(byAdding: .second, value: -18, to: Date(), wrappingComponents: false)!
+                        service.updateActivitiesWithLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
+                        updateAllActivities()
+                    } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
+                        // Always update row of current activity if
+                        indexPathToReload.append(IndexPath(row: i, section: 0))
+                    }
                 }
             }
         }
@@ -100,6 +103,7 @@ class ActivitiesViewController: UITableViewController {
         cell.isUserInteractionEnabled = activity.isStartable
         cell.titleLabel?.text = activity.description
         cell.detailLabel?.text = activity.isStartable ? "" : activity.timeRemainingString
+        cell.statusButton.titleLabel?.text = ""
         cell.icon.image = UIImage(named: activity.type.iconName)
         
         if let cellState = activity.stateMachine.currentState as? ActivityState {
@@ -135,7 +139,7 @@ class ActivitiesViewController: UITableViewController {
         switch activity.type {
         case .search:
             let studyService = StudyService(settings: settings, activityNumber: activity.number)
-            let task = ORKOrderedTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
+            let task = OrderedSearchTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
             let taskVC = ORKTaskViewController(task: task, taskRun: nil)
             
             taskVC.delegate = self
@@ -155,6 +159,7 @@ class ActivitiesViewController: UITableViewController {
     }
     
     func updateAllActivities() {
+        var rowsToReload: [IndexPath] = []
         for (i, activity) in service.activities.enumerated() {
             switch activity.type {
             case .search:
@@ -164,7 +169,7 @@ class ActivitiesViewController: UITableViewController {
                 if resultExists {
                     if isUploaded {
                         activity.stateMachine.enter(UploadCompleteState.self)
-                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                        rowsToReload.append(IndexPath(row: i, section: 0))
                     } else {
                         uploadResultsOf(activity: activity, forRow: i)
                     }
@@ -172,37 +177,45 @@ class ActivitiesViewController: UITableViewController {
                     if activity.timeRemaining <= 0 {
                         if service.isParticipantGroupAssigned {
                             activity.stateMachine.enter(DataAvailableState.self)
-                            self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                            rowsToReload.append(IndexPath(row: i, section: 0))
                         } else {
                             loadRemoteSettingsFor(activity: activity, forRow: i)
                         }
                     } else {
                         activity.stateMachine.enter(TimeRemainingState.self)
-                        self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                        rowsToReload.append(IndexPath(row: i, section: 0))
                     }
                 }
             case .survey:
                 if service.remoteDataService.isSurveyResultUploaded {
                     activity.stateMachine.enter(UploadCompleteState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 } else if service.surveyService.preferredLayout != nil {
                     uploadResultsOf(activity: activity, forRow: i)
+                } else if activity.isAllSearchTasksComplete {
+                    activity.stateMachine.enter(DataAvailableState.self)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 } else {
                     activity.stateMachine.enter(TimeRemainingState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 }
             case .reward:
                 if service.remoteDataService.isParticipantsEmailUploaded {
                     activity.stateMachine.enter(UploadCompleteState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 } else if service.rewardService.participantEmail != nil {
                     uploadResultsOf(activity: activity, forRow: i)
+                } else if activity.isStudyCompleted {
+                    activity.stateMachine.enter(DataAvailableState.self)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 } else {
                     activity.stateMachine.enter(TimeRemainingState.self)
-                    self.tableView.reloadRows(at: [IndexPath(row: i, section: 0)], with: .none)
+                    rowsToReload.append(IndexPath(row: i, section: 0))
                 }
             }
         }
+        
+        self.tableView.reloadRows(at: rowsToReload, with: .none)
     }
     
     func loadRemoteSettingsFor(activity: StudyActivity, forRow row: Int) {
@@ -238,7 +251,7 @@ class ActivitiesViewController: UITableViewController {
         
         switch activity.type {
         case .search:
-            service.remoteDataService.uploadStudyResult(resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], consentURL: service.resultService.fileService.consentPath, completion: { (error) in
+            service.remoteDataService.uploadStudyResult(participantId: settings.participant, resultNumber: activity.number, group: settings.group, csvURL: self.service.resultService.fileService.existingResultsPaths[activity.number], consentURL: service.resultService.fileService.consentPath, completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
@@ -380,7 +393,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed:
+        case .completed, .discarded:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -397,6 +410,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
                     }
                 }
             }
+            
             // Save results
             service.resultService.saveSearchResultToCSV(resultNumber: activity.number, results: searchResults)
             service.resultService.saveAvgSearchTimesFor(resultNumber: activity.number, results: searchResults)
@@ -408,7 +422,6 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             // Recreate activities to suite current data
             service.lastActivityNumber = activity.number
             service.setLastActivityDate(Date(), forActivityNumber: activity.number)
-            service.activeActivity = nil
             
             // Create reminder
             createNewNotificationFor(activity: activity)
@@ -417,7 +430,7 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved, .discarded:
+        case .failed, .saved:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
         }
@@ -457,5 +470,25 @@ extension ActivitiesViewController {
     
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         startUIUpdateTimer()
+    }
+}
+
+/// Updates the progress only when the current step is a SearchDescriptionStep
+class OrderedSearchTask: ORKOrderedTask {
+    private var searchSteps: [ORKStep] {
+        return steps.filter { $0 is SearchDescriptionStep }
+    }
+    private var lastSearchStepIndex: UInt = 0
+    
+    override func progress(ofCurrentStep step: ORKStep, with result: ORKTaskResult) -> ORKTaskProgress {
+        var progress = ORKTaskProgress()
+        
+        if step is SearchDescriptionStep {
+            lastSearchStepIndex = UInt(searchSteps.index(of: step) ?? 1)
+        }
+        progress.current = lastSearchStepIndex
+        progress.total = UInt(searchSteps.count)
+        
+        return progress
     }
 }

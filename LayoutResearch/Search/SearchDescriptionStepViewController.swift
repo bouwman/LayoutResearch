@@ -17,10 +17,14 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
         
         guard let searchStep = step as? SearchDescriptionStep else { return }
         
-        let size = searchStep.targetDiameter
-        let targetItem = searchStep.targetItem
-        let button = RoundedButton(frame: CGRect(x: 0, y: Const.Interface.descriptionItemMargin, width: size, height: size))
-        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: Const.Interface.descriptionItemMargin + size))
+        let topMargin = topMarginFor(layout: searchStep.settings.layout, itemDistance: searchStep.settings.itemDistance)
+        let estimatedLayoutHeight = 6 * (searchStep.settings.itemDiameter + searchStep.settings.itemDistance)
+        let yPosition = topMargin + CGFloat(searchStep.settings.targetDescriptionPosition) * estimatedLayoutHeight / 2.8
+        
+        let size = searchStep.settings.itemDiameter
+        let targetItem = searchStep.settings.targetItem
+        let button = RoundedButton(frame: CGRect(x: 0, y: yPosition, width: size, height: size))
+        let contentView = UIView(frame: CGRect(x: 0, y: 0, width: size, height: yPosition + size))
         let inset = size / Const.Interface.iconInsetDiameterRatio
         
         button.identifier = targetItem.identifier
@@ -45,27 +49,5 @@ class SearchDescriptionStepViewController: ORKActiveStepViewController {
                 }
             }
         }
-        
-        // Fade in button after 0.3 sec
-//        nextButton?.isHidden = true
     }
-//
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        // Fade in button after 1 sec
-//        nextButton?.alpha = 0.0
-//        nextButton?.isHidden = false
-//        nextButton?.isUserInteractionEnabled = false
-//    }
-//
-//    override func viewDidAppear(_ animated: Bool) {
-//        super.viewDidAppear(animated)
-//
-//        UIView.animate(withDuration: 0.2, delay: 0.2, options: .curveEaseOut, animations: {
-//            self.nextButton?.alpha = 1.0
-//        }, completion: { completed in
-//            self.nextButton?.isUserInteractionEnabled = true
-//        })
-//    }
 }

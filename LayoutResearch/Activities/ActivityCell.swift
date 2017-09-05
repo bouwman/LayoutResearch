@@ -18,17 +18,44 @@ class ActivityCell: UITableViewCell {
     
     override var isUserInteractionEnabled: Bool {
         didSet {
-            if isUserInteractionEnabled {
+            setColors(isActive: isUserInteractionEnabled, isSelected: false)
+        }
+    }
+    
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
+        super.setHighlighted(highlighted, animated: animated)
+        
+        setColors(isActive: isUserInteractionEnabled, isSelected: highlighted)
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        setColors(isActive: isUserInteractionEnabled, isSelected: selected)
+    }
+    
+    func setColors(isActive: Bool, isSelected: Bool) {
+        if isActive {
+            if isSelected {
+                backgroundColor = tintColor
+                titleLabel?.textColor = UIColor.white
+                detailLabel?.textColor = UIColor.white
+                icon?.tintColor = UIColor.white
+            } else {
+                backgroundColor = UIColor.clear
+                titleLabel?.textColor = tintColor
                 titleLabel?.alpha = 1.0
                 detailLabel?.alpha = 1.0
                 icon?.alpha = 1.0
-                icon?.tintColor = tintColor
-            } else {
-                titleLabel?.alpha = 0.5
-                detailLabel?.alpha = 0.5
-                icon?.alpha = 0.5
-                icon?.tintColor = UIColor.black
             }
+        } else {
+            titleLabel?.textColor = UIColor.black
+            titleLabel?.alpha = 0.5
+            detailLabel?.alpha = 0.5
+            icon?.alpha = 0.5
         }
+        detailLabel?.textColor = UIColor.black
+        icon?.tintColor = UIColor.black
     }
 }
+

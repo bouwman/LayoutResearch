@@ -58,6 +58,8 @@ class DashboardTableViewController: UITableViewController {
         }
         
         // Set the data source for each graph
+        discreteGraph.decimalPlaces = 1
+        lineGraph.decimalPlaces = 1
         discreteGraph.dataSource = service.discreteGraphDataSource
         lineGraph.dataSource = service.lineGraphDataSource
         discreteGraph.noDataText = "No task results yet."
@@ -66,7 +68,8 @@ class DashboardTableViewController: UITableViewController {
         // Set the table view to automatically calculate the height of cells.
         tableView.estimatedRowHeight = tableView.rowHeight
         tableView.rowHeight = UITableViewAutomaticDimension
-        
+        tableView.tableFooterView = UIView(frame: .zero)
+
         // Pull to refresh
         refreshControl?.addTarget(self, action: #selector(ActivitiesViewController.handleRefresh(refreshControl:)), for: .valueChanged)
     }

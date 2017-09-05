@@ -9,13 +9,11 @@
 import ResearchKit
 
 class LayoutIntroStep: ORKActiveStep {
-    var items: [[SearchItemProtocol]]
     var layout: LayoutType
     var itemDiameter: CGFloat
     var itemDistance: CGFloat
     
-    init(identifier: String, items: [[SearchItemProtocol]], layout: LayoutType, itemDiameter: CGFloat, itemDistance: CGFloat) {
-        self.items = items
+    init(identifier: String, layout: LayoutType, itemDiameter: CGFloat, itemDistance: CGFloat) {
         self.layout = layout
         self.itemDiameter = itemDiameter
         self.itemDistance = itemDistance

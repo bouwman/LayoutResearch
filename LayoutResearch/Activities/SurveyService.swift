@@ -11,7 +11,6 @@ import ResearchKit
 
 class SurveyService: NSObject {
     var surveyCompletion: ((Bool) -> ())?
-    
     var preferredLayout: String? {
         return UserDefaults.standard.string(forKey: SettingsString.preferredLayout.rawValue)
     }
@@ -20,10 +19,9 @@ class SurveyService: NSObject {
         surveyCompletion = completion
         
         // Choices
-        let imageVertical = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice vertical"), selectedImage: #imageLiteral(resourceName: "survey choice vertical selected"), text: "Hexagonal vertical", value: NSString(string: "vertical"))
         let imageHorizontal = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice horizontal"), selectedImage: #imageLiteral(resourceName: "survey choice horizontal selected"), text: "Hexagonal horizontal", value: NSString(string: "horizontal"))
         let imageGrid = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice grid"), selectedImage: #imageLiteral(resourceName: "survey choice grid selected"), text: "Hexagonal grid", value: NSString(string: "grid"))
-        let imageFormat = ORKImageChoiceAnswerFormat(imageChoices: [imageVertical, imageGrid, imageHorizontal])
+        let imageFormat = ORKImageChoiceAnswerFormat(imageChoices: [imageGrid, imageHorizontal])
         
         // Steps
         let questionStep = ORKQuestionStep(identifier: Const.Identifiers.layoutSurveyStep, title: "Survey", text: "Which layout did you prefer?", answer: imageFormat)

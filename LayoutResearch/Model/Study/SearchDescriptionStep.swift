@@ -9,12 +9,10 @@
 import ResearchKit
 
 class SearchDescriptionStep: ORKActiveStep {
-    var targetItem: SearchItemProtocol
-    var targetDiameter: CGFloat
+    var settings: StepSettings
     
-    init(identifier: String, targetItem: SearchItemProtocol, targetDiameter: CGFloat) {
-        self.targetItem = targetItem
-        self.targetDiameter = targetDiameter
+    init(identifier: String, settings: StepSettings) {
+        self.settings = settings
         
         super.init(identifier: identifier)
     }

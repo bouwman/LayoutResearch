@@ -22,7 +22,6 @@
 		4764C4B01F275C22009AC457 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */; };
 		4764C4B21F275CE1009AC457 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */; };
 		4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B31F275E05009AC457 /* WithdrawViewController.swift */; };
-		4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4764C4B51F276287009AC457 /* StudyViewController.swift */; };
 		47654C531F31D0B80099C285 /* ActivityStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47654C521F31D0B80099C285 /* ActivityStateMachine.swift */; };
 		476AC2EF1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */; };
 		4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4771FFE61F2DF82700D6E5DC /* StudySettings.swift */; };
@@ -49,6 +48,7 @@
 		47D15F391F348C8000335BBA /* LineGraphDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F351F348C8000335BBA /* LineGraphDataSource.swift */; };
 		47D15F3A1F348C8000335BBA /* DashboardTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F361F348C8000335BBA /* DashboardTableViewController.swift */; };
 		47D15F3B1F348C8000335BBA /* DiscreteGraphDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47D15F371F348C8000335BBA /* DiscreteGraphDataSource.swift */; };
+		47DAA0981F581AD3001512A1 /* FileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DAA0971F581AD3001512A1 /* FileCell.swift */; };
 		47DF75681F27F40200A6FC52 /* StudyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF75671F27F40200A6FC52 /* StudyService.swift */; };
 		47DF756D1F27F5AA00A6FC52 /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47DF756C1F27F5AA00A6FC52 /* SearchResult.swift */; };
 		47E7CBB81F2918DE00092680 /* ResultService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E7CBB71F2918DE00092680 /* ResultService.swift */; };
@@ -73,7 +73,6 @@
 		4764C4AF1F275C22009AC457 /* IntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
 		4764C4B11F275CE0009AC457 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		4764C4B31F275E05009AC457 /* WithdrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawViewController.swift; sourceTree = "<group>"; };
-		4764C4B51F276287009AC457 /* StudyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyViewController.swift; sourceTree = "<group>"; };
 		47654C521F31D0B80099C285 /* ActivityStateMachine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStateMachine.swift; sourceTree = "<group>"; };
 		476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchDescriptionStepViewController.swift; sourceTree = "<group>"; };
 		4771FFE61F2DF82700D6E5DC /* StudySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudySettings.swift; sourceTree = "<group>"; };
@@ -101,6 +100,7 @@
 		47D15F351F348C8000335BBA /* LineGraphDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineGraphDataSource.swift; sourceTree = "<group>"; };
 		47D15F361F348C8000335BBA /* DashboardTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardTableViewController.swift; sourceTree = "<group>"; };
 		47D15F371F348C8000335BBA /* DiscreteGraphDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscreteGraphDataSource.swift; sourceTree = "<group>"; };
+		47DAA0971F581AD3001512A1 /* FileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileCell.swift; sourceTree = "<group>"; };
 		47DF40341F2BF8A90008AB06 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		47DF75671F27F40200A6FC52 /* StudyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyService.swift; sourceTree = "<group>"; };
 		47DF756C1F27F5AA00A6FC52 /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
@@ -165,7 +165,7 @@
 				47D15F331F348A1B00335BBA /* Profile */,
 				4728AB031F29F3D10084EFB1 /* Settings */,
 				476AC2EB1F27A3EB004EB3A0 /* Onboarding */,
-				47DF75691F27F43B00A6FC52 /* Study */,
+				47DF75691F27F43B00A6FC52 /* Search */,
 				47DF756A1F27F45500A6FC52 /* Model */,
 				47DF756B1F27F46C00A6FC52 /* Views */,
 				4751B4F91F2517AE00549329 /* Main.storyboard */,
@@ -206,6 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				47D15F2F1F348A1400335BBA /* ProfileViewController.swift */,
+				47DAA0971F581AD3001512A1 /* FileCell.swift */,
 				47D15F2D1F348A1400335BBA /* ProfileHeaderView.swift */,
 			);
 			path = Profile;
@@ -222,15 +223,14 @@
 			path = Dashboard;
 			sourceTree = "<group>";
 		};
-		47DF75691F27F43B00A6FC52 /* Study */ = {
+		47DF75691F27F43B00A6FC52 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				4764C4B51F276287009AC457 /* StudyViewController.swift */,
 				47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */,
 				476AC2EE1F27ACE4004EB3A0 /* SearchDescriptionStepViewController.swift */,
 				47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */,
 			);
-			path = Study;
+			path = Search;
 			sourceTree = "<group>";
 		};
 		47DF756A1F27F45500A6FC52 /* Model */ = {
@@ -434,6 +434,7 @@
 				47CBA9581F31199F000F0312 /* RemoteErrorViewController.swift in Sources */,
 				4728AB051F29F3EC0084EFB1 /* SelectionViewController.swift in Sources */,
 				47D15F311F348A1400335BBA /* ProfileViewController.swift in Sources */,
+				47DAA0981F581AD3001512A1 /* FileCell.swift in Sources */,
 				4771FFE71F2DF82700D6E5DC /* StudySettings.swift in Sources */,
 				47654C531F31D0B80099C285 /* ActivityStateMachine.swift in Sources */,
 				47B307521F310A1F00AF2795 /* RemoteDataService.swift in Sources */,
@@ -444,7 +445,6 @@
 				47FE19BB1F34BDF900344887 /* ActivitiesViewController.swift in Sources */,
 				47D15F321F348A1400335BBA /* ProfileHeaderView.swift in Sources */,
 				4764C4B41F275E05009AC457 /* WithdrawViewController.swift in Sources */,
-				4764C4B61F276287009AC457 /* StudyViewController.swift in Sources */,
 				47D15F3A1F348C8000335BBA /* DashboardTableViewController.swift in Sources */,
 				4751B4F61F2517AE00549329 /* AppDelegate.swift in Sources */,
 				47DF75681F27F40200A6FC52 /* StudyService.swift in Sources */,
