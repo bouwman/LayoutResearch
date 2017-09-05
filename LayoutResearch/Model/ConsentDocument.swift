@@ -16,7 +16,7 @@ class ConsentDocument: ORKConsentDocument {
         "We shall record how long it takes you to select an application icon and whether it is the correct one for that trial. The data is gathered on your phone. With your permission the data is send to another computers to analyse it.",
         "All data will be handled according to the Data Protection Act 1998 and will be kept anonymous.",
         "Only UCL researchers working with Dr Duncan Brumby will analyse these data. With your permission, we may want to use this data for teaching, conferences, presentations, publications, and/or thesis work.",
-        "You agree to commit 10 minutes per day over a period of five days. We will ask you to complete the search task once per day.",
+        "You agree to commit 10 minutes per day over a period of three days. We will ask you to complete the search task once per day.",
         "This study may ask you to fill in surveys about your opinion regarding certain design features.",
         "In this study you will need to find and select a specific application icon on the screen of a computer. We shall record how long it takes you to select an application icon and whether it is the correct one for that trial. Between different trials features of the icons on the interface may change. We are interested in how these design features affect your performance.",
         "It is up to you to decide whether or not to take part. If you decide to take part you will be given this information sheet to keep and be asked to sign a consent form. If you decide to take part you are still free to withdraw at any time and without giving a reason."

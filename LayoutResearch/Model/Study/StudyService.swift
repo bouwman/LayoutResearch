@@ -172,7 +172,7 @@ class StudyService {
     private func addTrialStepsFor(index: Int, layout: LayoutType, target: SearchItemProtocol, targetDescriptionPosition: Int, isPractice: Bool) {
         // Shuffle layout for every trial if random
         if settings.group.organisation == .random {
-            if settings.group.isDesignedLayout {
+            if settings.group.isDesignedLayout == false {
                 shuffle2dArray(&searchItems)
             } else {
                 shuffle2dArrayMaintainingColorDistance(&searchItems)
