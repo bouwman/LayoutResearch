@@ -13,14 +13,41 @@ enum OrganisationType {
     case random, stable
 }
 
-struct SearchItem: SearchItemProtocol, CustomStringConvertible {
+class SearchItem: NSObject, SearchItemProtocol, NSCoding {
     var identifier: String
     var colorId: Int
     var shapeId: Int
     var sharedColorCount: Int
     
-    var description: String {
+    init(identifier: String, colorId: Int, shapeId: Int, sharedColorCount: Int) {
+        self.identifier = identifier
+        self.colorId = colorId
+        self.shapeId = shapeId
+        self.sharedColorCount = sharedColorCount
+        
+        super.init()
+    }
+    
+    override var description: String {
         return identifier
+    }
+    
+    // MARK: - NSCoding
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(identifier, forKey: "identifier")
+        aCoder.encode(colorId, forKey: "colorId")
+        aCoder.encode(shapeId, forKey: "shapeId")
+        aCoder.encode(sharedColorCount, forKey: "sharedColorCount")
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        identifier = aDecoder.decodeObject(forKey: "identifier") as! String
+        colorId = aDecoder.decodeInteger(forKey: "colorId")
+        shapeId = aDecoder.decodeInteger(forKey: "shapeId")
+        sharedColorCount = aDecoder.decodeInteger(forKey: "sharedColorCount")
+        
+        super.init()
     }
 }
 
@@ -36,14 +63,27 @@ class StudyService {
         self.settings = settings
         self.activityNumber = activityNumber
         
+        // Random shapes
+        var shapeIDs: [Int] = []
+        if activityNumber == 0 || settings.group.organisation == .random {
+            for i in 1...24 {
+                shapeIDs.append(i)
+            }
+            shapeIDs.shuffle()
+            UserDefaults.standard.set(shapeIDs, forKey: SettingsString.lastUsedShapeIDs.rawValue)
+        } else {
+            shapeIDs = UserDefaults.standard.array(forKey: SettingsString.lastUsedShapeIDs.rawValue) as! [Int]
+        }
+        
         // Create base item array
         var counter = 1
         for row in 0..<settings.rowCount {
             var rowItems: [SearchItemProtocol] = []
             for column in 0..<settings.columnCount {
                 let colorId = staticColors[row][column]
+                let shapeId = shapeIDs[counter-1]
                 let sharedColorCount = countColorsIn(colorArray: staticColors, colorId: colorId)
-                let item = SearchItem(identifier: "\(counter)", colorId: colorId, shapeId: counter, sharedColorCount: sharedColorCount)
+                let item = SearchItem(identifier: "\(counter)", colorId: colorId, shapeId: shapeId, sharedColorCount: sharedColorCount)
                 rowItems.append(item)
                 targetItems.append(item)
                 
@@ -55,6 +95,16 @@ class StudyService {
         
         // Create targets
         targetItems = settings.group.targetItemsFrom(searchItems: searchItems)
+        
+        // Shuffle if not using designed layout
+        if settings.group.isDesignedLayout == false {
+            if activityNumber == 0 || settings.group.organisation == .random {
+                searchItems.shuffle()
+                store(searchItems: searchItems)
+            } else {
+                searchItems = loadSearchItems(rowCount: settings.rowCount, columnCount: settings.columnCount)
+            }
+        }
         
         // Create intro step
         var trialCounter = 0
@@ -99,7 +149,7 @@ class StudyService {
 //                steps.append(waitStep)
                 
                 // Introduce new layout
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", items: layoutIntroItems, layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
+                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
@@ -117,6 +167,32 @@ class StudyService {
         completionStep.title = "Thank you!"
         completionStep.text = "Thank you for completing the task."
         steps.append(completionStep)
+    }
+    
+    private func addTrialStepsFor(index: Int, layout: LayoutType, target: SearchItemProtocol, targetDescriptionPosition: Int, isPractice: Bool) {
+        // Shuffle layout for every trial if random
+        if settings.group.organisation == .random {
+            if settings.group.isDesignedLayout {
+                shuffle2dArray(&searchItems)
+            } else {
+                shuffle2dArrayMaintainingColorDistance(&searchItems)
+                
+                // Shuffle again if target has not the distance it should have
+                shuffleSearchItemsIfNeededFor(target: target)
+            }
+        }
+        
+        let targetsBeforeIndex = targetItems[0...(index % targetItems.count)]
+        let targetsOfTargetType = targetsBeforeIndex.filter { $0.colorId == target.colorId && $0.shapeId == target.shapeId }
+        let targetTrialNumber = targetsOfTargetType.count
+        
+        let searchStepIdentifier = "\(index)"
+        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
+        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
+        
+        steps.append(descriptionStep)
+        steps.append(searchStep)
     }
     
     private func shuffle2dArrayMaintainingColorDistance(_ array: inout [[SearchItemProtocol]]) {
@@ -192,29 +268,6 @@ class StudyService {
                 itemCounter += 1
             }
         }
-    }
-
-    private func addTrialStepsFor(index: Int, layout: LayoutType, target: SearchItemProtocol, targetDescriptionPosition: Int, isPractice: Bool) {
-        // Shuffle layout for every trial if random
-        if settings.group.organisation == .random {
-            shuffle2dArrayMaintainingColorDistance(&searchItems)
-            
-            // Shuffle again if target has not the distance it should have
-            shuffleSearchItemsIfNeededFor(target: target)
-        }
-        
-        let targetsBeforeIndex = targetItems[0...(index % targetItems.count)]
-        let targetsOfTargetType = targetsBeforeIndex.filter { $0.colorId == target.colorId && $0.shapeId == target.shapeId }
-        let targetTrialNumber = targetsOfTargetType.count
-        
-        
-        let searchStepIdentifier = "\(index)"
-        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
-        let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
-        let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
-        
-        steps.append(descriptionStep)
-        steps.append(searchStep)
     }
     
     var isColorFarApartCondition1LastFarApart = false
@@ -318,20 +371,26 @@ class StudyService {
         return counter
     }
     
-    private var layoutIntroItems: [[SearchItemProtocol]] {
-        var items: [[SearchItemProtocol]] = []
-        
-        var counter = 1
-        for _ in 0..<settings.rowCount {
-            var rowItems: [SearchItemProtocol] = []
-            for _ in 0..<settings.columnCount {
-                // 0 for black color and no shape
-                let item = SearchItem(identifier: "\(counter)", colorId: 0, shapeId: 0, sharedColorCount: 0)
-                rowItems.append(item)
-                counter += 1
+    private func store(searchItems: [[SearchItemProtocol]]) {
+        for (i, row) in searchItems.enumerated() {
+            for (j, column) in row.enumerated() {
+                let encodedData = NSKeyedArchiver.archivedData(withRootObject: column)
+                UserDefaults.standard.set(encodedData, forKey: SettingsString.lastUsedSearchItems.rawValue + "\(i)\(j)")
             }
-            items.append(rowItems)
         }
-        return items
+    }
+    
+    private func loadSearchItems(rowCount: Int, columnCount: Int) -> [[SearchItemProtocol]] {
+        var searchItems: [[SearchItemProtocol]] = []
+        for i in 0..<rowCount {
+            var row: [SearchItemProtocol] = []
+            for j in 0..<columnCount {
+                let encodedData = UserDefaults.standard.object(forKey: SettingsString.lastUsedSearchItems.rawValue + "\(i)\(j)") as! Data
+                let searchItem = NSKeyedUnarchiver.unarchiveObject(with: encodedData) as! SearchItemProtocol
+                row.append(searchItem)
+            }
+            searchItems.append(row)
+        }
+        return searchItems
     }
 }

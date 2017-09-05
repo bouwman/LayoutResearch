@@ -79,6 +79,8 @@ enum SettingsString: String {
     case avgTimeHorResult
     case avgTimeVerResult
     case avgTimeGridResult
+    case lastUsedShapeIDs
+    case lastUsedSearchItems
 }
 
 extension UIColor {

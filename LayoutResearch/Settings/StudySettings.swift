@@ -29,12 +29,12 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         }
     }
     
-    var designedLayout: String {
+    var isDesignedLayout: Bool {
         switch self {
         case .a,.b,.c,.d:
-            return "Designed layout"
+            return true
         case .e,.f,.g,.h:
-            return "Random layout"
+            return false
         }
     }
     
