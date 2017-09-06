@@ -39,6 +39,10 @@ class ActivitiesService {
     
     func setLastActivityDate(_ date: Date, forActivityNumber number: Int?) {
         UserDefaults.standard.set(date.timeIntervalSinceReferenceDate, forKey: SettingsString.lastActivityCompletionDate.rawValue)
+        updateActivitiesWithLastActivityDate(date, forActivityNumber: number)
+    }
+    
+    func updateActivitiesWithLastActivityDate(_ date: Date, forActivityNumber number: Int?) {
         activities = ActivitiesService.createActivitiesBasedOnLastActivityDate(lastDate: date, activityNumber: number)
     }
     

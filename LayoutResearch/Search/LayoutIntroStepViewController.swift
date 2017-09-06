@@ -15,15 +15,22 @@ class LayoutIntroStepViewController: ORKActiveStepViewController {
         guard let layoutIntroStep = step as? LayoutIntroStep else { return }
         
         var topMargin = Const.Interface.introLayoutMargin
-        if layoutIntroStep.layout == .vertical {
+        let image: UIImage?
+        switch layoutIntroStep.layout {
+        case .vertical:
             topMargin -= layoutIntroStep.itemDistance
-        } else if layoutIntroStep.layout == .horizontal {
+            image = #imageLiteral(resourceName: "Layout preview hex ver")
+        case .horizontal:
             topMargin += layoutIntroStep.itemDistance
+            image = #imageLiteral(resourceName: "Layout preview hex hor")
+        case .grid:
+            image = #imageLiteral(resourceName: "Layout preview grid")
         }
         
         // Create view
-        let searchView = SearchView(itemDiameter: layoutIntroStep.itemDiameter, distance: layoutIntroStep.itemDistance, layout: layoutIntroStep.layout, topMargin: topMargin, items: layoutIntroStep.items)
-                
-        customView = searchView
+        let previewImageView = UIImageView(image: image)
+        previewImageView.contentMode = .center
+        
+        customView = previewImageView
     }
 }

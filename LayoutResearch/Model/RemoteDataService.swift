@@ -95,16 +95,18 @@ class RemoteDataService {
             let sortByCreationDate = NSSortDescriptor(key: CloudRecords.Universal.createdAt, ascending: false)
             let query = CKQuery(recordType: CloudRecords.StudySettings.typeName, predicate: predicate)
             let operation = CKQueryOperation(query: query)
-            var isRecordsFound = false
             
             query.sortDescriptors = [sortByCreationDate]
             operation.qualityOfService = .userInitiated
-            operation.resultsLimit = 200
+            operation.resultsLimit = 500
             operation.desiredKeys = [CloudRecords.StudySettings.group]
+            
+            // Count number of participants (settings)
+            var participantCount = 0
             
             operation.recordFetchedBlock = { record in
                 if let groupString = record[CloudRecords.StudySettings.group] as? String, let group = ParticipantGroup(rawValue: groupString), let currentCount = groupCounts[group] {
-                    isRecordsFound = true
+                    participantCount += 1
                     groupCounts[group] = currentCount + 1
                 }
             }
@@ -113,7 +115,13 @@ class RemoteDataService {
                 if let error = error {
                     completion(nil, userId, error)
                 } else {
-                    if isRecordsFound {
+                    if participantCount > 0 {
+                        // Only pick among mandatory groups
+                        if participantCount <= 24 {
+                            for optionalGroup in ParticipantGroup.optionalGroups {
+                                groupCounts.removeValue(forKey: optionalGroup)
+                            }
+                        }
                         // Find minimum value
                         if let min = groupCounts.min(by: { $0.value < $1.value }) {
                             let minGroup: ParticipantGroup
@@ -132,7 +140,7 @@ class RemoteDataService {
                         }
                     } else {
                         // No records found so pick random
-                        let randomGroup = ParticipantGroup.random
+                        let randomGroup = ParticipantGroup.randomMandatory
                         completion(randomGroup, userId, nil)
                     }
                 }
@@ -203,47 +211,29 @@ class RemoteDataService {
         publicDB.add(operation)
     }
     
-    func uploadStudyResult(resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
+    func uploadStudyResult(participantId: String, resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
                 return
             }
+            let firstEightCharacters = participantId.index(participantId.startIndex, offsetBy: 8)
+            let idString = participantId.substring(to: firstEightCharacters) + "-attempt\(resultNumber)"
+            let recordId = CKRecordID(recordName: idString)
+            let fetchExistingOperation = CKFetchRecordsOperation(recordIDs: [recordId])
             
-            // Setup records
-            var records: [CKRecord] = []
-            let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName)
-            
-            resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .none)
-            resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
-            records.append(resultRecord)
-            
-            // Upload last settings and consent if first activity
-            if resultNumber == 0 {
-                let settingsRecord = self.settingsRecordFor(participantGroup: group)
-                let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
-                
-                consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
-                consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
-                
-                records.append(settingsRecord)
-                records.append(consentRecord)
-            }
-            
-            // Create operation
-            let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
-            operation.qualityOfService = .userInitiated
-            
-            operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-                if let error = error {
-                    completion(error)
-                } else {
-                    self.setIsResultUploadedFor(resultNumber: resultNumber, isResultUploaded: true)
-                    completion(error)
+            fetchExistingOperation.fetchRecordsCompletionBlock = { fetchedRecords, error in
+                // Record already exists
+                if let fetchedRecords = fetchedRecords, fetchedRecords.count > 0 {
+                    completion(nil)
+                }
+                else if let _ = error { // No record online yet
+                    let uploadResultOperation = self.createUploadStudyResultOperation(userId: userId, resultRecordId: recordId, resultNumber: resultNumber, group: group, csvURL: csvURL, consentURL: consentURL, completion: completion)
+                    self.publicDB.add(uploadResultOperation)
                 }
             }
             
-            self.publicDB.add(operation)
+            self.publicDB.add(fetchExistingOperation)
         }
     }
     
@@ -356,5 +346,42 @@ class RemoteDataService {
         record[CloudRecords.StudySettings.group] = NSString(string: participantGroup.rawValue)
         
         return record
+    }
+    
+    private func createUploadStudyResultOperation(userId: CKRecordID, resultRecordId: CKRecordID, resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) -> CKModifyRecordsOperation {
+        
+        // Setup records
+        var records: [CKRecord] = []
+        let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName, recordID: resultRecordId)
+        
+        resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .none)
+        resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
+        records.append(resultRecord)
+        
+        // Upload last settings and consent if first activity
+        if resultNumber == 0 {
+            let settingsRecord = self.settingsRecordFor(participantGroup: group)
+            let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
+            
+            consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
+            consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
+            
+            records.append(settingsRecord)
+            records.append(consentRecord)
+        }
+        
+        // Create operation
+        let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+        operation.qualityOfService = .userInitiated
+        
+        operation.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+            if let error = error {
+                completion(error)
+            } else {
+                self.setIsResultUploadedFor(resultNumber: resultNumber, isResultUploaded: true)
+                completion(error)
+            }
+        }
+        return operation
     }
 }

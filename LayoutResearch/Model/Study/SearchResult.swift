@@ -29,22 +29,33 @@ enum SearchItemDistance {
     }
 }
 
-class SearchResult: ORKResult {
-    var participantIdentifier: String
+struct StepSettings {
+    var activityNumber: Int
+    var trialNumber: Int
     var targetItem: SearchItemProtocol
+    var targetDescriptionPosition: Int
+    var targetTrialNumber: Int
     var layout: LayoutType
     var organisation: OrganisationType
     var participantGroup: ParticipantGroup
     var itemCount: Int
+    var itemDiameter: CGFloat
+    var itemDistance: CGFloat
     var isPractice: Bool
+}
+
+class SearchResult: ORKResult {
+    var participantIdentifier: String
+    var settings: StepSettings
     var itemLocation: IndexPath
     var sameColorCount: Int
     var targetFrequency: Int
-    var activityNumber: Int
+    var targetTrialNumber: Int
     var participantAge: Int
     var participantGender: String
     var screenSize: String
     var language: String
+    var hoursSinceLastActivity: Int?
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
     var searchTime: TimeInterval?
@@ -53,19 +64,14 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, targetItem: SearchItemProtocol, itemLocation: IndexPath, layout: LayoutType, organisation: OrganisationType, participantGroup: ParticipantGroup, itemCount: Int, sameColorCount: Int, targetFrequency: Int, isPractice: Bool, activityNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, targetTrialNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+        self.settings = settings
         self.participantIdentifier = participantIdentifier
-        self.targetItem = targetItem
-        self.layout = layout
-        self.organisation = organisation
-        self.itemCount = itemCount
         self.itemLocation = itemLocation
         self.sameColorCount = sameColorCount
         self.targetFrequency = targetFrequency
-        self.isPractice = isPractice
-        self.activityNumber = activityNumber
+        self.targetTrialNumber = targetTrialNumber
         self.participantAge = participantAge
-        self.participantGroup = participantGroup
         self.screenSize = screenSize
         self.participantGender = participantGender
         self.language = language
@@ -82,10 +88,72 @@ class SearchResult: ORKResult {
     }
     
     var csvHeadlines: [String] {
-        return ["Participant Id", "Attempt", "Trial", "Layout", "Organisation", "Target Group", "Group", "Total Item Count", "Same Color Count", "Distance Condition", "Distance To Nearest Shared Color", "Close Neighbours Count", "Target Id", "Target Color", "Target Frequency", "Search Time", "Item Location Row", "Item Location Column", "Press Location Row", "Press Location Column", "Practice", "Error", "Screen Size", "Language", "Age",  "Gender"]
+        return [
+            "Attempt",
+            "Trial",
+            "Search Time",
+            "Layout",
+            "Organisation",
+            "Target Frequency",
+            "Target Description Position",
+            "Same Color Count",
+            "Distance Condition",
+            "Distance To Nearest Shared Color",
+            "Close Neighbours Count",
+            "Hours since last attempt",
+            "Randomness",
+            "Target Id",
+            "Target Color",
+            "Target Shape",
+            "Target Trial Number",
+            "Item Location Row",
+            "Item Location Column",
+            "Press Location Row",
+            "Press Location Column",
+            "Group",
+            "Practice",
+            "Error",
+            "Screen Size",
+            "Language",
+            "Age",
+            "Gender",
+            "Total Item Count",
+            "Participant Id"
+        ]
     }
     
     var csvRow: [String] {
-        return [participantIdentifier, "\(activityNumber)", identifier, String(describing: layout), String(describing: organisation), participantGroup.targetGroup, String(describing: participantGroup), "\(itemCount)", "\(sameColorCount)", distanceCondition == nil ? "–" : String(describing: distanceCondition!), "\(distanceToNearestSharedColor ?? -1)", "\(closeNeighboursCount ?? -1)", "\(targetItem.identifier)", "\(targetItem.colorId)", "\(targetFrequency)", "\(searchTime ?? -1)", "\(itemLocation.row)", "\(itemLocation.section)", "\(pressLocation?.row ?? -1)", "\(pressLocation?.section ?? -1)", "\(isPractice)", "\(isError ?? true)", screenSize, language, "\(participantAge)", "\(participantGender)"]
+        return [
+            "\(settings.activityNumber)",
+            identifier,
+            "\(searchTime ?? -1)",
+            String(describing: settings.layout),
+            String(describing: settings.organisation),
+            "\(targetFrequency)",
+            "\(settings.targetDescriptionPosition)",
+            "\(sameColorCount)",
+            distanceCondition == nil ? "–" : String(describing: distanceCondition!),
+            "\(distanceToNearestSharedColor ?? -1)",
+            "\(closeNeighboursCount ?? -1)",
+            "\(hoursSinceLastActivity ?? -1)",
+            settings.participantGroup.isDesignedLayout ? "Designed layout" : "Random layout",
+            "\(settings.targetItem.identifier)",
+            "\(settings.targetItem.colorId)",
+            "\(settings.targetItem.shapeId)",
+            "\(targetTrialNumber)",
+            "\(itemLocation.row)",
+            "\(itemLocation.section)",
+            "\(pressLocation?.row ?? -1)",
+            "\(pressLocation?.section ?? -1)",
+            String(describing: settings.participantGroup),
+            "\(settings.isPractice)",
+            "\(isError ?? true)",
+            screenSize,
+            language,
+            "\(participantAge)",
+            "\(participantGender)",
+            "\(settings.itemCount)",
+            participantIdentifier
+        ]
     }
 }
