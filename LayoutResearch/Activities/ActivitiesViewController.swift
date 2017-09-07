@@ -24,7 +24,7 @@ class ActivitiesViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-//            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Self sizing cells

@@ -89,10 +89,9 @@ extension UIColor {
     }
     
     static func searchColorFor(id: Int) -> UIColor {
-        // TODO: Xcode 9
-//        if #available(iOS 11.0, *) {
-//            return UIColor(named: "Color\(id)") ?? UIColor.black
-//        } else {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "Color\(id)") ?? UIColor.black
+        } else {
             switch id {
             case 0:
                 return UIColor.black
@@ -113,7 +112,7 @@ extension UIColor {
             default:
                 return UIColor.gray
             }
-//        }
+        }
     }
     
     convenience init(red: Int, green: Int, blue: Int) {

@@ -45,8 +45,7 @@ class ProfileViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-            // TODO: Xcode 9
-//            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Ensure the table view automatically sizes its rows.
