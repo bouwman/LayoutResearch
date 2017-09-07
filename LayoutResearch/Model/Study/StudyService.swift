@@ -202,7 +202,7 @@ class StudyService {
         
         // Swap first half with second half
         for i in 0..<half {
-            swap(&array[i], &array[half + i])
+            array.swapAt(i, half + i)
             // TODO: Xcode 9
 //            array.swapAt(i, half + i)
         }

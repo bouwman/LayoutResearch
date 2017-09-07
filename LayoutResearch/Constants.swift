@@ -89,10 +89,9 @@ extension UIColor {
     }
     
     static func searchColorFor(id: Int) -> UIColor {
-        // TODO: Xcode 9
-//        if #available(iOS 11.0, *) {
-//            return UIColor(named: "Color\(id)") ?? UIColor.black
-//        } else {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "Color\(id)") ?? UIColor.black
+        } else {
             switch id {
             case 0:
                 return UIColor.black
@@ -113,7 +112,7 @@ extension UIColor {
             default:
                 return UIColor.gray
             }
-//        }
+        }
     }
     
     convenience init(red: Int, green: Int, blue: Int) {
@@ -144,7 +143,7 @@ extension UIImage {
 }
 
 // Swift 3
-extension MutableCollection where Indices.Iterator.Element == Index {
+extension MutableCollection {
     /// Shuffles the contents of this collection.
     mutating func shuffle() {
         let c = count
@@ -154,7 +153,7 @@ extension MutableCollection where Indices.Iterator.Element == Index {
             let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
             guard d != 0 else { continue }
             let i = index(firstUnshuffled, offsetBy: d)
-            swap(&self[firstUnshuffled], &self[i])
+            self.swapAt(firstUnshuffled, i)
         }
     }
 }
