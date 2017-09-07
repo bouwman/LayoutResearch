@@ -45,8 +45,7 @@ class ProfileViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-            // TODO: Xcode 9
-//            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Ensure the table view automatically sizes its rows.
@@ -112,7 +111,7 @@ class ProfileViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont.systemFont(ofSize: 23, weight: UIFontWeightBold)
+        header.textLabel?.font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         header.textLabel?.textColor = UIColor.black
         header.backgroundView?.backgroundColor = UIColor.white
         header.frame = header.frame.offsetBy(dx: 0, dy: -10) // Does not seem to work

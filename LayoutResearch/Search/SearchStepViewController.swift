@@ -54,8 +54,6 @@ class SearchStepViewController: ORKActiveStepViewController {
         // Load age
         let age = UserDefaults.standard.integer(forKey: SettingsString.participantAge.rawValue)
         let gender = UserDefaults.standard.string(forKey: SettingsString.participantGender.rawValue) ?? "–"
-        let groupStringOptional = UserDefaults.standard.string(forKey: SettingsString.participantGroup.rawValue)
-        guard let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) else { return }
         
         // Determine screen size
         let screenSize = UIScreen.main.bounds
