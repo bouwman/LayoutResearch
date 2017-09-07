@@ -217,8 +217,7 @@ class RemoteDataService {
                 completion(errorUser)
                 return
             }
-            let firstEightCharacters = participantId.index(participantId.startIndex, offsetBy: 8)
-            let idString = participantId.substring(to: firstEightCharacters) + "-attempt\(resultNumber)"
+            let idString = String(participantId.prefix(8)) + "-attempt\(resultNumber)"
             let recordId = CKRecordID(recordName: idString)
             let fetchExistingOperation = CKFetchRecordsOperation(recordIDs: [recordId])
             
