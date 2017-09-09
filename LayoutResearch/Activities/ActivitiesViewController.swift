@@ -288,28 +288,26 @@ class ActivitiesViewController: UITableViewController {
             settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
         }
-        let diameterAndDistance = iconDiameterAndDistanceForDeviceScreenSize()
         
-//        settings.itemDistance = diameterAndDistance.distance
-        settings.itemDiameter = diameterAndDistance.diameter
+        settings.itemDiameter = iconDistanceForDeviceScreenSize()
         
         return settings
     }
     
-    private func iconDiameterAndDistanceForDeviceScreenSize() -> (diameter: CGFloat, distance: CGFloat) {
+    private func iconDistanceForDeviceScreenSize() -> CGFloat {
         let screenWidth = UIScreen.main.bounds.width
         
         switch screenWidth {
         case 0...320: // iPhone SE
-            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter
         case 321...500: // iPhone 7 + Plus
-            return (Const.StudyParameters.itemDiameter + 10, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter + 10
         case 501...900: // iPad
-            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter + 20
         case 900...1024: // iPad Pro 12.9
-            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter + 20
         default:
-            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter
         }
     }
     

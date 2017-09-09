@@ -188,7 +188,8 @@ class StudyService {
         let targetTrialNumber = targetsOfTargetType.count
         
         let searchStepIdentifier = "\(index)"
-        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.group.itemDistance, isPractice: isPractice)
+        let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDistance: settings.group.itemDistance, itemDiameter: settings.itemDiameter)
+        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: itemDistance, isPractice: isPractice)
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
         
