@@ -290,7 +290,7 @@ class ActivitiesViewController: UITableViewController {
         }
         let diameterAndDistance = iconDiameterAndDistanceForDeviceScreenSize()
         
-        settings.itemDistance = diameterAndDistance.distance
+//        settings.itemDistance = diameterAndDistance.distance
         settings.itemDiameter = diameterAndDistance.diameter
         
         return settings

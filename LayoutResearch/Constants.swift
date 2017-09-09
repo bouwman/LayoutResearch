@@ -68,7 +68,6 @@ enum SettingsString: String {
     case participantIdentifier
     case participantGroup
     case layoutItemDiameter
-    case layoutItemDistance
     case layoutRowCount
     case layoutColumnCount
     case practiceTrialCount
@@ -197,6 +196,16 @@ func -(left: IndexPath, right: IndexPath) -> IndexPath {
 
 func randomInt(min: Int, max:Int) -> Int {
     return min + Int(arc4random_uniform(UInt32(max - min + 1)))
+}
+
+func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDistance: CGFloat, itemDiameter: CGFloat) -> CGFloat {
+    switch layout {
+    case .grid:
+        return itemDistance
+    case .horizontal, .vertical:
+        let multiplier: CGFloat = abs((sqrt(3)-sqrt(2)*pow(3, 0.25))/sqrt(3))
+        return itemDistance + multiplier * itemDiameter + multiplier * itemDistance
+    }
 }
 
 extension Sequence where Iterator.Element == Sequence {
