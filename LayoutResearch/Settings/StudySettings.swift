@@ -34,7 +34,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         case .a,.b,.c,.d,.i,.j,.k,.l:
             return Const.StudyParameters.itemDistance
         case .e,.f,.g,.h,.m,.n,.o,.p:
-            return 0
+            return 1
         }
     }
     
