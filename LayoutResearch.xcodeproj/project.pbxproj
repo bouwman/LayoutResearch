@@ -36,6 +36,7 @@
 		47B5C8D11F254A9B00EDF07C /* SearchStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */; };
 		47B5C8D31F25519200EDF07C /* RoundedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47B5C8D21F25519200EDF07C /* RoundedButton.swift */; };
 		47BAC7601F34DFBB00ED54DD /* ActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BAC75F1F34DFBB00ED54DD /* ActivityService.swift */; };
+		47BC73B81F640062006F33E6 /* LayoutResearchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47BC73B71F640062006F33E6 /* LayoutResearchTests.swift */; };
 		47C15EE21F35B50B0097D1CC /* StudyActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C15EE11F35B50A0097D1CC /* StudyActivity.swift */; };
 		47C1DA141F28EE8200F69A75 /* LayoutIntroStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */; };
 		47C1DA161F28EF8E00F69A75 /* LayoutIntroStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */; };
@@ -55,6 +56,16 @@
 		47FE19BB1F34BDF900344887 /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FE19BA1F34BDF900344887 /* ActivitiesViewController.swift */; };
 		47FE19BE1F34BFEE00344887 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FE19BD1F34BFEE00344887 /* ActivityCell.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		47BC73BA1F640062006F33E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4751B4EA1F2517AE00549329 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4751B4F11F2517AE00549329;
+			remoteInfo = LayoutResearch;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4728AB011F29F3CB0084EFB1 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -88,6 +99,9 @@
 		47B5C8D01F254A9B00EDF07C /* SearchStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStepViewController.swift; sourceTree = "<group>"; };
 		47B5C8D21F25519200EDF07C /* RoundedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedButton.swift; sourceTree = "<group>"; };
 		47BAC75F1F34DFBB00ED54DD /* ActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityService.swift; sourceTree = "<group>"; };
+		47BC73B51F640062006F33E6 /* LayoutResearchTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LayoutResearchTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		47BC73B71F640062006F33E6 /* LayoutResearchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutResearchTests.swift; sourceTree = "<group>"; };
+		47BC73B91F640062006F33E6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		47C15EE11F35B50A0097D1CC /* StudyActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudyActivity.swift; sourceTree = "<group>"; };
 		47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutIntroStep.swift; sourceTree = "<group>"; };
 		47C1DA151F28EF8E00F69A75 /* LayoutIntroStepViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutIntroStepViewController.swift; sourceTree = "<group>"; };
@@ -122,6 +136,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		47BC73B21F640062006F33E6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -140,6 +161,7 @@
 			children = (
 				47DF40341F2BF8A90008AB06 /* README.md */,
 				4751B4F41F2517AE00549329 /* LayoutResearch */,
+				47BC73B61F640062006F33E6 /* LayoutResearchTests */,
 				4751B4F31F2517AE00549329 /* Products */,
 				526073EEABE3E332DA835BD2 /* Pods */,
 				87459A4B7AAE9B925724A81A /* Frameworks */,
@@ -150,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				4751B4F21F2517AE00549329 /* LayoutResearch.app */,
+				47BC73B51F640062006F33E6 /* LayoutResearchTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -200,6 +223,15 @@
 				47C1DA131F28EE8200F69A75 /* LayoutIntroStep.swift */,
 			);
 			path = Study;
+			sourceTree = "<group>";
+		};
+		47BC73B61F640062006F33E6 /* LayoutResearchTests */ = {
+			isa = PBXGroup;
+			children = (
+				47BC73B71F640062006F33E6 /* LayoutResearchTests.swift */,
+				47BC73B91F640062006F33E6 /* Info.plist */,
+			);
+			path = LayoutResearchTests;
 			sourceTree = "<group>";
 		};
 		47D15F331F348A1B00335BBA /* Profile */ = {
@@ -311,6 +343,24 @@
 			productReference = 4751B4F21F2517AE00549329 /* LayoutResearch.app */;
 			productType = "com.apple.product-type.application";
 		};
+		47BC73B41F640062006F33E6 /* LayoutResearchTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 47BC73BE1F640062006F33E6 /* Build configuration list for PBXNativeTarget "LayoutResearchTests" */;
+			buildPhases = (
+				47BC73B11F640062006F33E6 /* Sources */,
+				47BC73B21F640062006F33E6 /* Frameworks */,
+				47BC73B31F640062006F33E6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				47BC73BB1F640062006F33E6 /* PBXTargetDependency */,
+			);
+			name = LayoutResearchTests;
+			productName = LayoutResearchTests;
+			productReference = 47BC73B51F640062006F33E6 /* LayoutResearchTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -339,6 +389,11 @@
 							};
 						};
 					};
+					47BC73B41F640062006F33E6 = {
+						CreatedOnToolsVersion = 9.0;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 4751B4F11F2517AE00549329;
+					};
 				};
 			};
 			buildConfigurationList = 4751B4ED1F2517AE00549329 /* Build configuration list for PBXProject "LayoutResearch" */;
@@ -355,6 +410,7 @@
 			projectRoot = "";
 			targets = (
 				4751B4F11F2517AE00549329 /* LayoutResearch */,
+				47BC73B41F640062006F33E6 /* LayoutResearchTests */,
 			);
 		};
 /* End PBXProject section */
@@ -368,6 +424,13 @@
 				4751B4FD1F2517AE00549329 /* Assets.xcassets in Resources */,
 				4751B4FB1F2517AE00549329 /* Main.storyboard in Resources */,
 				4792C3AD1F29EBEE00D99BEA /* Settings.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47BC73B31F640062006F33E6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,7 +539,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		47BC73B11F640062006F33E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47BC73B81F640062006F33E6 /* LayoutResearchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		47BC73BB1F640062006F33E6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4751B4F11F2517AE00549329 /* LayoutResearch */;
+			targetProxy = 47BC73BA1F640062006F33E6 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4751B4F91F2517AE00549329 /* Main.storyboard */ = {
@@ -643,6 +722,40 @@
 			};
 			name = Release;
 		};
+		47BC73BC1F640062006F33E6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A66LE5ZVQX;
+				INFOPLIST_FILE = LayoutResearchTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tassilobouwman.LayoutResearchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LayoutResearch.app/LayoutResearch";
+			};
+			name = Debug;
+		};
+		47BC73BD1F640062006F33E6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = A66LE5ZVQX;
+				INFOPLIST_FILE = LayoutResearchTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tassilobouwman.LayoutResearchTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LayoutResearch.app/LayoutResearch";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -660,6 +773,15 @@
 			buildConfigurations = (
 				4751B5051F2517AE00549329 /* Debug */,
 				4751B5061F2517AE00549329 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		47BC73BE1F640062006F33E6 /* Build configuration list for PBXNativeTarget "LayoutResearchTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47BC73BC1F640062006F33E6 /* Debug */,
+				47BC73BD1F640062006F33E6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
