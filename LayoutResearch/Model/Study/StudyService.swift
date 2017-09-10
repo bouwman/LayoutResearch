@@ -149,7 +149,7 @@ class StudyService {
 //                steps.append(waitStep)
                 
                 // Introduce new layout
-                let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDistance: settings.group.itemDistance, itemDiameter: settings.itemDiameter)
+                let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.group.itemDistance)
                 let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", layout: layout, itemDiameter: settings.itemDiameter, itemDistance: itemDistance)
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
@@ -188,7 +188,7 @@ class StudyService {
         let targetTrialNumber = targetsOfTargetType.count
         
         let searchStepIdentifier = "\(index)"
-        let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDistance: settings.group.itemDistance, itemDiameter: settings.itemDiameter)
+        let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.group.itemDistance)
         let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: itemDistance, isPractice: isPractice)
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)

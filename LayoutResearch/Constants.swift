@@ -33,7 +33,7 @@ struct Const {
         static let rowCount = 6
         static let columnCount = 4
         static let itemDiameter: CGFloat = 50.0
-        static let itemDistance: CGFloat = 10
+        static let itemDistance: CGFloat = 13.33
         static let practiceTrialCount = 3
         static let targetFreqLowCount = 2
         static let targetFreqHighCount = 6
@@ -198,13 +198,27 @@ func randomInt(min: Int, max:Int) -> Int {
     return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
-func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDistance: CGFloat, itemDiameter: CGFloat) -> CGFloat {
+enum ItemDistance {
+    case standard
+    case fix(CGFloat)
+}
+
+func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDiameter: CGFloat, itemDistance: ItemDistance) -> CGFloat {
+    let itemDistanceValue: CGFloat
+    switch itemDistance {
+    case .standard:
+        itemDistanceValue = 16/60 * itemDiameter
+    case .fix(let value):
+        itemDistanceValue = value
+        return itemDistanceValue
+    }
+    
     switch layout {
     case .grid:
-        return itemDistance
+        return itemDistanceValue
     case .horizontal, .vertical:
         let multiplier: CGFloat = abs((sqrt(3)-sqrt(2)*pow(3, 0.25))/sqrt(3))
-        return itemDistance + multiplier * itemDiameter + multiplier * itemDistance
+        return itemDistanceValue + multiplier * itemDiameter + multiplier * itemDistanceValue
     }
 }
 

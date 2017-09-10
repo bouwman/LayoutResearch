@@ -29,12 +29,12 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
         }
     }
     
-    var itemDistance: CGFloat {
+    var itemDistance: ItemDistance {
         switch self {
         case .a,.b,.c,.d,.i,.j,.k,.l:
-            return Const.StudyParameters.itemDistance
+            return .standard
         case .e,.f,.g,.h,.m,.n,.o,.p:
-            return 1
+            return .fix(1)
         }
     }
     
