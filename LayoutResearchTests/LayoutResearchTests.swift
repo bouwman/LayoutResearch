@@ -22,8 +22,8 @@ class LayoutResearchTests: XCTestCase {
     }
     
     func testDistanceFunction() {
-        let distanceGrid1 = itemDistanceWithEqualWhiteSpaceFor(layout: .grid, itemDistance: 1, itemDiameter: 50)
-        let distanceHexa1 = itemDistanceWithEqualWhiteSpaceFor(layout: .horizontal, itemDistance: 1, itemDiameter: 50)
+        let distanceGrid1 = itemDistanceWithEqualWhiteSpaceFor(layout: .grid, itemDiameter: 1, itemDistance: .standardEqualWhiteSpace)
+        let distanceHexa1 = itemDistanceWithEqualWhiteSpaceFor(layout: .horizontal, itemDiameter: 1, itemDistance: .standardEqualWhiteSpace)
         
         XCTAssertNotEqual(distanceGrid1, distanceHexa1)
     }
