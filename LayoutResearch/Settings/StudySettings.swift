@@ -86,6 +86,22 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     
     func targetItemsFrom(searchItems: [[SearchItemProtocol]]) -> [SearchItemProtocol] {
         let a,b,c,d,e,f,g,h,i,j : SearchItemProtocol
+        
+        // Color distractor count high
+        a = searchItems[2][1] // Blue
+        b = searchItems[1][3] // Blue
+        c = searchItems[4][3] // Orange
+        d = searchItems[1][1] // Orange
+        
+        // Color distractor count low
+        e = searchItems[3][2] // Dark green
+        f = searchItems[2][2] // Dark green
+        g = searchItems[4][1] // Dark blue
+        h = searchItems[1][2] // Dark blue
+        i = searchItems[5][1] // Green
+        j = searchItems[0][2] // Green
+        
+        /*
         switch self {
         case .a,.b,.c,.d,.e,.f,.g,.h:
             // Color distractor count high
@@ -116,6 +132,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
             i = searchItems[0][2] // Green
             j = searchItems[5][1] // Green
         }
+         */
         
         return [a, j, g, f, c, h, e, i, a, g, c, e, b, i, d, a, j, g, f, c, h, e, i, a, g, c, e, b, i, d]
     }
