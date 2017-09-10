@@ -200,7 +200,9 @@ func randomInt(min: Int, max:Int) -> Int {
 
 enum ItemDistance {
     case standard
+    case standardEqualWhiteSpace
     case fix(CGFloat)
+    case fixEqualWhiteSpace(CGFloat)
 }
 
 func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDiameter: CGFloat, itemDistance: ItemDistance) -> CGFloat {
@@ -208,9 +210,16 @@ func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDiameter: CGFloa
     switch itemDistance {
     case .standard:
         itemDistanceValue = 16/60 * itemDiameter
+        // Return without calculating equal white space
+        return itemDistanceValue
+    case .standardEqualWhiteSpace:
+        itemDistanceValue = 16/60 * itemDiameter
     case .fix(let value):
         itemDistanceValue = value
+        // Return without calculating equal white space
         return itemDistanceValue
+    case .fixEqualWhiteSpace(let value):
+        itemDistanceValue = value
     }
     
     switch layout {

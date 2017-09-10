@@ -296,16 +296,13 @@ class ActivitiesViewController: UITableViewController {
     
     private func iconDistanceForDeviceScreenSize() -> CGFloat {
         let screenWidth = UIScreen.main.bounds.width
-        
         switch screenWidth {
-        case 0...320: // iPhone SE
+        case 0...600: // iPhones
+//            let scaleOffset = (screenWidth - 320.0) / 6
             return Const.StudyParameters.itemDiameter
-        case 321...500: // iPhone 7 + Plus
-            return Const.StudyParameters.itemDiameter + 10
-        case 501...900: // iPad
-            return Const.StudyParameters.itemDiameter + 20
-        case 900...1024: // iPad Pro 12.9
-            return Const.StudyParameters.itemDiameter + 20
+        case 601...1400: // iPads
+            let scaleOffset: CGFloat = 25
+            return Const.StudyParameters.itemDiameter + scaleOffset
         default:
             return Const.StudyParameters.itemDiameter
         }
