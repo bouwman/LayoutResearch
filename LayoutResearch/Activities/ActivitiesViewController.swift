@@ -419,7 +419,10 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             service.setLastActivityDate(Date(), forActivityNumber: activity.number)
             
             // Create reminder
-            createNewNotificationFor(activity: activity)
+            let nextActivity = service.activities[activity.number + 1]
+            if nextActivity.type == .search {
+                createNewNotificationFor(activity: nextActivity)
+            }
             
             updateAllActivities()
             
