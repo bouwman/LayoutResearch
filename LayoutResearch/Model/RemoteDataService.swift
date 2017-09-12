@@ -30,6 +30,7 @@ private struct CloudRecords {
         static let typeName = "SurveyResult"
         static let user = "user"
         static let preferredLayout = "preferredLayout"
+        static let preferredDensity = "preferredDensity"
     }
     struct RewardSignup {
         static let typeName = "RewardSignup"
@@ -262,7 +263,7 @@ class RemoteDataService {
         }
     }
     
-    func uploadSurveyResult(preferredLayout: String, completion: @escaping (Error?) -> ()) {
+    func uploadSurveyResult(preferredLayout: String, preferredDensity: String, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
@@ -272,6 +273,7 @@ class RemoteDataService {
             
             surveyRecord[CloudRecords.SurveyResult.user] = CKReference(recordID: userId, action: .none)
             surveyRecord[CloudRecords.SurveyResult.preferredLayout] = preferredLayout as NSString
+            surveyRecord[CloudRecords.SurveyResult.preferredDensity] = preferredDensity as NSString
             
             let operation = CKModifyRecordsOperation(recordsToSave: [surveyRecord], recordIDsToDelete: nil)
             operation.qualityOfService = .userInitiated

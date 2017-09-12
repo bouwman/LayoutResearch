@@ -16,6 +16,7 @@ struct Const {
         static let eligibilityItemGender = "EligibilityItemGender"
         static let visualConsentStep = "VisualConsentStep"
         static let layoutSurveyStep = "LayoutSurveyStep"
+        static let densitySurveyStep = "DensitySurveyStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
         static let activityCell = "ActivityCell"
@@ -58,6 +59,7 @@ enum SettingsString: String {
     case lastActivityNumber
     case isParticipantGroupAssigned
     case preferredLayout
+    case preferredDensity
     case participantGivenName
     case participantFamilyName
     case participantEmail

@@ -255,8 +255,9 @@ class ActivitiesViewController: UITableViewController {
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
-            if let preferredLayout = service.surveyService.preferredLayout {
-                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, completion: { (error) in
+            if let preferredLayout = service.surveyService.preferredLayout,
+                let preferredDensity = service.surveyService.preferredDensity {
+                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, preferredDensity: preferredDensity, completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
                 })
             }
