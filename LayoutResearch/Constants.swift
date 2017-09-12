@@ -32,8 +32,7 @@ struct Const {
     struct StudyParameters {
         static let rowCount = 6
         static let columnCount = 4
-        static let itemDiameter: CGFloat = 50.0
-        static let itemDistance: CGFloat = 13.33
+        static let itemDiameter: CGFloat = 55.0
         static let practiceTrialCount = 3
         static let targetFreqLowCount = 2
         static let targetFreqHighCount = 6

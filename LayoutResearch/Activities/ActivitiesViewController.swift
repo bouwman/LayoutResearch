@@ -301,7 +301,7 @@ class ActivitiesViewController: UITableViewController {
 //            let scaleOffset = (screenWidth - 320.0) / 6
             return Const.StudyParameters.itemDiameter
         case 601...1400: // iPads
-            let scaleOffset: CGFloat = 25
+            let scaleOffset: CGFloat = Const.StudyParameters.itemDiameter * 1/4
             return Const.StudyParameters.itemDiameter + scaleOffset
         default:
             return Const.StudyParameters.itemDiameter
