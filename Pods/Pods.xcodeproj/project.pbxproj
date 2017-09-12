@@ -2301,6 +2301,14 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0900;
+				TargetAttributes = {
+					5A153E92F1DB9244C14A77CCA746D0AA = {
+						LastSwiftMigration = 0900;
+					};
+					A258544A4A8DD033FB73880404C965F0 = {
+						LastSwiftMigration = 0900;
+					};
+				};
 			};
 			buildConfigurationList = 2D8E8EC45A3A1A1D94AE762CB5028504 /* Build configuration list for PBXProject "Pods" */;
 			compatibilityVersion = "Xcode 3.2";

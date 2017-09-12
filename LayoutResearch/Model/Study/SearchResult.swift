@@ -55,6 +55,7 @@ class SearchResult: ORKResult {
     var participantGender: String
     var screenSize: String
     var language: String
+    var appVersion: String
     var hoursSinceLastActivity: Int?
     var pressedItem: SearchItemProtocol?
     var pressLocation: IndexPath?
@@ -64,7 +65,7 @@ class SearchResult: ORKResult {
     var closeNeighboursCount: Int?
     var isError: Bool?
     
-    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, targetTrialNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String) {
+    init(identifier: String, participantIdentifier: String, settings: StepSettings, itemLocation: IndexPath, sameColorCount: Int, targetFrequency: Int, targetTrialNumber: Int, participantAge: Int, participantGender: String, screenSize: String, language: String, appVersion: String) {
         self.settings = settings
         self.participantIdentifier = participantIdentifier
         self.itemLocation = itemLocation
@@ -75,6 +76,7 @@ class SearchResult: ORKResult {
         self.screenSize = screenSize
         self.participantGender = participantGender
         self.language = language
+        self.appVersion = appVersion
         
         super.init(identifier: identifier)
     }
@@ -116,6 +118,7 @@ class SearchResult: ORKResult {
             "Error",
             "Screen Size",
             "Language",
+            "App Version",
             "Age",
             "Gender",
             "Total Item Count",
@@ -152,6 +155,7 @@ class SearchResult: ORKResult {
             "\(isError ?? true)",
             screenSize,
             language,
+            appVersion,
             "\(participantAge)",
             "\(participantGender)",
             "\(settings.itemCount)",
