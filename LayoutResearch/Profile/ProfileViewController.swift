@@ -49,8 +49,6 @@ class ProfileViewController: UITableViewController {
         }
         
         // Ensure the table view automatically sizes its rows.
-        tableView.estimatedRowHeight = tableView.rowHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundView = nil
         tableView.backgroundColor = UIColor.white
