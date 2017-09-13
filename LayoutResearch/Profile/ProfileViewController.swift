@@ -112,7 +112,7 @@ class ProfileViewController: UITableViewController {
         header.textLabel?.font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         header.textLabel?.textColor = UIColor.black
         header.backgroundView?.backgroundColor = UIColor.white
-        header.frame = header.frame.offsetBy(dx: 0, dy: -10) // Does not seem to work
+        header.frame = header.frame.offsetBy(dx: 0, dy: 10) // Does not seem to work
         header.textLabel?.text = section == 0 ? "Consent file" : "Result files"
     }
     
