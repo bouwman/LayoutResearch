@@ -53,10 +53,10 @@ class OnboardingViewController: UIViewController {
         
         // Consent
         let consentStep = ORKVisualConsentStep(identifier: Const.Identifiers.visualConsentStep, document: consentDocument)
-        let signature = consentDocument.signatures!.first!
-        let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: signature, in: consentDocument)
+        let participantSignature = consentDocument.signatures!.first!
+        let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: participantSignature, in: consentDocument)
         
-        reviewConsentStep.text = "Review the consent form."
+        reviewConsentStep.text = "Sign the consent form."
         reviewConsentStep.reasonForConsent = "Consent to join the Visual search in circular icon arrangements study."
         
         // Thank you
@@ -96,7 +96,14 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                 let result = taskViewController.result
                 if let consentStepResult = result.stepResult(forStepIdentifier: Const.Identifiers.consetReviewStep),
                     let signatureResult = consentStepResult.results?.first as? ORKConsentSignatureResult {
+                    
+                    // Add signatures
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .short
+                    dateFormatter.timeStyle = .none
+                    let researcherSignature = ORKConsentSignature(forPersonWithTitle: "Researcher", dateFormatString: nil, identifier: "ResearcherSignature", givenName: "Tassilo", familyName: "Bouwman", signatureImage: #imageLiteral(resourceName: "Signature"), dateString: dateFormatter.string(from: Date()))
                     signatureResult.apply(to: consentDocument)
+                    consentDocument.signatures?.append(researcherSignature)
                     
                     // Save pdf
                     consentDocument.makePDF(completionHandler: { (data, error) in
