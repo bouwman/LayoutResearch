@@ -22,8 +22,8 @@ class SurveyService: NSObject {
         surveyCompletion = completion
         
         // Choices
-        let imageHorizontal = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice horizontal"), selectedImage: #imageLiteral(resourceName: "survey choice horizontal selected"), text: "Hexagonal horizontal", value: NSString(string: "horizontal"))
-        let imageGrid = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice grid"), selectedImage: #imageLiteral(resourceName: "survey choice grid selected"), text: "Hexagonal grid", value: NSString(string: "grid"))
+        let imageHorizontal = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice horizontal"), selectedImage: #imageLiteral(resourceName: "survey choice horizontal selected"), text: "Hexagonal", value: NSString(string: "horizontal"))
+        let imageGrid = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice grid"), selectedImage: #imageLiteral(resourceName: "survey choice grid selected"), text: "Grid", value: NSString(string: "grid"))
         let layoutFormat = ORKImageChoiceAnswerFormat(imageChoices: [imageGrid, imageHorizontal])
         
         let imageClose = ORKImageChoice(normalImage: #imageLiteral(resourceName: "survey choice close"), selectedImage: #imageLiteral(resourceName: "survey choice close selected"), text: "High density", value: NSString(string: "close"))
@@ -35,6 +35,7 @@ class SurveyService: NSObject {
         let densityQuestionStep = ORKQuestionStep(identifier: Const.Identifiers.densitySurveyStep, title: "Density", text: "Which layout density would you prefer?", answer: densityFormat)
 
         layoutQuestionStep.isOptional = false
+        densityQuestionStep.isOptional = false
         
         let completeStep = ORKCompletionStep(identifier: "CompletionStep")
         completeStep.title = "Done!"
