@@ -94,11 +94,11 @@ class LineGraphDataSource: NSObject, ORKValueRangeGraphChartViewDataSource {
     private var dummyPoints =
         [
             [
-                ORKValueRange(value: 23),
-                ORKValueRange(value: 21),
-                ORKValueRange(value: 17),
-                ORKValueRange(value: 20),
-                ORKValueRange(value: 16)
+                ORKValueRange(value: 4.2),
+                ORKValueRange(value: 4.5),
+                ORKValueRange(value: 5.1),
+                ORKValueRange(value: 4.4),
+                ORKValueRange(value: 4.8)
             ]
     ]
 }
