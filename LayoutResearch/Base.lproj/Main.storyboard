@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment version="4144" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -310,13 +310,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Time per Layout" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="os0-Id-T91">
-                                                    <rect key="frame" x="8" y="8" width="359" height="24"/>
+                                                    <rect key="frame" x="16" y="11" width="343" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xhy-wg-qlL" customClass="ORKDiscreteGraphChartView">
-                                                    <rect key="frame" x="8" y="40" width="359" height="202"/>
+                                                    <rect key="frame" x="16" y="37" width="343" height="202"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="202" id="2Ob-S6-gXb"/>
@@ -342,13 +342,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Search Time" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Huo-B5-JfD">
-                                                    <rect key="frame" x="8" y="8" width="359" height="24"/>
+                                                    <rect key="frame" x="16" y="11" width="343" height="18"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QVd-9o-fRs" customClass="ORKLineGraphChartView">
-                                                    <rect key="frame" x="8" y="40" width="359" height="202"/>
+                                                    <rect key="frame" x="16" y="37" width="343" height="202"/>
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="202" id="4Bw-SM-nhD"/>
@@ -406,7 +406,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="sIA-i9-P7Y">
-                                            <rect key="frame" x="82" y="19.5" width="125.5" height="42.5"/>
+                                            <rect key="frame" x="82" y="22" width="125.5" height="42.5"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search Task 1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gve-zt-k8p">
                                                     <rect key="frame" x="0.0" y="0.0" width="125.5" height="20.5"/>
@@ -426,7 +426,7 @@
                                             <rect key="frame" x="339" y="30" width="20" height="20"/>
                                         </activityIndicatorView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="activity search" translatesAutoresizingMaskIntoConstraints="NO" id="2we-TP-yOL">
-                                            <rect key="frame" x="20" y="20.5" width="40" height="40"/>
+                                            <rect key="frame" x="20" y="23" width="40" height="40"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="2we-TP-yOL" secondAttribute="height" multiplier="1:1" id="KOg-RH-yKq"/>
                                                 <constraint firstAttribute="height" constant="40" id="yB7-Ls-S9s"/>
@@ -529,20 +529,21 @@
                                     </constraints>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="QOF-oC-sKH">
-                                    <rect key="frame" x="104" y="27" width="136.5" height="48"/>
+                                    <rect key="frame" x="104" y="21" width="136.5" height="60"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Berryseed" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.90000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="9lt-D5-8d9">
-                                            <rect key="frame" x="0.0" y="0.0" width="136.5" height="24"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="136.5" height="30"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Group A" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jTJ-14-5qE">
-                                            <rect key="frame" x="0.0" y="24" width="65.5" height="24"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MNn-ri-mU3">
+                                            <rect key="frame" x="0.0" y="30" width="60" height="30"/>
+                                            <state key="normal" title="Group --"/>
+                                            <connections>
+                                                <segue destination="sx8-DW-eOB" kind="show" id="EbX-8f-RGD"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                 </stackView>
                             </subviews>
@@ -570,7 +571,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dGg-bc-5Wy">
-                                            <rect key="frame" x="16" y="0.0" width="344" height="59.5"/>
+                                            <rect key="frame" x="16" y="0.0" width="343" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.2048697025" green="0.47176262740000002" blue="0.96604371069999995" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -587,7 +588,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Profile" id="lEP-fg-VJH"/>
                     <connections>
-                        <outlet property="groupLabel" destination="jTJ-14-5qE" id="4yP-NP-wYm"/>
+                        <outlet property="groupLabelButton" destination="MNn-ri-mU3" id="ZA4-lJ-E1g"/>
                         <outlet property="nameLabel" destination="9lt-D5-8d9" id="KLh-6Y-sYH"/>
                     </connections>
                 </tableViewController>
@@ -698,7 +699,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="The study is conducted by researchers at the UCLIC department of the University College London." textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Ue-0B-LjN">
-                                <rect key="frame" x="19" y="204" width="338" height="20.5"/>
+                                <rect key="frame" x="27.5" y="182" width="321.5" height="64.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="338" id="s0I-gv-0zD"/>
                                 </constraints>
@@ -713,7 +714,7 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Researchers" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S93-YW-SrI">
-                                <rect key="frame" x="118.5" y="164.5" width="139.5" height="31.5"/>
+                                <rect key="frame" x="118.5" y="142.5" width="139.5" height="31.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -738,6 +739,43 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jqi-29-vhb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4199" y="-232"/>
+        </scene>
+        <!--Select Group-->
+        <scene sceneID="K3c-2Q-sdU">
+            <objects>
+                <tableViewController title="Select Group" id="sx8-DW-eOB" customClass="SelectionViewController" customModule="LayoutResearch" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="ZRB-Un-W9J">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="SelectionCell" textLabel="rrX-X6-rTV" style="IBUITableViewCellStyleDefault" id="e2F-bN-swJ">
+                                <rect key="frame" x="0.0" y="55.5" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="e2F-bN-swJ" id="C6W-hd-sUy">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rrX-X6-rTV">
+                                            <rect key="frame" x="16" y="0.0" width="343" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sx8-DW-eOB" id="V8Y-Tn-Odq"/>
+                            <outlet property="delegate" destination="sx8-DW-eOB" id="Dhm-Yr-xGF"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Ic-Am-ywY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2570" y="2025"/>
         </scene>
     </scenes>
     <resources>

@@ -34,9 +34,14 @@ import ResearchKit
 class ProfileViewController: UITableViewController {
         
     let fileService = LocalDataService()
+    var group: ParticipantGroup? {
+        didSet {
+            groupLabelButton?.setTitle(group?.title ?? "Group --", for: UIControlState.normal)
+        }
+    }
     
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var groupLabel: UILabel!
+    @IBOutlet weak var groupLabelButton: UIButton!
     
     // MARK: UIViewController
     
@@ -62,12 +67,16 @@ class ProfileViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let groupStringOptional = UserDefaults.standard.string(forKey: SettingsString.participantGroup.rawValue)
-        
-        if let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) {
-            groupLabel.text = group.title
+        if let group = group {
+            groupLabelButton.titleLabel?.text = group.title
         } else {
-            groupLabel.text = "Group --"
+            let groupStringOptional = UserDefaults.standard.string(forKey: SettingsString.participantGroup.rawValue)
+            
+            if let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) {
+                self.group = group
+            } else {
+                self.group = nil
+            }
         }
     }
     
@@ -145,5 +154,26 @@ class ProfileViewController: UITableViewController {
             .openInIBooks
         ]
         return activityVC
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let selectionVC = segue.destination as? SelectionViewController {
+            selectionVC.items = ParticipantGroup.allGroups
+            selectionVC.delegate = self
+        }
+    }
+}
+
+extension ProfileViewController: SelectionViewControllerDelegate {
+    func selectionViewController(viewController: SelectionViewController, didSelect item: SelectionPresentable) {
+        if let group = item as? ParticipantGroup {
+            self.group = group
+            UserDefaults.standard.set(group.rawValue, forKey: SettingsString.participantGroup.rawValue)
+            UserDefaults.standard.setValue(true, forKey: SettingsString.isParticipantGroupAssigned.rawValue)
+        } else {
+            self.group = nil
+        }
     }
 }
