@@ -79,7 +79,7 @@ class DashboardTableViewController: UITableViewController {
         
         // Animate any visible charts
         let visibleCells = tableView.visibleCells
-        let visibleAnimatableCharts = visibleCells.flatMap { animatableChartInCell($0) }
+        let visibleAnimatableCharts = visibleCells.compactMap { animatableChartInCell($0) }
         
         for chart in visibleAnimatableCharts {
             chart.animateWithDuration(0.5)
