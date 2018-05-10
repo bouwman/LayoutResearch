@@ -110,7 +110,6 @@ class StudyService {
         var trialCounter = 0
         let layouts = settings.group.layouts
         let randomGen = GKShuffledDistribution(lowestValue: 0, highestValue: 2)
-            GKRandomDistribution(lowestValue: 0, highestValue: 2)
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
         introStep.text = "Please read this carefully.\n\nTry to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. The 'Next' button will appear after 1 second. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select the correct item you are taken to the next trial. If you selected the wrong trial, the description of the item will be shown again."
