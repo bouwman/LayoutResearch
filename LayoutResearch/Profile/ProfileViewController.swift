@@ -74,6 +74,9 @@ class ProfileViewController: UITableViewController {
             
             if let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) {
                 self.group = group
+                if let _ = UserDefaults.standard.object(forKey: SettingsString.lastActivityNumber.rawValue) as? Int {
+                    self.groupLabelButton.isEnabled = false
+                }
             } else {
                 self.group = nil
             }
