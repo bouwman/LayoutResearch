@@ -122,6 +122,10 @@ class RemoteDataService {
                             for optionalGroup in ParticipantGroup.optionalGroups {
                                 groupCounts.removeValue(forKey: optionalGroup)
                             }
+                        } else {
+                            for mandatoryGroup in ParticipantGroup.mandatoryGroups {
+                                groupCounts.removeValue(forKey: mandatoryGroup)
+                            }
                         }
                         // Find minimum value
                         if let min = groupCounts.min(by: { $0.value < $1.value }) {
