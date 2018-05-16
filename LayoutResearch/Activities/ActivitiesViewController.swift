@@ -138,6 +138,7 @@ class ActivitiesViewController: UITableViewController {
     func start(activity: StudyActivity) {
         switch activity.type {
         case .search:
+            settings = loadLocalSettings()
             let studyService = StudyService(settings: settings, activityNumber: activity.number)
             let task = OrderedSearchTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
             let taskVC = ORKTaskViewController(task: task, taskRun: nil)
