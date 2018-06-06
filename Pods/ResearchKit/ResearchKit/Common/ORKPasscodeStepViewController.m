@@ -39,6 +39,8 @@
 #import "ORKPasscodeViewController.h"
 #import "ORKStepViewController_Internal.h"
 
+#import "ORKCollectionResult_Private.h"
+#import "ORKPasscodeResult.h"
 #import "ORKPasscodeStep.h"
 #import "ORKResult.h"
 
@@ -298,7 +300,7 @@ static CGFloat const kForgotPasscodeHeight              = 100.0f;
 }
 
 + (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationMaskAll;
 }
 
 #pragma mark - Helpers
@@ -636,7 +638,9 @@ static CGFloat const kForgotPasscodeHeight              = 100.0f;
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
     
     ORKPasscodeTextField *passcodeTextField = _passcodeStepView.textField;
-    [passcodeTextField insertText:string];
+    if (passcodeTextField.text.length < passcodeTextField.numberOfDigits) {
+        [passcodeTextField insertText:string];
+    }
 
     // Disable input while changing states.
     if (_isChangingState) {
