@@ -60,5 +60,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech Recognition is required by the ReasearchKit framework. Not used in this app.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is required by the ReasearchKit framework. Not used in this app.</string>
 </dict>
 </plist>
