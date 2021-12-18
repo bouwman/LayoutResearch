@@ -14,13 +14,13 @@ import UserNotifications
 class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupAppearance()
         checkAppUpgrade()
         
         // Load remote settings if settings changed while app was terminated
         if let options: NSDictionary = launchOptions as NSDictionary? {
-            let remoteNotification = options[UIApplicationLaunchOptionsKey.remoteNotification]
+            let remoteNotification = options[UIApplication.LaunchOptionsKey.remoteNotification]
             if let notification = remoteNotification {
                 self.application(application, didReceiveRemoteNotification: notification as! [AnyHashable : Any], fetchCompletionHandler:  { (result) in
                 })
@@ -61,8 +61,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: - Helper
     
     var activitiesViewController: ActivitiesViewController? {
-        if let tabbarChilds = window?.rootViewController?.childViewControllers.first?.childViewControllers, tabbarChilds.count > 1 {
-            if let activitiesVC = tabbarChilds[1].childViewControllers.first as? ActivitiesViewController {
+        if let tabbarChilds = window?.rootViewController?.children.first?.children, tabbarChilds.count > 1 {
+            if let activitiesVC = tabbarChilds[1].children.first as? ActivitiesViewController {
                 return activitiesVC
             }
         }

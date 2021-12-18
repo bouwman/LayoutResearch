@@ -84,7 +84,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         var index: IndexPath?
         
         for (row, itemsInRow) in items.enumerated() {
-            if let column = itemsInRow.index(where: { $0.identifier == searchedItem.identifier }) {
+            if let column = itemsInRow.firstIndex(where: { $0.identifier == searchedItem.identifier }) {
                 index = IndexPath(row: row, section: column)
             }
         }

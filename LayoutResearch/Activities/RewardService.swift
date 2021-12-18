@@ -27,7 +27,7 @@ class RewardService: NSObject {
         introStep.footnote = "1. People who complete the study and submit their contact details will be entered into a prize draw to win one of five £20 Amazon vouchers.\n2. The closing date for entries to be received is 20 July 2018.\n3. The two winners will be drawn at random on 27 July 2018 from all eligible study participants that submitted their contact details.\n4. The winners will be notified within two weeks of the draw using the contact details provided on entry.\n5. A £20 Amazon voucher will be emailed to each winner within eight weeks of the draw date using the email address provided.\n6. No cash alternative will be given. Only one prize can be won per study participant.\n7. In order to be eligible to enter the prize draw, contact details must be provided.\n8. Personal information required for the prize draw will be used only for the purpose of the prize draw and will only be processed by the researchers conducting this study.\n9. The conductors of this study reserve the right to remove or change this prize draw at any time."
         
         // Steps
-        let questionStep = ORKQuestionStep(identifier: Const.Identifiers.layoutSurveyStep, title: "Enter Email", text: "Type your email address to enter the prize draw.", answer: ORKEmailAnswerFormat())
+        let questionStep = ORKQuestionStep.init(identifier: Const.Identifiers.layoutSurveyStep, title: "Enter Email", question: "Type your email address to enter the prize draw.", answer: ORKEmailAnswerFormat())
         questionStep.isOptional = false
         
         let completeStep = ORKCompletionStep(identifier: "CompletionStep")
@@ -61,6 +61,8 @@ extension RewardService: ORKTaskViewControllerDelegate {
             if let completion = taskComletion {
                 completion(false)
             }
+        @unknown default:
+            fatalError()
         }
         taskViewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }

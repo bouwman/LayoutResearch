@@ -134,6 +134,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                 }
             case .discarded, .failed, .saved:
                 dismiss(animated: true, completion: nil)
+        @unknown default:
+            fatalError()
         }
     }
 }

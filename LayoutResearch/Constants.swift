@@ -231,27 +231,3 @@ func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDiameter: CGFloa
         return itemDistanceValue + multiplier * itemDiameter + multiplier * itemDistanceValue
     }
 }
-
-extension Sequence where Iterator.Element == Sequence {
-    /// Returns a two dimensional array with the contents of this sequence, shuffled.
-//    func shuffled2dArray()  -> [Element] {
-//        
-//        var shuffledArray: [Element] = []
-//        
-//        var counter = 0
-//        var flatArray = flatMap { $0 }
-//        
-//        flatArray.shuffle()
-//        
-//        for (row, rowItems) in self.enumerated() {
-//            guard let rowItemsCollection = rowItems as? Self else { return [] }
-//            shuffledArray.append([])
-//            for column in rowItemsCollection.enumerated() {
-//                shuffledArray[row][column] = 
-//                counter += 1
-//            }
-//        }
-//        
-//        return shuffledArray
-//    }
-}
