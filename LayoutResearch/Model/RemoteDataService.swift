@@ -30,6 +30,7 @@ private struct CloudRecords {
         static let typeName = "SurveyResult"
         static let user = "user"
         static let preferredLayout = "preferredLayout"
+        static let preferredDensity = "preferredDensity"
     }
     struct RewardSignup {
         static let typeName = "RewardSignup"
@@ -77,7 +78,7 @@ class RemoteDataService {
         UserDefaults.standard.set(isResultUploaded, forKey: SettingsString.searchResultWasUploaded.rawValue + "\(resultNumber)")
     }
     
-    func fetchLeastUsedSetting(completion: @escaping (ParticipantGroup?, CKRecordID?, Error?) -> ()) {
+    func fetchLeastUsedSetting(completion: @escaping (ParticipantGroup?, CKRecord.ID?, Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(nil, nil, errorUser)
@@ -121,6 +122,10 @@ class RemoteDataService {
                             for optionalGroup in ParticipantGroup.optionalGroups {
                                 groupCounts.removeValue(forKey: optionalGroup)
                             }
+                        } else {
+                            for mandatoryGroup in ParticipantGroup.mandatoryGroups {
+                                groupCounts.removeValue(forKey: mandatoryGroup)
+                            }
                         }
                         // Find minimum value
                         if let min = groupCounts.min(by: { $0.value < $1.value }) {
@@ -150,7 +155,7 @@ class RemoteDataService {
         }
     }
     
-    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecordID?, Error?) -> ()) {
+    func fetchLastSettings(completion: @escaping (ParticipantGroup?, CKRecord?, CKRecord.ID?, Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(nil, nil, nil, errorUser)
@@ -217,9 +222,8 @@ class RemoteDataService {
                 completion(errorUser)
                 return
             }
-            let firstEightCharacters = participantId.index(participantId.startIndex, offsetBy: 8)
-            let idString = participantId.substring(to: firstEightCharacters) + "-attempt\(resultNumber)"
-            let recordId = CKRecordID(recordName: idString)
+            let idString = String(participantId.prefix(8)) + "-attempt\(resultNumber)"
+            let recordId = CKRecord.ID(recordName: idString)
             let fetchExistingOperation = CKFetchRecordsOperation(recordIDs: [recordId])
             
             fetchExistingOperation.fetchRecordsCompletionBlock = { fetchedRecords, error in
@@ -245,7 +249,7 @@ class RemoteDataService {
             }
             let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
             
-            consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
+            consentRecord[CloudRecords.ConsentForm.user] = CKRecord.Reference(recordID: userId, action: .none)
             consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
             
             let operation = CKModifyRecordsOperation(recordsToSave: [consentRecord], recordIDsToDelete: nil)
@@ -263,7 +267,7 @@ class RemoteDataService {
         }
     }
     
-    func uploadSurveyResult(preferredLayout: String, completion: @escaping (Error?) -> ()) {
+    func uploadSurveyResult(preferredLayout: String, preferredDensity: String, completion: @escaping (Error?) -> ()) {
         container.fetchUserRecordID { (userId, errorUser) in
             guard let userId = userId else {
                 completion(errorUser)
@@ -271,8 +275,9 @@ class RemoteDataService {
             }
             let surveyRecord = CKRecord(recordType: CloudRecords.SurveyResult.typeName)
             
-            surveyRecord[CloudRecords.SurveyResult.user] = CKReference(recordID: userId, action: .none)
+            surveyRecord[CloudRecords.SurveyResult.user] = CKRecord.Reference(recordID: userId, action: .none)
             surveyRecord[CloudRecords.SurveyResult.preferredLayout] = preferredLayout as NSString
+            surveyRecord[CloudRecords.SurveyResult.preferredDensity] = preferredDensity as NSString
             
             let operation = CKModifyRecordsOperation(recordsToSave: [surveyRecord], recordIDsToDelete: nil)
             operation.qualityOfService = .userInitiated
@@ -298,7 +303,7 @@ class RemoteDataService {
             }
             let rewardRecord = CKRecord(recordType: CloudRecords.RewardSignup.typeName)
             
-            rewardRecord[CloudRecords.RewardSignup.user] = CKReference(recordID: userId, action: .none)
+            rewardRecord[CloudRecords.RewardSignup.user] = CKRecord.Reference(recordID: userId, action: .none)
             rewardRecord[CloudRecords.RewardSignup.email] = participantsEmail as NSString
             
             let operation = CKModifyRecordsOperation(recordsToSave: [rewardRecord], recordIDsToDelete: nil)
@@ -327,8 +332,8 @@ class RemoteDataService {
             } else {
                 // Create new
                 let predicate = NSPredicate(value: true)
-                let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
-                let notification = CKNotificationInfo()
+                let subscription = CKQuerySubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
+                let notification = CKSubscription.NotificationInfo()
                 
                 subscription.notificationInfo = notification
                 
@@ -348,13 +353,13 @@ class RemoteDataService {
         return record
     }
     
-    private func createUploadStudyResultOperation(userId: CKRecordID, resultRecordId: CKRecordID, resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) -> CKModifyRecordsOperation {
+    private func createUploadStudyResultOperation(userId: CKRecord.ID, resultRecordId: CKRecord.ID, resultNumber: Int, group: ParticipantGroup, csvURL: URL, consentURL: URL, completion: @escaping (Error?) -> ()) -> CKModifyRecordsOperation {
         
         // Setup records
         var records: [CKRecord] = []
         let resultRecord = CKRecord(recordType: CloudRecords.StudyResult.typeName, recordID: resultRecordId)
         
-        resultRecord[CloudRecords.StudyResult.user] = CKReference(recordID: userId, action: .none)
+        resultRecord[CloudRecords.StudyResult.user] = CKRecord.Reference(recordID: userId, action: .none)
         resultRecord[CloudRecords.StudyResult.csvFile] = CKAsset(fileURL: csvURL)
         records.append(resultRecord)
         
@@ -363,7 +368,7 @@ class RemoteDataService {
             let settingsRecord = self.settingsRecordFor(participantGroup: group)
             let consentRecord = CKRecord(recordType: CloudRecords.ConsentForm.typeName)
             
-            consentRecord[CloudRecords.ConsentForm.user] = CKReference(recordID: userId, action: .none)
+            consentRecord[CloudRecords.ConsentForm.user] = CKRecord.Reference(recordID: userId, action: .none)
             consentRecord[CloudRecords.ConsentForm.pdf] = CKAsset(fileURL: consentURL)
             
             records.append(settingsRecord)

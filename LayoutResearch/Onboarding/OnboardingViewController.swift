@@ -40,9 +40,10 @@ class OnboardingViewController: UIViewController {
     
     @IBAction func joinButtonTapped(_ sender: UIButton) {
         let numberAnswer = ORKNumericAnswerFormat(style: .integer, unit: nil, minimum: 1, maximum: 99)
-        let boolAnswer = ORKBooleanAnswerFormat(yesString: "Male", noString: "Female")
+        let genderTexts = [ORKTextChoice(text: "Male", value: "Male" as NSString), ORKTextChoice(text: "Female", value: "Female" as NSString), ORKTextChoice(text: "Non-binary/ third gender", value: "Non-binary/ third gender" as NSString), ORKTextChoice(text: "Prefer not to say", value: "Prefer not to say" as NSString)]
+        let textChoiceAnswer = ORKTextChoiceAnswerFormat(style: .singleChoice, textChoices: genderTexts)
         let ageItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemAge, text: "How old are you?", answerFormat: numberAnswer)
-        let genderItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemGender, text: "What is your gender?", answerFormat: boolAnswer)
+        let genderItem = ORKFormItem(identifier: Const.Identifiers.eligibilityItemGender, text: "What is your gender?", answerFormat: textChoiceAnswer)
         
         ageItem.isOptional = false
         genderItem.isOptional = false
@@ -53,10 +54,10 @@ class OnboardingViewController: UIViewController {
         
         // Consent
         let consentStep = ORKVisualConsentStep(identifier: Const.Identifiers.visualConsentStep, document: consentDocument)
-        let signature = consentDocument.signatures!.first!
-        let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: signature, in: consentDocument)
+        let participantSignature = consentDocument.signatures!.first!
+        let reviewConsentStep = ORKConsentReviewStep(identifier: Const.Identifiers.consetReviewStep, signature: participantSignature, in: consentDocument)
         
-        reviewConsentStep.text = "Review the consent form."
+        reviewConsentStep.text = "Sign the consent form."
         reviewConsentStep.reasonForConsent = "Consent to join the Visual search in circular icon arrangements study."
         
         // Thank you
@@ -96,7 +97,14 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                 let result = taskViewController.result
                 if let consentStepResult = result.stepResult(forStepIdentifier: Const.Identifiers.consetReviewStep),
                     let signatureResult = consentStepResult.results?.first as? ORKConsentSignatureResult {
+                    
+                    // Add signatures
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateStyle = .short
+                    dateFormatter.timeStyle = .none
+                    let researcherSignature = ORKConsentSignature(forPersonWithTitle: "Researcher", dateFormatString: nil, identifier: "ResearcherSignature", givenName: "Tassilo", familyName: "Bouwman", signatureImage: #imageLiteral(resourceName: "Signature"), dateString: dateFormatter.string(from: Date()))
                     signatureResult.apply(to: consentDocument)
+                    consentDocument.signatures?.append(researcherSignature)
                     
                     // Save pdf
                     consentDocument.makePDF(completionHandler: { (data, error) in
@@ -113,8 +121,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                             if eligibilityResult.identifier == Const.Identifiers.eligibilityItemAge, let ageResult = eligibilityResult as? ORKNumericQuestionResult {
                                 UserDefaults.standard.set(ageResult.numericAnswer!, forKey: SettingsString.participantAge.rawValue)
                             }
-                            if eligibilityResult.identifier == Const.Identifiers.eligibilityItemGender, let genderResult = eligibilityResult as? ORKBooleanQuestionResult {
-                                UserDefaults.standard.set(genderResult.booleanAnswer! == 1 ? "Male" : "Female", forKey: SettingsString.participantGender.rawValue)
+                            if eligibilityResult.identifier == Const.Identifiers.eligibilityItemGender, let genderResult = eligibilityResult as? ORKChoiceQuestionResult {
+                                UserDefaults.standard.set(genderResult.choiceAnswers!.first! as! NSString, forKey: SettingsString.participantGender.rawValue)
                             }
                         }
                     }
@@ -126,6 +134,8 @@ extension OnboardingViewController : ORKTaskViewControllerDelegate {
                 }
             case .discarded, .failed, .saved:
                 dismiss(animated: true, completion: nil)
+        @unknown default:
+            fatalError()
         }
     }
 }

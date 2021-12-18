@@ -16,6 +16,7 @@ struct Const {
         static let eligibilityItemGender = "EligibilityItemGender"
         static let visualConsentStep = "VisualConsentStep"
         static let layoutSurveyStep = "LayoutSurveyStep"
+        static let densitySurveyStep = "DensitySurveyStep"
         static let selectionCell = "SelectionCell"
         static let profileDataCell = "ProfileDataCell"
         static let activityCell = "ActivityCell"
@@ -32,8 +33,7 @@ struct Const {
     struct StudyParameters {
         static let rowCount = 6
         static let columnCount = 4
-        static let itemDiameter: CGFloat = 50.0
-        static let itemDistance: CGFloat = 10
+        static let itemDiameter: CGFloat = 55.0
         static let practiceTrialCount = 3
         static let targetFreqLowCount = 2
         static let targetFreqHighCount = 6
@@ -59,6 +59,7 @@ enum SettingsString: String {
     case lastActivityNumber
     case isParticipantGroupAssigned
     case preferredLayout
+    case preferredDensity
     case participantGivenName
     case participantFamilyName
     case participantEmail
@@ -68,7 +69,6 @@ enum SettingsString: String {
     case participantIdentifier
     case participantGroup
     case layoutItemDiameter
-    case layoutItemDistance
     case layoutRowCount
     case layoutColumnCount
     case practiceTrialCount
@@ -89,10 +89,9 @@ extension UIColor {
     }
     
     static func searchColorFor(id: Int) -> UIColor {
-        // TODO: Xcode 9
-//        if #available(iOS 11.0, *) {
-//            return UIColor(named: "Color\(id)") ?? UIColor.black
-//        } else {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "Color\(id)") ?? UIColor.black
+        } else {
             switch id {
             case 0:
                 return UIColor.black
@@ -113,7 +112,7 @@ extension UIColor {
             default:
                 return UIColor.gray
             }
-//        }
+        }
     }
     
     convenience init(red: Int, green: Int, blue: Int) {
@@ -144,17 +143,17 @@ extension UIImage {
 }
 
 // Swift 3
-extension MutableCollection where Indices.Iterator.Element == Index {
+extension MutableCollection {
     /// Shuffles the contents of this collection.
     mutating func shuffle() {
         let c = count
         guard c > 1 else { return }
         
         for (firstUnshuffled , unshuffledCount) in zip(indices, stride(from: c, to: 1, by: -1)) {
-            let d: IndexDistance = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
+            let d: Int = numericCast(arc4random_uniform(numericCast(unshuffledCount)))
             guard d != 0 else { continue }
             let i = index(firstUnshuffled, offsetBy: d)
-            swap(&self[firstUnshuffled], &self[i])
+            self.swapAt(firstUnshuffled, i)
         }
     }
 }
@@ -200,26 +199,35 @@ func randomInt(min: Int, max:Int) -> Int {
     return min + Int(arc4random_uniform(UInt32(max - min + 1)))
 }
 
-extension Sequence where Iterator.Element == Sequence {
-    /// Returns a two dimensional array with the contents of this sequence, shuffled.
-//    func shuffled2dArray()  -> [Element] {
-//        
-//        var shuffledArray: [Element] = []
-//        
-//        var counter = 0
-//        var flatArray = flatMap { $0 }
-//        
-//        flatArray.shuffle()
-//        
-//        for (row, rowItems) in self.enumerated() {
-//            guard let rowItemsCollection = rowItems as? Self else { return [] }
-//            shuffledArray.append([])
-//            for column in rowItemsCollection.enumerated() {
-//                shuffledArray[row][column] = 
-//                counter += 1
-//            }
-//        }
-//        
-//        return shuffledArray
-//    }
+enum ItemDistance {
+    case standard
+    case standardEqualWhiteSpace
+    case fix(CGFloat)
+    case fixEqualWhiteSpace(CGFloat)
+}
+
+func itemDistanceWithEqualWhiteSpaceFor(layout: LayoutType, itemDiameter: CGFloat, itemDistance: ItemDistance) -> CGFloat {
+    let itemDistanceValue: CGFloat
+    switch itemDistance {
+    case .standard:
+        itemDistanceValue = 16/60 * itemDiameter
+        // Return without calculating equal white space
+        return itemDistanceValue
+    case .standardEqualWhiteSpace:
+        itemDistanceValue = 16/60 * itemDiameter
+    case .fix(let value):
+        itemDistanceValue = value
+        // Return without calculating equal white space
+        return itemDistanceValue
+    case .fixEqualWhiteSpace(let value):
+        itemDistanceValue = value
+    }
+    
+    switch layout {
+    case .grid:
+        return itemDistanceValue
+    case .horizontal, .vertical:
+        let multiplier: CGFloat = abs((sqrt(3)-sqrt(2)*pow(3, 0.25))/sqrt(3))
+        return itemDistanceValue + multiplier * itemDiameter + multiplier * itemDistanceValue
+    }
 }

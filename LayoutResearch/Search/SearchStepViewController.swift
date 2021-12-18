@@ -54,8 +54,6 @@ class SearchStepViewController: ORKActiveStepViewController {
         // Load age
         let age = UserDefaults.standard.integer(forKey: SettingsString.participantAge.rawValue)
         let gender = UserDefaults.standard.string(forKey: SettingsString.participantGender.rawValue) ?? "–"
-        let groupStringOptional = UserDefaults.standard.string(forKey: SettingsString.participantGroup.rawValue)
-        guard let groupString = groupStringOptional, let group = ParticipantGroup(rawValue: groupString) else { return }
         
         // Determine screen size
         let screenSize = UIScreen.main.bounds
@@ -64,9 +62,12 @@ class SearchStepViewController: ORKActiveStepViewController {
         // Get device language
         let language = Locale.preferredLanguages.first!
         
+        // Get app version
+        let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String
+        
         // Setup result
         let index = indexOf(searchedItem: searchStep.settings.targetItem, inItems: searchStep.items)
-        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, settings: searchStep.settings, itemLocation: index!, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, targetTrialNumber: searchStep.settings.targetTrialNumber, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language)
+        searchResult = SearchResult(identifier: searchStep.identifier, participantIdentifier: searchStep.participantIdentifier, settings: searchStep.settings, itemLocation: index!, sameColorCount: searchStep.sameColorCount, targetFrequency: searchStep.targetFrequency, targetTrialNumber: searchStep.settings.targetTrialNumber, participantAge: age, participantGender: gender, screenSize: screenSizeString, language: language, appVersion: currentVersion)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -83,7 +84,7 @@ class SearchStepViewController: ORKActiveStepViewController {
         var index: IndexPath?
         
         for (row, itemsInRow) in items.enumerated() {
-            if let column = itemsInRow.index(where: { $0.identifier == searchedItem.identifier }) {
+            if let column = itemsInRow.firstIndex(where: { $0.identifier == searchedItem.identifier }) {
                 index = IndexPath(row: row, section: column)
             }
         }

@@ -45,7 +45,7 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func itemDistanceSliderChanged(_ sender: UISlider) {
-        settings?.itemDistance = CGFloat(sender.value)
+//        settings?.itemDistance = CGFloat(sender.value)
         updateUI()
     }
     
@@ -124,18 +124,18 @@ class SettingsViewController: UITableViewController {
         
         participantGroupLabel?.text = settings.group.description
         itemDiameterLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDiameter)
-        itemDistanceLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDistance)
+//        itemDistanceLabel?.text = String.localizedStringWithFormat("%.1f", settings.itemDistance)
         targetFrequencyHighCountLabel?.text = "\(settings.targetFreqHighCount)"
         targetFrequencyLowCountLabel?.text = "\(settings.targetFreqLowCount)"
         
         itemDiameterSlider?.value = Float(settings.itemDiameter)
-        itemDistanceSlider?.value = Float(settings.itemDistance)
+//        itemDistanceSlider?.value = Float(settings.itemDistance)
         targetFrequencyHightCountSlider?.value = Float(settings.targetFreqHighCount)
         targetFrequencyLowCountSlider?.value = Float(settings.targetFreqLowCount)
 
         layoutPreviewView?.items = createItemsFor(rows: settings.rowCount, columns: settings.columnCount)
         layoutPreviewView?.itemDiameter = settings.itemDiameter
-        layoutPreviewView?.distance = settings.itemDistance
+//        layoutPreviewView?.distance = settings.itemDistance
     }
     
     private func createItemsFor(rows: Int, columns: Int) -> [[SearchItemProtocol]] {

@@ -24,12 +24,12 @@ class ActivitiesViewController: UITableViewController {
         
         // Large title for iOS 11
         if #available(iOS 11.0, *) {
-//            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.prefersLargeTitles = true
         }
         
         // Self sizing cells
         tableView.estimatedRowHeight = 80
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView(frame: .zero)
         
         // Pull to refresh
@@ -80,7 +80,7 @@ class ActivitiesViewController: UITableViewController {
                     let resultExists = service.resultService.fileService.resultFileExists(resultNumber: activity.number)
                     let nextOrSecondActivityNumber = service.lastActivityNumber == nil ? 1 : service.lastActivityNumber! + 2
                     if activity.number == nextOrSecondActivityNumber {
-                        let oneDayBack = Calendar.current.date(byAdding: .second, value: -18, to: Date(), wrappingComponents: false)!
+                        let oneDayBack = Calendar.current.date(byAdding: .hour, value: -18, to: Date(), wrappingComponents: false)!
                         service.updateActivitiesWithLastActivityDate(oneDayBack, forActivityNumber: service.lastActivityNumber)
                         updateAllActivities()
                     } else if let number = service.lastActivityNumber, activity.number == number, resultExists == false {
@@ -138,6 +138,7 @@ class ActivitiesViewController: UITableViewController {
     func start(activity: StudyActivity) {
         switch activity.type {
         case .search:
+            settings = loadLocalSettings()
             let studyService = StudyService(settings: settings, activityNumber: activity.number)
             let task = OrderedSearchTask(identifier: "SearchTask-\(activity.number)", steps: studyService.steps)
             let taskVC = ORKTaskViewController(task: task, taskRun: nil)
@@ -255,8 +256,9 @@ class ActivitiesViewController: UITableViewController {
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
             })
         case .survey:
-            if let preferredLayout = service.surveyService.preferredLayout {
-                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, completion: { (error) in
+            if let preferredLayout = service.surveyService.preferredLayout,
+                let preferredDensity = service.surveyService.preferredDensity {
+                service.remoteDataService.uploadSurveyResult(preferredLayout: preferredLayout, preferredDensity: preferredDensity, completion: { (error) in
                     self.updateUploadStateOf(activity: activity, atRow: row, afterError: error)
                 })
             }
@@ -288,47 +290,36 @@ class ActivitiesViewController: UITableViewController {
             settings = StudySettings.defaultSettingsForParticipant(UUID().uuidString)
             settings.saveToUserDefaults(userDefaults: UserDefaults.standard)
         }
-        let diameterAndDistance = iconDiameterAndDistanceForDeviceScreenSize()
         
-        settings.itemDistance = diameterAndDistance.distance
-        settings.itemDiameter = diameterAndDistance.diameter
+        settings.itemDiameter = iconDistanceForDeviceScreenSize()
         
         return settings
     }
     
-    private func iconDiameterAndDistanceForDeviceScreenSize() -> (diameter: CGFloat, distance: CGFloat) {
+    private func iconDistanceForDeviceScreenSize() -> CGFloat {
         let screenWidth = UIScreen.main.bounds.width
-        
         switch screenWidth {
-        case 0...320: // iPhone SE
-            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
-        case 321...500: // iPhone 7 + Plus
-            return (Const.StudyParameters.itemDiameter + 10, Const.StudyParameters.itemDistance)
-        case 501...900: // iPad
-            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
-        case 900...1024: // iPad Pro 12.9
-            return (Const.StudyParameters.itemDiameter + 20, Const.StudyParameters.itemDistance)
+        case 0...600: // iPhones
+//            let scaleOffset = (screenWidth - 320.0) / 6
+            return Const.StudyParameters.itemDiameter
+        case 601...1400: // iPads
+            let scaleOffset: CGFloat = Const.StudyParameters.itemDiameter * 1/4
+            return Const.StudyParameters.itemDiameter + scaleOffset
         default:
-            return (Const.StudyParameters.itemDiameter, Const.StudyParameters.itemDistance)
+            return Const.StudyParameters.itemDiameter
         }
     }
     
     private func registerNotifications() {
         let application = UIApplication.shared
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
-                if granted {
-                    DispatchQueue.main.async {
-                        application.registerForRemoteNotifications()
-                        UNUserNotificationCenter.current().delegate = NotificationHandler.sharedInstance
-                    }
+        UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
+            if granted {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                    UNUserNotificationCenter.current().delegate = NotificationHandler.sharedInstance
                 }
-            })
-        } else if #available(iOS 9.0, *) {
-            let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        }
+            }
+        })
     }
     
     func createNewNotificationFor(activity: StudyActivity) {
@@ -342,7 +333,7 @@ class ActivitiesViewController: UITableViewController {
             content.title = title
             content.body = body
             content.badge = 1
-            content.sound = UNNotificationSound.default()
+            content.sound = UNNotificationSound.default
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: activity.timeRemaining, repeats: false)
             let request = UNNotificationRequest(identifier: activity.identifier, content: content, trigger: trigger)
@@ -376,7 +367,7 @@ class ActivitiesViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navVC = segue.destination as? UINavigationController {
-            if let settingsVC = navVC.childViewControllers.first as? SettingsViewController {
+            if let settingsVC = navVC.children.first as? SettingsViewController {
                 settingsVC.settings = settings
                 settingsVC.delegate = self
             }
@@ -393,7 +384,7 @@ class ActivitiesViewController: UITableViewController {
 extension ActivitiesViewController: ORKTaskViewControllerDelegate {
     func taskViewController(_ taskViewController: ORKTaskViewController, didFinishWith reason: ORKTaskViewControllerFinishReason, error: Error?) {
         switch reason {
-        case .completed, .discarded:
+        case .completed:
             // Retrieve results
             let taskResults = taskViewController.result.results!
             let activity = service.activeActivity!
@@ -424,15 +415,20 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
             service.setLastActivityDate(Date(), forActivityNumber: activity.number)
             
             // Create reminder
-            createNewNotificationFor(activity: activity)
+            let nextActivity = service.activities[activity.number + 1]
+            if nextActivity.type == .search {
+                createNewNotificationFor(activity: nextActivity)
+            }
             
             updateAllActivities()
             
             // Dismiss
             dismiss(animated: true, completion: nil)
-        case .failed, .saved:
+        case .failed, .saved, .discarded:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -484,7 +480,7 @@ class OrderedSearchTask: ORKOrderedTask {
         var progress = ORKTaskProgress()
         
         if step is SearchDescriptionStep {
-            lastSearchStepIndex = UInt(searchSteps.index(of: step) ?? 1)
+            lastSearchStepIndex = UInt(searchSteps.firstIndex(of: step) ?? 1)
         }
         progress.current = lastSearchStepIndex
         progress.total = UInt(searchSteps.count)

@@ -109,7 +109,7 @@ class StudyService {
         // Create intro step
         var trialCounter = 0
         let layouts = settings.group.layouts
-        let randomGen = GKRandomDistribution(lowestValue: 0, highestValue: 2)
+        let randomGen = GKShuffledDistribution(lowestValue: 0, highestValue: 2)
         let introStep = ORKInstructionStep(identifier: "IntroStep")
         introStep.title = "Introduction"
         introStep.text = "Please read this carefully.\n\nTry to find an icon as quickly as possible.\n\nAt the start of each trial, you are told which icon you are looking for.\n\nYou start a trial by clicking on the 'Next' button shown under the description. The 'Next' button will appear after 1 second. On pressing the button, the icon image will disappear, and the menu appears.\nTry to locate the item as quickly as possible and click on it.\n\nAs soon as you select the correct item you are taken to the next trial. If you selected the wrong trial, the description of the item will be shown again."
@@ -149,7 +149,8 @@ class StudyService {
 //                steps.append(waitStep)
                 
                 // Introduce new layout
-                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistanceWithEqualWhiteSpaceFor(layout: layout))
+                let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.group.itemDistance)
+                let newLayoutStep = LayoutIntroStep(identifier: "NewLayoutStep\(layouts.count + i)", layout: layout, itemDiameter: settings.itemDiameter, itemDistance: itemDistance)
                 newLayoutStep.title = "New Layout"
                 newLayoutStep.text = "The next layout will be different but the task is the same: Locate the target as quickly as possible."
                 steps.append(newLayoutStep)
@@ -187,7 +188,8 @@ class StudyService {
         let targetTrialNumber = targetsOfTargetType.count
         
         let searchStepIdentifier = "\(index)"
-        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: settings.itemDistance, isPractice: isPractice)
+        let itemDistance = itemDistanceWithEqualWhiteSpaceFor(layout: layout, itemDiameter: settings.itemDiameter, itemDistance: settings.group.itemDistance)
+        let stepSettings = StepSettings(activityNumber: activityNumber, trialNumber: index, targetItem: target, targetDescriptionPosition: targetDescriptionPosition, targetTrialNumber: targetTrialNumber, layout: layout, organisation: settings.group.organisation, participantGroup: settings.group, itemCount: settings.rowCount * settings.columnCount, itemDiameter: settings.itemDiameter, itemDistance: itemDistance, isPractice: isPractice)
         let descriptionStep = SearchDescriptionStep(identifier: "SearchDescription\(searchStepIdentifier)", settings: stepSettings)
         let searchStep = SearchStep(identifier: searchStepIdentifier, participantIdentifier: settings.participant, items: searchItems, targetFrequency: countFrequencyOf(target: target), settings: stepSettings)
         
@@ -202,7 +204,7 @@ class StudyService {
         
         // Swap first half with second half
         for i in 0..<half {
-            swap(&array[i], &array[half + i])
+            array.swapAt(i, half + i)
             // TODO: Xcode 9
 //            array.swapAt(i, half + i)
         }
@@ -218,8 +220,8 @@ class StudyService {
             let middleLowerRow = array[half]
             
             // Make sure two items are grouped in the middle
-            let upperItemColumn = middleUpperRow.index(where: { $0.sharedColorCount == settings.distractorColorLowCount })
-            let lowerItemColumn = middleLowerRow.index(where: { $0.sharedColorCount == settings.distractorColorLowCount })
+            let upperItemColumn = middleUpperRow.firstIndex(where: { $0.sharedColorCount == settings.distractorColorLowCount })
+            let lowerItemColumn = middleLowerRow.firstIndex(where: { $0.sharedColorCount == settings.distractorColorLowCount })
             
             // Stop if on top of each other
             if  upperItemColumn == lowerItemColumn {
@@ -235,13 +237,13 @@ class StudyService {
         repeat {
             let apartId = Const.StudyParameters.colorIdApartCondition
             
-            let itemIndexRow1 = array[0].index(where: { $0.colorId == apartId })
-            let itemIndexRow2 = array[1].index(where: { $0.colorId == apartId })
-            let itemIndexRow3 = array[2].index(where: { $0.colorId == apartId })
+            let itemIndexRow1 = array[0].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRow2 = array[1].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRow3 = array[2].firstIndex(where: { $0.colorId == apartId })
 
-            let itemIndexRowLast3 = array[array.count - 3].index(where: { $0.colorId == apartId })
-            let itemIndexRowLast2 = array[array.count - 2].index(where: { $0.colorId == apartId })
-            let itemIndexRowLast1 = array[array.count - 1].index(where: { $0.colorId == apartId })
+            let itemIndexRowLast3 = array[array.count - 3].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRowLast2 = array[array.count - 2].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRowLast1 = array[array.count - 1].firstIndex(where: { $0.colorId == apartId })
             
             if itemIndexRow2 == itemIndexRow1 || itemIndexRow2 == itemIndexRow3 {
                 array[1].shuffle()

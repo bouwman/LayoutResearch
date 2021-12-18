@@ -85,7 +85,7 @@ class DashboardService: NSObject {
         var dataPoints: [[Double]] = []
         
         // Create a plot row for each layout
-        for _ in 0...2 {
+        for _ in 0...1 {
             let dataRow: [Double] = []
             dataPoints.append(dataRow)
         }
@@ -94,16 +94,12 @@ class DashboardService: NSObject {
         for i in 0..<Const.StudyParameters.searchActivityCount {
             let gridAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeGridResult.rawValue + "\(i)")
             let horAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeHorResult.rawValue + "\(i)")
-            let verAvgFromDefaults = UserDefaults.standard.double(forKey: SettingsString.avgTimeVerResult.rawValue + "\(i)")
             
             if gridAvgFromDefaults != 0 && gridAvgFromDefaults.isNaN == false {
                 dataPoints[0].append(gridAvgFromDefaults)
             }
             if horAvgFromDefaults != 0 && horAvgFromDefaults.isNaN == false {
                 dataPoints[1].append(horAvgFromDefaults)
-            }
-            if verAvgFromDefaults != 0 && verAvgFromDefaults.isNaN == false  {
-                dataPoints[2].append(verAvgFromDefaults)
             }
         }
         

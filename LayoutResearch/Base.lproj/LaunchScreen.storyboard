@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,27 +12,24 @@
         <scene sceneID="EHf-IW-A2E">
             <objects>
                 <viewController id="01J-lp-oVM" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="SHp-6E-Bxq"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ja2-Ed-jHb"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Search corner" translatesAutoresizingMaskIntoConstraints="NO" id="b8h-fF-OPJ">
-                                <rect key="frame" x="195" y="487" width="180" height="180"/>
+                                <rect key="frame" x="234" y="556" width="180" height="180"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo text" translatesAutoresizingMaskIntoConstraints="NO" id="dp8-aC-eZR">
-                                <rect key="frame" x="40" y="253.5" width="231" height="80"/>
+                                <rect key="frame" x="40" y="288" width="231" height="80"/>
                             </imageView>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="xKP-qb-XCu"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Ja2-Ed-jHb" firstAttribute="top" secondItem="b8h-fF-OPJ" secondAttribute="bottom" id="KvI-wJ-yoy"/>
+                            <constraint firstAttribute="bottom" secondItem="b8h-fF-OPJ" secondAttribute="bottom" id="KvI-wJ-yoy"/>
                             <constraint firstAttribute="trailing" secondItem="b8h-fF-OPJ" secondAttribute="trailing" id="WzK-VM-lY3"/>
                             <constraint firstItem="dp8-aC-eZR" firstAttribute="baseline" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="XTH-UG-W3K"/>
-                            <constraint firstItem="dp8-aC-eZR" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="40" id="hoi-YA-gM4"/>
+                            <constraint firstItem="dp8-aC-eZR" firstAttribute="leading" secondItem="xKP-qb-XCu" secondAttribute="leading" constant="40" id="hoi-YA-gM4"/>
                         </constraints>
                     </view>
                 </viewController>
