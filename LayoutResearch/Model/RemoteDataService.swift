@@ -332,7 +332,7 @@ class RemoteDataService {
             } else {
                 // Create new
                 let predicate = NSPredicate(value: true)
-                let subscription = CKSubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
+                let subscription = CKQuerySubscription(recordType: CloudRecords.StudySettings.typeName, predicate: predicate, options: .firesOnRecordCreation)
                 let notification = CKNotificationInfo()
                 
                 subscription.notificationInfo = notification
