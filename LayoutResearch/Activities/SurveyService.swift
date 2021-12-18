@@ -74,6 +74,8 @@ extension SurveyService: ORKTaskViewControllerDelegate {
             if let completion = surveyCompletion {
                 completion(false)
             }
+        @unknown default:
+            fatalError()
         }
         taskViewController.presentingViewController?.dismiss(animated: true, completion: nil)
     }

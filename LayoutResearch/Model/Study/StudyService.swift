@@ -220,8 +220,8 @@ class StudyService {
             let middleLowerRow = array[half]
             
             // Make sure two items are grouped in the middle
-            let upperItemColumn = middleUpperRow.index(where: { $0.sharedColorCount == settings.distractorColorLowCount })
-            let lowerItemColumn = middleLowerRow.index(where: { $0.sharedColorCount == settings.distractorColorLowCount })
+            let upperItemColumn = middleUpperRow.firstIndex(where: { $0.sharedColorCount == settings.distractorColorLowCount })
+            let lowerItemColumn = middleLowerRow.firstIndex(where: { $0.sharedColorCount == settings.distractorColorLowCount })
             
             // Stop if on top of each other
             if  upperItemColumn == lowerItemColumn {
@@ -237,13 +237,13 @@ class StudyService {
         repeat {
             let apartId = Const.StudyParameters.colorIdApartCondition
             
-            let itemIndexRow1 = array[0].index(where: { $0.colorId == apartId })
-            let itemIndexRow2 = array[1].index(where: { $0.colorId == apartId })
-            let itemIndexRow3 = array[2].index(where: { $0.colorId == apartId })
+            let itemIndexRow1 = array[0].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRow2 = array[1].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRow3 = array[2].firstIndex(where: { $0.colorId == apartId })
 
-            let itemIndexRowLast3 = array[array.count - 3].index(where: { $0.colorId == apartId })
-            let itemIndexRowLast2 = array[array.count - 2].index(where: { $0.colorId == apartId })
-            let itemIndexRowLast1 = array[array.count - 1].index(where: { $0.colorId == apartId })
+            let itemIndexRowLast3 = array[array.count - 3].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRowLast2 = array[array.count - 2].firstIndex(where: { $0.colorId == apartId })
+            let itemIndexRowLast1 = array[array.count - 1].firstIndex(where: { $0.colorId == apartId })
             
             if itemIndexRow2 == itemIndexRow1 || itemIndexRow2 == itemIndexRow3 {
                 array[1].shuffle()

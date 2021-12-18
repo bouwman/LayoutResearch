@@ -44,7 +44,7 @@ class ConsentDocument: ORKConsentDocument {
         for sectionType in sectionTypes {
             let section = ORKConsentSection(type: sectionType)
             
-            let localizedIpsum = NSLocalizedString(ipsum[sectionTypes.index(of: sectionType)!], comment: "")
+            let localizedIpsum = NSLocalizedString(ipsum[sectionTypes.firstIndex(of: sectionType)!], comment: "")
             let localizedSummary = localizedIpsum.components(separatedBy: ".")[0] + "."
             
             section.summary = localizedSummary
@@ -98,6 +98,8 @@ extension ORKConsentSectionType: CustomStringConvertible {
             
         case .onlyInDocument:
             return "OnlyInDocument"
+        @unknown default:
+            fatalError()
         }
     }
 }

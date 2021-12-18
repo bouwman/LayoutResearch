@@ -121,7 +121,7 @@ class SearchView: UIView {
         var item: SearchItemProtocol?
         
         for (row, itemsInRow) in items.enumerated() {
-            if let column = itemsInRow.index(where: { $0.identifier == button.identifier }) {
+            if let column = itemsInRow.firstIndex(where: { $0.identifier == button.identifier }) {
                 item = itemsInRow[column]
                 index = IndexPath(row: row, section: column)
             }

@@ -29,7 +29,7 @@ class ActivitiesViewController: UITableViewController {
         
         // Self sizing cells
         tableView.estimatedRowHeight = 80
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
         tableView.tableFooterView = UIView(frame: .zero)
         
         // Pull to refresh
@@ -312,20 +312,14 @@ class ActivitiesViewController: UITableViewController {
     
     private func registerNotifications() {
         let application = UIApplication.shared
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
-                if granted {
-                    DispatchQueue.main.async {
-                        application.registerForRemoteNotifications()
-                        UNUserNotificationCenter.current().delegate = NotificationHandler.sharedInstance
-                    }
+        UNUserNotificationCenter.current().requestAuthorization(options:[[.alert, .sound, .badge]], completionHandler: { (granted, error) in
+            if granted {
+                DispatchQueue.main.async {
+                    application.registerForRemoteNotifications()
+                    UNUserNotificationCenter.current().delegate = NotificationHandler.sharedInstance
                 }
-            })
-        } else if #available(iOS 9.0, *) {
-            let settings = UIUserNotificationSettings(types: [.alert, .sound, .badge], categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-        }
+            }
+        })
     }
     
     func createNewNotificationFor(activity: StudyActivity) {
@@ -339,7 +333,7 @@ class ActivitiesViewController: UITableViewController {
             content.title = title
             content.body = body
             content.badge = 1
-            content.sound = UNNotificationSound.default()
+            content.sound = UNNotificationSound.default
             
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: activity.timeRemaining, repeats: false)
             let request = UNNotificationRequest(identifier: activity.identifier, content: content, trigger: trigger)
@@ -373,7 +367,7 @@ class ActivitiesViewController: UITableViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navVC = segue.destination as? UINavigationController {
-            if let settingsVC = navVC.childViewControllers.first as? SettingsViewController {
+            if let settingsVC = navVC.children.first as? SettingsViewController {
                 settingsVC.settings = settings
                 settingsVC.delegate = self
             }
@@ -433,6 +427,8 @@ extension ActivitiesViewController: ORKTaskViewControllerDelegate {
         case .failed, .saved, .discarded:
             service.activeActivity = nil
             dismiss(animated: true, completion: nil)
+        @unknown default:
+            fatalError()
         }
     }
     
@@ -484,7 +480,7 @@ class OrderedSearchTask: ORKOrderedTask {
         var progress = ORKTaskProgress()
         
         if step is SearchDescriptionStep {
-            lastSearchStepIndex = UInt(searchSteps.index(of: step) ?? 1)
+            lastSearchStepIndex = UInt(searchSteps.firstIndex(of: step) ?? 1)
         }
         progress.current = lastSearchStepIndex
         progress.total = UInt(searchSteps.count)

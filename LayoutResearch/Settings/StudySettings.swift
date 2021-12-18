@@ -56,7 +56,7 @@ enum ParticipantGroup: String, CustomStringConvertible, SelectionPresentable {
     }
     
     func next() -> ParticipantGroup {
-        let currentIndex = ParticipantGroup.allGroups.index(of: self)!
+        let currentIndex = ParticipantGroup.allGroups.firstIndex(of: self)!
         if currentIndex == ParticipantGroup.allGroups.count - 1 {
             return ParticipantGroup.allGroups.first!
         } else {

@@ -36,7 +36,7 @@ class ProfileViewController: UITableViewController {
     let fileService = LocalDataService()
     var group: ParticipantGroup? {
         didSet {
-            groupLabelButton?.setTitle(group?.title ?? "Group --", for: UIControlState.normal)
+            groupLabelButton?.setTitle(group?.title ?? "Group --", for: UIControl.State.normal)
         }
     }
     
