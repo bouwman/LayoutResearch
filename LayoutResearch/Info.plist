@@ -32,10 +32,14 @@
 	<string>Location is required by the ReasearchKit framework. Not used in this app.</string>
 	<key>NSLocationUsageDescription</key>
 	<string>Location is required by the ReasearchKit framework. Not used in this app.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Location is required by the ReasearchKit framework. Not used in this app.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>The microphone is required by the ReasearchKit framework. Not used in this app.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Motion is required by the ReasearchKit framework. Not used in this app.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Speech Recognition is required by the ReasearchKit framework. Not used in this app.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
